@@ -71,6 +71,10 @@ $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
 
 $composer_json = json_decode(file_get_contents(getcwd() . "/composer.json"));
 $version = $composer_json->version;
+if (empty($version)) {
+    echo "Version not available in composer.json > version!\n";
+    die(1);
+}
 
 $changelog_md = file_get_contents(getcwd() . "/CHANGELOG.md");
 $changelog_header = "## [" . $version . "]";
