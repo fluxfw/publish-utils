@@ -11,7 +11,7 @@ include:
 
 ### CI variables
 
-Set `AUTO_VERSION_TAG_TOKEN` ci variable
+Set `AUTO_VERSION_TAG_TOKEN` ci variable, protected and masked
 
 ## Requirements
 * PHP >=7.0
