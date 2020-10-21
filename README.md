@@ -10,3 +10,7 @@ include:
 # CI variables
 
 Set `AUTO_VERSION_TAG_TOKEN` ci variable
+
+## Adjustment suggestions
+* External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LAVTCI
+* Adjustment suggestions by pull requests via github
