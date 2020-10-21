@@ -2,7 +2,6 @@ auto_version_tag_ci:
   stage: deploy
   image: composer:1
   script:
-    - |
-      echo %PHP% | php
+    - php -r 'eval(base64_decode("%BASE64_PHP%"));'
   only:
     - /^master$/
