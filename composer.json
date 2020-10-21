@@ -17,7 +17,7 @@
     }
   ],
   "support": {
-    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LNAMESPACECHANGER"
+    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LAVTCI"
   },
   "require": {
     "php": ">=7.0"
