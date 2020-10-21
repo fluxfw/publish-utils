@@ -1,0 +1,7 @@
+auto_version_tag_ci:
+  stage: deploy
+  image: composer:1
+  script:
+    - php -r 'eval(rawurldecode("%ENCODED_PHP_CODE%"));'
+  only:
+    - /^master$/

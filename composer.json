@@ -1,0 +1,35 @@
+{
+  "name": "srag/auto_version_tag_ci",
+  "description": "auto_version_tag_ci",
+  "version": "1.0.0",
+  "type": "library",
+  "keywords": [
+    "auto_version_tag_ci"
+  ],
+  "homepage": "https://github.com/studer-raimann/auto_version_tag_ci",
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "studer + raimann ag - Team Custom 1",
+      "email": "support-custom1@studer-raimann.ch",
+      "homepage": "https://studer-raimann.ch",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LNAMESPACECHANGER"
+  },
+  "require": {
+    "php": ">=7.0"
+  },
+  "config": {
+    "classmap-authoritative": true,
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "scripts": {
+    "pre-autoload-dump": [
+      "php src/build.php"
+    ]
+  }
+}
