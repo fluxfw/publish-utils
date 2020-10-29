@@ -1,7 +1,7 @@
 {
   "name": "srag/auto_version_tag_ci",
   "description": "auto_version_tag_ci",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "library",
   "keywords": [
     "auto_version_tag_ci"
