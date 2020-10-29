@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../vendor/autoload.php";
+//require_once __DIR__ . "/../vendor/autoload.php";
 
 $yml_code = file_get_contents(__DIR__ . "/auto_version_tag_ci.yml");
 
