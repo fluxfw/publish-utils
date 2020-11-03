@@ -84,7 +84,10 @@ if ($changelog_header_pos === false) {
     die(1);
 }
 $changelog = substr($changelog_md, $changelog_header_pos + strlen($changelog_header));
-$changelog = substr($changelog, 0, strpos($changelog, "\n\n"));
+$changelog_end_pos = strpos($changelog, "\n\n");
+if ($changelog_end_pos !== false) {
+    $changelog = substr($changelog, 0, $changelog_end_pos);
+}
 $changelog = trim($changelog);
 
 $maintainer_user_id = gitlabRequest("members", 200);

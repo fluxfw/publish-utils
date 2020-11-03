@@ -1,5 +1,8 @@
 # Changelog
 
+## [x]
+- Fix empty text if last changelog entry
+
 ## [1.0.3]
 - Fix build permissions
 
