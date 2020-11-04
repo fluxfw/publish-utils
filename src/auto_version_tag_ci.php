@@ -23,7 +23,7 @@ function getEnvironmentVariable(string $variable) : string
  *
  * @return string|null
  */
-function gitlabRequest(string $api_url, int $expect_status_code, bool $post = false)/* : ?string*/
+function gitlabRequest(string $api_url, int $expect_status_code, bool $post = false) : ?string
 {
     $AUTO_VERSION_TAG_TOKEN = getEnvironmentVariable("AUTO_VERSION_TAG_TOKEN");
     $SERVER_URL = getEnvironmentVariable("CI_SERVER_URL");

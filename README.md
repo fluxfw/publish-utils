@@ -14,7 +14,7 @@ include:
 Set `AUTO_VERSION_TAG_TOKEN` ci variable, protected and masked
 
 ## Requirements
-* PHP >=7.0
+* PHP >=7.2
 
 ## Adjustment suggestions
 * External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LAVTCI

@@ -10,5 +10,8 @@ $encode = ["%", '"', "'", "$", ":"];
 
 $build_code = str_replace("%ENCODED_PHP_CODE%", str_replace($encode, array_map("rawurlencode", $encode), $php_code), $yml_code);
 
-mkdir(__DIR__ . "/../build", 0755, true);
+if (!file_exists(__DIR__ . "/../build")) {
+    mkdir(__DIR__ . "/../build", 0755, true);
+}
+
 file_put_contents(__DIR__ . "/../build/auto_version_tag_ci.yml", $build_code);
