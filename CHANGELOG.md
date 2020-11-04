@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.0]
+- Fix empty text if last changelog entry
+- Min. PHP 7.2
+- Change docker image
+
 ## [1.0.3]
 - Fix build permissions
 

@@ -1,6 +1,6 @@
 auto_version_tag_ci:
   stage: deploy
-  image: composer:1
+  image: php:7.2-alpine
   script:
     - php -r 'eval(rawurldecode("%ENCODED_PHP_CODE%"));'
   only:
