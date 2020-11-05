@@ -1,4 +1,4 @@
-# auto_version_tag_ci library
+# auto_version_tag_ci
 
 ## Usage
 
