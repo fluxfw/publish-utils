@@ -4,9 +4,58 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb867f369af2b0df78ec0a5f2f9fadfa",
+    "content-hash": "2a7c009e30f07246c1fe94c34afc8ba0",
     "packages": [],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "srag/generateplugininfoshelper",
+            "version": "2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
+                "reference": "8a88e97a073ded1edfd428a175534e8f5dff285a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/8a88e97a073ded1edfd428a175534e8f5dff285a",
+                "reference": "8a88e97a073ded1edfd428a175534e8f5dff285a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "extra": {
+                "generate_plugin_readme_template": "SRAG_LIBRARY"
+            },
+            "autoload": {
+                "psr-4": {
+                    "srag\\GeneratePluginInfosHelper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "studer + raimann ag - Team Custom 1",
+                    "email": "support-custom1@studer-raimann.ch",
+                    "homepage": "https://studer-raimann.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Generate plugin infos helper",
+            "homepage": "https://github.com/studer-raimann/GeneratePluginInfosHelper",
+            "keywords": [
+                "Infos",
+                "generate",
+                "helper",
+                "plugin"
+            ],
+            "time": "2020-11-09T11:46:28+00:00"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],

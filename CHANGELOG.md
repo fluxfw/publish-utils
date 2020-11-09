@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.2.0]
+- Generate readme
+
 ## [1.1.0]
 - Fix empty text if last changelog entry
 - Min. PHP 7.2
