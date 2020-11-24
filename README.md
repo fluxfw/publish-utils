@@ -2,11 +2,21 @@
 
 # srag/auto_version_tag_ci Library
 
-auto_version_tag_ci
+Auto create version tag gitlab ci on merge to master amongst other things
 
 This is an OpenSource project by studer + raimann ag, CH-Burgdorf (https://studer-raimann.ch)
 
 This project is licensed under the GPL-3.0-only license
+
+## Description
+
+- Auto create version tag on merge `develop` to `master`
+  - Version from `composer.json` > `version`
+  - Changelog from `CHANGELOG.md`
+- Auto update gitlab project description
+  - Short description from `composer.json` > `description`
+- Auto recreate gitlab pull request `develop` to `master`
+  - Assign user is first maintainer in gitlab project members
 
 ## Usage
 

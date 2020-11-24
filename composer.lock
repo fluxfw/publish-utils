@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3373b50ab974553451187edc3ffe7b8b",
+    "content-hash": "44a04a8735fe599bd78f4fa3ce4a663b",
     "packages": [],
     "packages-dev": [
         {
             "name": "srag/generateplugininfoshelper",
-            "version": "2.3.2",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
-                "reference": "5de665d2803355843ffb44d8c66d96b049ec1edd"
+                "reference": "ba69bc820a45df076f1c65601ee75697236eccc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/5de665d2803355843ffb44d8c66d96b049ec1edd",
-                "reference": "5de665d2803355843ffb44d8c66d96b049ec1edd",
+                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/ba69bc820a45df076f1c65601ee75697236eccc7",
+                "reference": "ba69bc820a45df076f1c65601ee75697236eccc7",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "helper",
                 "plugin"
             ],
-            "time": "2020-11-09T13:17:14+00:00"
+            "time": "2020-11-17T08:37:46+00:00"
         }
     ],
     "aliases": [],
