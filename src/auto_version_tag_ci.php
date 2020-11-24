@@ -17,13 +17,14 @@ function getEnvironmentVariable(string $variable) : string
 }
 
 /**
- * @param string $api_url
- * @param int    $expect_status_code
- * @param bool   $post
+ * @param string     $api_url
+ * @param int        $expect_status_code
+ * @param string     $method
+ * @param array|null $body_data
  *
  * @return string|null
  */
-function gitlabRequest(string $api_url, int $expect_status_code, bool $post = false) : ?string
+function gitlabRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
 {
     $AUTO_VERSION_TAG_TOKEN = getEnvironmentVariable("AUTO_VERSION_TAG_TOKEN");
     $SERVER_URL = getEnvironmentVariable("CI_SERVER_URL");
@@ -33,14 +34,18 @@ function gitlabRequest(string $api_url, int $expect_status_code, bool $post = fa
     $response = null;
     $status_code = null;
     try {
-        $request_url = $SERVER_URL . "/api/v4/projects/" . $PROJECT_ID . "/" . $api_url;
+        $request_url = $SERVER_URL . "/api/v4/projects/" . $PROJECT_ID . (!empty($api_url) ? "/" . $api_url : "");
         echo "Request url: " . $request_url . "\n";
 
         $curl = curl_init($request_url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: " . $AUTO_VERSION_TAG_TOKEN]);
 
-        if ($post) {
-            curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        echo $method . " method\n";
+
+        if (!empty($body_data)) {
+            echo "Body data: " . json_encode($body_data) . "\n";
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $body_data);
         }
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -70,9 +75,16 @@ if (php_sapi_name() !== "cli") {
 $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
 
 $composer_json = json_decode(file_get_contents(getcwd() . "/composer.json"));
+
 $version = $composer_json->version;
 if (empty($version)) {
     echo "Version not available in composer.json > version!\n";
+    die(1);
+}
+
+$description = $composer_json->description;
+if (empty($description)) {
+    echo "Short description not available in composer.json > description!\n";
     die(1);
 }
 
@@ -105,7 +117,11 @@ if (empty($maintainer_user_id)) {
 $maintainer_user_id = current($maintainer_user_id)["id"];
 
 gitlabRequest("repository/tags?tag_name=" . rawurlencode("v" . $version) . "&ref=" . rawurlencode($COMMIT_ID) . "&message=" . rawurlencode($changelog) . "&release_description="
-    . rawurlencode($changelog), 201, true);
+    . rawurlencode($changelog), 201, "POST");
+
+gitlabRequest("", 200, "PUT", [
+    "description" => $description
+]);
 
 gitlabRequest("merge_requests?source_branch=" . rawurlencode("develop") . "&target_branch=" . rawurlencode("master") . "&title=" . rawurlencode("WIP: Develop") . "&assignee_id="
-    . rawurlencode($maintainer_user_id), 201, true);
+    . rawurlencode($maintainer_user_id), 201, "POST");
