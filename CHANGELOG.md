@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.3.0]
+- Auto update gitlab project description from composer.json>description
+
 ## [1.2.2]
 - Move doc/DESCRIPTION.md to src/LONG_DESCRIPTION.md
 
