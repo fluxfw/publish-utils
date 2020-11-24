@@ -1,7 +1,7 @@
 {
   "name": "srag/auto_version_tag_ci",
-  "description": "auto_version_tag_ci",
-  "version": "1.3.1",
+  "description": "Auto create version tag gitlab ci on merge to master amongst other things",
+  "version": "1.3.2",
   "extra": {
     "generate_plugin_readme_template": "SRAG_LIBRARY"
   },
