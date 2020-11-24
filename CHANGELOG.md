@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.3.1]
+- Move generatePluginReadme to manual script
+
 ## [1.3.0]
 - Auto update gitlab project description from composer.json>description
 
