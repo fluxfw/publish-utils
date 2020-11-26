@@ -31,7 +31,7 @@ function request(string $request_url, callable $set_token, int $expect_status_co
     $response = null;
     $status_code = null;
     try {
-        echo "Request url: " . $request_url . "\n";
+        echo "curl " . $method . " request: " . $request_url . "\n";
 
         $curl = curl_init($request_url);
 
@@ -42,7 +42,6 @@ function request(string $request_url, callable $set_token, int $expect_status_co
         $set_token($curl, $headers);
 
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-        echo $method . " method\n";
 
         if (!empty($body_data)) {
             //echo "Body data: " . json_encode($body_data) . "\n";
