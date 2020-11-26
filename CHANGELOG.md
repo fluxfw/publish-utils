@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.4.0]
+- Update description on github
+
 ## [1.3.2]
 - Update description
 
