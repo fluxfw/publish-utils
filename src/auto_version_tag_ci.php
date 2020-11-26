@@ -117,31 +117,9 @@ function gitlabRequest(string $api_url, int $expect_status_code, string $method 
  */
 function githubRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
 {
-    static $GITHUB_MIRROR_URL = null;
-    if ($GITHUB_MIRROR_URL === null || $GITHUB_MIRROR_URL === false) {
-        if ($GITHUB_MIRROR_URL === null) {
-            $GITHUB_MIRROR_URL = gitlabRequest("remote_mirrors", 200);
-        }
-
-        if (empty($GITHUB_MIRROR_URL) || empty($GITHUB_MIRROR_URL = json_decode($GITHUB_MIRROR_URL, true)) || !is_array($GITHUB_MIRROR_URL)
-            || empty($GITHUB_MIRROR_URL
-                = current($GITHUB_MIRROR_URL)["url"])
-        ) {
-            echo "No project remote mirror found!\n";
-
-            $GITHUB_MIRROR_URL = false;
-
-            return null;
-        }
-
-        $GITHUB_MIRROR_URL = explode("@", $GITHUB_MIRROR_URL)[1];
-
-        if (strpos($GITHUB_MIRROR_URL, "github.com/") !== 0) {
-            echo "Project remote mirror is not github!\n";
-            die(1);
-        }
-
-        $GITHUB_MIRROR_URL = "https://" . str_replace([".git", "github.com"], ["", "api.github.com/repos"], $GITHUB_MIRROR_URL);
+    global $github_url;
+    if (empty($github_url)) {
+        return null;
     }
 
     static $AUTO_VERSION_TAG_TOKEN = null;
@@ -149,7 +127,7 @@ function githubRequest(string $api_url, int $expect_status_code, string $method 
         $AUTO_VERSION_TAG_TOKEN = getEnvironmentVariable("AUTO_VERSION_TAG_TOKEN_GITHUB");
     }
 
-    $request_url = $GITHUB_MIRROR_URL . (!empty($api_url) ? "/" . $api_url : "");
+    $request_url = $github_url . (!empty($api_url) ? "/" . $api_url : "");
 
     return request($request_url, function ($curl, array &$headers) use ($AUTO_VERSION_TAG_TOKEN): void {
         curl_setopt($curl, CURLOPT_USERPWD, $AUTO_VERSION_TAG_TOKEN);
@@ -203,6 +181,21 @@ if (empty($maintainer_user_id)) {
     die(1);
 }
 $maintainer_user_id = current($maintainer_user_id)["id"];
+
+$github_url = gitlabRequest("remote_mirrors", 200);
+if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) && is_array($github_url)
+    && !empty($github_url = current($github_url)["url"])
+) {
+    $github_url = explode("@", $github_url)[1];
+    if (strpos($github_url, "github.com/") !== 0) {
+        echo "Project remote mirror is not github!\n";
+        die(1);
+    }
+    $github_url = "https://" . str_replace([".git", "github.com"], ["", "api.github.com/repos"], $github_url);
+} else {
+    echo "No project remote mirror found!\n";
+    $github_url = null;
+}
 
 $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
 
