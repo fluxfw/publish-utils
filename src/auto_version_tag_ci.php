@@ -17,41 +17,48 @@ function getEnvironmentVariable(string $variable) : string
 }
 
 /**
- * @param string     $api_url
+ * @param string     $request_url
+ * @param callable   $set_token
  * @param int        $expect_status_code
  * @param string     $method
  * @param array|null $body_data
  *
  * @return string|null
  */
-function gitlabRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
+function request(string $request_url, callable $set_token, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
 {
-    $AUTO_VERSION_TAG_TOKEN = getEnvironmentVariable("AUTO_VERSION_TAG_TOKEN");
-    $SERVER_URL = getEnvironmentVariable("CI_SERVER_URL");
-    $PROJECT_ID = getEnvironmentVariable("CI_PROJECT_ID");
-
     $curl = null;
     $response = null;
     $status_code = null;
     try {
-        $request_url = $SERVER_URL . "/api/v4/projects/" . $PROJECT_ID . (!empty($api_url) ? "/" . $api_url : "");
         echo "Request url: " . $request_url . "\n";
 
         $curl = curl_init($request_url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: " . $AUTO_VERSION_TAG_TOKEN]);
+
+        $headers = [
+            "User-Agent" => "%COMPOSER_NAME%"
+        ];
+
+        $set_token($curl, $headers);
 
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
         echo $method . " method\n";
 
         if (!empty($body_data)) {
-            echo "Body data: " . json_encode($body_data) . "\n";
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $body_data);
+            //echo "Body data: " . json_encode($body_data) . "\n";
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($body_data));
+            $headers["Content-Type"] = "application/json";
         }
+
+        //echo "Headers: " . json_encode($headers) . "\n";
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array_map(function (string $key, string $value) : string {
+            return ($key . ": " . $value);
+        }, array_keys($headers), $headers));
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($curl);
-        echo "Response: " . $response . "\n";
+        //echo "Response: " . $response . "\n";
 
         $status_code = intval(curl_getinfo($curl, CURLINFO_HTTP_CODE));
         echo "Status code: " . $status_code . "\n";
@@ -68,11 +75,92 @@ function gitlabRequest(string $api_url, int $expect_status_code, string $method 
     return $response;
 }
 
+/**
+ * @param string     $api_url
+ * @param int        $expect_status_code
+ * @param string     $method
+ * @param array|null $body_data
+ *
+ * @return string|null
+ */
+function gitlabRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
+{
+    static $AUTO_VERSION_TAG_TOKEN = null;
+    if ($AUTO_VERSION_TAG_TOKEN === null) {
+        $AUTO_VERSION_TAG_TOKEN = getEnvironmentVariable("AUTO_VERSION_TAG_TOKEN");
+    }
+
+    static $SERVER_URL = null;
+    if ($SERVER_URL === null) {
+        $SERVER_URL = getEnvironmentVariable("CI_SERVER_URL");
+    }
+
+    static $PROJECT_ID = null;
+    if ($PROJECT_ID === null) {
+        $PROJECT_ID = getEnvironmentVariable("CI_PROJECT_ID");
+    }
+
+    $request_url = $SERVER_URL . "/api/v4/projects/" . $PROJECT_ID . (!empty($api_url) ? "/" . $api_url : "");
+
+    return request($request_url, function ($curl, array &$headers) use ($AUTO_VERSION_TAG_TOKEN): void {
+        $headers["PRIVATE-TOKEN"] = $AUTO_VERSION_TAG_TOKEN;
+    }, $expect_status_code, $method, $body_data);
+}
+
+/**
+ * @param string     $api_url
+ * @param int        $expect_status_code
+ * @param string     $method
+ * @param array|null $body_data
+ *
+ * @return string|null
+ */
+function githubRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
+{
+    static $GITHUB_MIRROR_URL = null;
+    if ($GITHUB_MIRROR_URL === null || $GITHUB_MIRROR_URL === false) {
+        if ($GITHUB_MIRROR_URL === null) {
+            $GITHUB_MIRROR_URL = gitlabRequest("remote_mirrors", 200);
+        }
+
+        if (empty($GITHUB_MIRROR_URL) || empty($GITHUB_MIRROR_URL = json_decode($GITHUB_MIRROR_URL, true)) || !is_array($GITHUB_MIRROR_URL)
+            || empty($GITHUB_MIRROR_URL
+                = current($GITHUB_MIRROR_URL)["url"])
+        ) {
+            echo "No project remote mirror found!\n";
+
+            $GITHUB_MIRROR_URL = false;
+
+            return null;
+        }
+
+        $GITHUB_MIRROR_URL = explode("@", $GITHUB_MIRROR_URL)[1];
+
+        if (strpos($GITHUB_MIRROR_URL, "github.com/") !== 0) {
+            echo "Project remote mirror is not github!\n";
+            die(1);
+        }
+
+        $GITHUB_MIRROR_URL = "https://" . str_replace([".git", "github.com"], ["", "api.github.com/repos"], $GITHUB_MIRROR_URL);
+    }
+
+    static $AUTO_VERSION_TAG_TOKEN = null;
+    if ($AUTO_VERSION_TAG_TOKEN === null) {
+        $AUTO_VERSION_TAG_TOKEN = getEnvironmentVariable("AUTO_VERSION_TAG_TOKEN_GITHUB");
+    }
+
+    $request_url = $GITHUB_MIRROR_URL . (!empty($api_url) ? "/" . $api_url : "");
+
+    return request($request_url, function ($curl, array &$headers) use ($AUTO_VERSION_TAG_TOKEN): void {
+        curl_setopt($curl, CURLOPT_USERPWD, $AUTO_VERSION_TAG_TOKEN);
+    }, $expect_status_code, $method, $body_data);
+}
+
 if (php_sapi_name() !== "cli") {
     die();
 }
 
-$COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
+echo "> Collect needed infos\n";
 
 $composer_json = json_decode(file_get_contents(getcwd() . "/composer.json"));
 
@@ -116,12 +204,20 @@ if (empty($maintainer_user_id)) {
 }
 $maintainer_user_id = current($maintainer_user_id)["id"];
 
+$COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
+
+echo "> Auto create version tag\n";
 gitlabRequest("repository/tags?tag_name=" . rawurlencode("v" . $version) . "&ref=" . rawurlencode($COMMIT_ID) . "&message=" . rawurlencode($changelog) . "&release_description="
     . rawurlencode($changelog), 201, "POST");
 
+echo "> Auto update gitlab and github project description\n";
 gitlabRequest("", 200, "PUT", [
     "description" => $description
 ]);
+githubRequest("", 200, "PATCH", [
+    "description" => $description
+]);
 
+echo "> Auto recreate gitlab pull request `develop` to `master`\n";
 gitlabRequest("merge_requests?source_branch=" . rawurlencode("develop") . "&target_branch=" . rawurlencode("master") . "&title=" . rawurlencode("WIP: Develop") . "&assignee_id="
     . rawurlencode($maintainer_user_id), 201, "POST");

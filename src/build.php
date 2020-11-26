@@ -2,9 +2,13 @@
 
 //require_once __DIR__ . "/../vendor/autoload.php";
 
+$composer_json = json_decode(file_get_contents(getcwd() . "/composer.json"));
+
 $yml_code = file_get_contents(__DIR__ . "/auto_version_tag_ci.yml");
 
 $php_code = trim(exec("php -w " . escapeshellarg(__DIR__ . "/auto_version_tag_ci.php")));
+
+$php_code = str_replace("%COMPOSER_NAME%", $composer_json->name, $php_code);
 
 $encode = ["%", '"', "'", "$", ":"];
 

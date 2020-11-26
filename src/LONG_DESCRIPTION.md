@@ -1,12 +1,14 @@
 ## Description
 
-- Auto create version tag on merge `develop` to `master`
+Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
+
+- Auto create version tag
   - Version from `composer.json` > `version`
   - Changelog from `CHANGELOG.md`
-- Auto update gitlab project description
+- Auto update gitlab and github project description
   - Short description from `composer.json` > `description`
 - Auto recreate gitlab pull request `develop` to `master`
-  - Assign user is first maintainer in gitlab project members
+  - Assigned user is first maintainer in gitlab project members
 
 ## Usage
 
@@ -20,3 +22,5 @@ include:
 ### CI variables
 
 Set `AUTO_VERSION_TAG_TOKEN` ci variable, protected and masked
+
+Set `AUTO_VERSION_TAG_TOKEN_GITHUB` ci variable (`user:token`), protected and masked
