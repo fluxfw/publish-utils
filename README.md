@@ -15,8 +15,10 @@ Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
 - Auto create version tag
   - Version from `composer.json` > `version`
   - Changelog from `CHANGELOG.md`
-- Auto update gitlab and github project description
+- Auto update gitlab and github project description, topics and homepage
   - Short description from `composer.json` > `description`
+  - Topics from `composer.json` > `keywords`
+  - Homepage from `composer.json` > `homepage`
 - Auto recreate gitlab pull request `develop` to `master`
   - Assigned user is first maintainer in gitlab project members
 

@@ -130,6 +130,7 @@ function githubRequest(string $api_url, int $expect_status_code, string $method 
 
     return request($request_url, function ($curl, array &$headers) use ($AUTO_VERSION_TAG_TOKEN): void {
         curl_setopt($curl, CURLOPT_USERPWD, $AUTO_VERSION_TAG_TOKEN);
+        $headers["Accept"] = "application/vnd.github.mercy-preview+json";
     }, $expect_status_code, $method, $body_data);
 }
 
@@ -150,6 +151,18 @@ if (empty($version)) {
 $description = $composer_json->description;
 if (empty($description)) {
     echo "Short description not available in composer.json > description!\n";
+    die(1);
+}
+
+$keywords = $composer_json->keywords;
+if (empty($keywords)) {
+    echo "Keywords not available in composer.json > keywords!\n";
+    die(1);
+}
+
+$homepage = $composer_json->homepage;
+if (empty($homepage)) {
+    echo "Homepage not available in composer.json > homepage!\n";
     die(1);
 }
 
@@ -204,10 +217,15 @@ gitlabRequest("repository/tags?tag_name=" . rawurlencode("v" . $version) . "&ref
 
 echo "> Auto update gitlab and github project description\n";
 gitlabRequest("", 200, "PUT", [
-    "description" => $description
+    "description" => $description,
+    "tag_list"    => $keywords
 ]);
 githubRequest("", 200, "PATCH", [
-    "description" => $description
+    "description" => $description,
+    "homepage"    => $homepage
+]);
+githubRequest("topics", 200, "PUT", [
+    "names" => $keywords
 ]);
 
 echo "> Auto recreate gitlab pull request `develop` to `master`\n";

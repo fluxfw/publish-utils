@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.5.0]
+- Update keywords and homepage on gitlab and github
+
 ## [1.4.3]
 - Update description on github
 
