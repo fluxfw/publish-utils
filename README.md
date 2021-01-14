@@ -15,8 +15,10 @@ Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
 - Auto create version tag
   - Version from `composer.json` > `version`
   - Changelog from `CHANGELOG.md`
-- Auto update gitlab and github project description
+- Auto update gitlab and github project description, topics and homepage
   - Short description from `composer.json` > `description`
+  - Topics from `composer.json` > `keywords`
+  - Homepage from `composer.json` > `homepage`
 - Auto recreate gitlab pull request `develop` to `master`
   - Assigned user is first maintainer in gitlab project members
 
@@ -41,5 +43,6 @@ Set `AUTO_VERSION_TAG_TOKEN_GITHUB` ci variable (`user:token`), protected and ma
 
 ## Adjustment suggestions
 
-* External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LAVTCI
-* Adjustment suggestions by pull requests via github
+You can report bugs or suggestions at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LAVTCI
+
+There is no guarantee this can be fixed or implemented
