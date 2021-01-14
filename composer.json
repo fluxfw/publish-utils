@@ -1,13 +1,30 @@
 {
   "name": "srag/auto_version_tag_ci",
   "description": "Auto create version tag gitlab ci on merge `develop` to `master`, among other things",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "extra": {
     "generate_plugin_readme_template": "SRAG_LIBRARY"
   },
   "type": "project",
   "keywords": [
-    "auto_version_tag_ci"
+    "auto",
+    "changelog",
+    "ci",
+    "composer",
+    "description",
+    "github",
+    "gitlab",
+    "homepage",
+    "keywords",
+    "json",
+    "maintainer",
+    "pull",
+    "request",
+    "short",
+    "tag",
+    "topics",
+    "update",
+    "version"
   ],
   "homepage": "https://github.com/studer-raimann/auto_version_tag_ci",
   "license": "GPL-3.0-only",
