@@ -54,6 +54,8 @@ function request(string $request_url, callable $set_token, int $expect_status_co
             return ($key . ": " . $value);
         }, array_keys($headers), $headers));
 
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($curl);
@@ -101,7 +103,7 @@ function gitlabRequest(string $api_url, int $expect_status_code, string $method 
 
     $request_url = $SERVER_URL . "/api/v4/projects/" . $PROJECT_ID . (!empty($api_url) ? "/" . $api_url : "");
 
-    return request($request_url, function ($curl, array &$headers) use ($AUTO_VERSION_TAG_TOKEN): void {
+    return request($request_url, function ($curl, array &$headers) use ($AUTO_VERSION_TAG_TOKEN) : void {
         $headers["PRIVATE-TOKEN"] = $AUTO_VERSION_TAG_TOKEN;
     }, $expect_status_code, $method, $body_data);
 }
@@ -128,7 +130,7 @@ function githubRequest(string $api_url, int $expect_status_code, string $method 
 
     $request_url = $github_url . (!empty($api_url) ? "/" . $api_url : "");
 
-    return request($request_url, function ($curl, array &$headers) use ($AUTO_VERSION_TAG_TOKEN): void {
+    return request($request_url, function ($curl, array &$headers) use ($AUTO_VERSION_TAG_TOKEN) : void {
         curl_setopt($curl, CURLOPT_USERPWD, $AUTO_VERSION_TAG_TOKEN);
         $headers["Accept"] = "application/vnd.github.mercy-preview+json";
     }, $expect_status_code, $method, $body_data);
