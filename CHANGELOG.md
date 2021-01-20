@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.5.2]
+- Follow location header
+
 ## [1.5.1]
 - Update keywords
 
