@@ -142,29 +142,36 @@ if (php_sapi_name() !== "cli") {
 
 echo "> Collect needed infos\n";
 
-$composer_json = json_decode(file_get_contents(getcwd() . "/composer.json"));
+if (!file_exists($info_json_file = getcwd() . "/composer.json")) {
+    if (!file_exists($info_json_file = getcwd() . "/package.json")) {
+        echo "Neither composer.json or package.json found!\n";
+        die(1);
+    }
+}
 
-$version = $composer_json->version;
+$info_json = json_decode(file_get_contents($info_json_file));
+
+$version = $info_json->version;
 if (empty($version)) {
-    echo "Version not available in composer.json > version!\n";
+    echo "Version not available in " . basename($info_json_file) . " > version!\n";
     die(1);
 }
 
-$description = $composer_json->description;
+$description = $info_json->description;
 if (empty($description)) {
-    echo "Short description not available in composer.json > description!\n";
+    echo "Short description not available in " . basename($info_json_file) . " > description!\n";
     die(1);
 }
 
-$keywords = $composer_json->keywords;
+$keywords = $info_json->keywords;
 if (empty($keywords)) {
-    echo "Keywords not available in composer.json > keywords!\n";
+    echo "Keywords not available in " . basename($info_json_file) . " > keywords!\n";
     die(1);
 }
 
-$homepage = $composer_json->homepage;
+$homepage = $info_json->homepage;
 if (empty($homepage)) {
-    echo "Homepage not available in composer.json > homepage!\n";
+    echo "Homepage not available in " . basename($info_json_file) . " > homepage!\n";
     die(1);
 }
 

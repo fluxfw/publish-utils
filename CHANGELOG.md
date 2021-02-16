@@ -1,5 +1,8 @@
 # Changelog
 
+## [x]
+- Supports package.json
+
 ## [1.5.2]
 - Follow location header
 
