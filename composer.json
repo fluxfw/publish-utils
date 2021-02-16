@@ -41,7 +41,7 @@
     "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LAVTCI"
   },
   "require": {
-    "php": ">=7.2"
+    "php": ">=7.4"
   },
   "require-dev": {
     "srag/generateplugininfoshelper": ">=0.1.0"
