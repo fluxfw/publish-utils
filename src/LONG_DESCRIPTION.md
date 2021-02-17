@@ -24,7 +24,8 @@ include:
 #### Docker build
 
 ```yaml
-- https://plugins.studer-raimann.ch/Customizing/global/auto_version_tag_ci/build/docker_build_ci.yml
+...
+  - https://plugins.studer-raimann.ch/Customizing/global/auto_version_tag_ci/build/docker_build_ci.yml
 ```
 
 ### CI variables
