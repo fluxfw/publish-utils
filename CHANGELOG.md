@@ -2,6 +2,7 @@
 
 ## [x]
 - build stage
+- Rename to docker_build_ci.yml
 
 ## [1.6.0]
 - Supports package.json
