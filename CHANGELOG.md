@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.6.2]
+- Ensure `AUTO_VERSION_TAG_TOKEN_GITHUB` exists, if remote mirror is enabled, without do partially changes
+
 ## [1.6.1]
 - build stage
 - Rename to docker_build_ci.yml
