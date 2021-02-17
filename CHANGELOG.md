@@ -1,6 +1,6 @@
 # Changelog
 
-## [x]
+## [1.6.1]
 - build stage
 - Rename to docker_build_ci.yml
 
