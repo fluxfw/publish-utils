@@ -4,6 +4,7 @@
 - Supports package.json
 - Update to PHP 7.4
 - Dockerfile
+- docker_build.yml
 
 ## [1.5.2]
 - Follow location header
