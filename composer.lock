@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdb1304c9f766a80db47c751b1c3e992",
+    "content-hash": "0e739a2f7bc1be4779d2097b4871b0ed",
     "packages": [],
     "packages-dev": [
         {
             "name": "srag/generateplugininfoshelper",
-            "version": "2.6.2",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
-                "reference": "c27b765782c9533f6f6f67e2b1a705f52df377a1"
+                "reference": "7ff2f5e06faf8e4f4562724a758633d8d11b9fac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/c27b765782c9533f6f6f67e2b1a705f52df377a1",
-                "reference": "c27b765782c9533f6f6f67e2b1a705f52df377a1",
+                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/7ff2f5e06faf8e4f4562724a758633d8d11b9fac",
+                "reference": "7ff2f5e06faf8e4f4562724a758633d8d11b9fac",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,8 @@
             },
             "type": "library",
             "extra": {
-                "generate_plugin_readme_template": "SRAG_LIBRARY"
+                "generate_plugin_readme_template": "SRAG_LIBRARY",
+                "long_description_template": "src/LONG_DESCRIPTION.md"
             },
             "autoload": {
                 "psr-4": {
@@ -53,7 +54,7 @@
                 "helper",
                 "plugin"
             ],
-            "time": "2020-11-30T14:15:16+00:00"
+            "time": "2021-01-25T06:24:01+00:00"
         }
     ],
     "aliases": [],
@@ -62,7 +63,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2"
+        "php": ">=7.4"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"
