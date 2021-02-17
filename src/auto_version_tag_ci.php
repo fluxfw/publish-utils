@@ -118,20 +118,15 @@ function gitlabRequest(string $api_url, int $expect_status_code, string $method 
  */
 function githubRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
 {
-    global $github_url;
-    if (empty($github_url)) {
+    global $github_url, $github_token;
+    if (empty($github_url) || empty($github_token)) {
         return null;
-    }
-
-    static $AUTO_VERSION_TAG_TOKEN = null;
-    if ($AUTO_VERSION_TAG_TOKEN === null) {
-        $AUTO_VERSION_TAG_TOKEN = getEnvironmentVariable("AUTO_VERSION_TAG_TOKEN_GITHUB");
     }
 
     $request_url = $github_url . (!empty($api_url) ? "/" . $api_url : "");
 
-    return request($request_url, function ($curl, array &$headers) use ($AUTO_VERSION_TAG_TOKEN) : void {
-        curl_setopt($curl, CURLOPT_USERPWD, $AUTO_VERSION_TAG_TOKEN);
+    return request($request_url, function ($curl, array &$headers) use ($github_token) : void {
+        curl_setopt($curl, CURLOPT_USERPWD, $github_token);
         $headers["Accept"] = "application/vnd.github.mercy-preview+json";
     }, $expect_status_code, $method, $body_data);
 }
@@ -213,9 +208,11 @@ if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) 
         die(1);
     }
     $github_url = "https://" . str_replace([".git", "github.com"], ["", "api.github.com/repos"], $github_url);
+    $github_token = getEnvironmentVariable("AUTO_VERSION_TAG_TOKEN_GITHUB");
 } else {
     echo "No project remote mirror found!\n";
     $github_url = null;
+    $github_token = null;
 }
 
 $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
