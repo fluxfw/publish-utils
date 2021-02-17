@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.1]
+- build stage
+- Rename to docker_build_ci.yml
+
 ## [1.6.0]
 - Supports package.json
 - Update to PHP 7.4
