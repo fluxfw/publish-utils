@@ -1,5 +1,8 @@
 # Changelog
 
+## [x]
+- build stage
+
 ## [1.6.0]
 - Supports package.json
 - Update to PHP 7.4
