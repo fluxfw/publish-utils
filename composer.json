@@ -1,5 +1,5 @@
 {
-  "name": "fluxlabs/auto_version_tag_ci",
+  "name": "fluxfw/auto_version_tag_ci",
   "description": "Auto create version tag gitlab ci on merge `develop` to `master`, among other things",
   "version": "1.7.1",
   "extra": {
