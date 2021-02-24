@@ -1,4 +1,4 @@
-npm_build:
+gitlab_npm_publish_ci:
   stage: build
   image: node:15-alpine
   script:

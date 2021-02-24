@@ -1,4 +1,4 @@
-auto_version_tag:
+auto_version_tag_ci:
   stage: build
   image: php:7.4-alpine
   script:
