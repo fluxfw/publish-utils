@@ -1,3 +1,3 @@
 include:
   - https://plugins.studer-raimann.ch/Customizing/global/auto_version_tag_ci/build/auto_version_tag_ci.yml
-  - /src/gitlab_docker_publish_ci.yml
+  - /src/gitlab_docker_registry_publish_ci.yml

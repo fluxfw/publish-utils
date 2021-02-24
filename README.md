@@ -31,25 +31,25 @@ include:
   - https://plugins.studer-raimann.ch/Customizing/global/auto_version_tag_ci/build/auto_version_tag_ci.yml
 ```
 
-#### Composer build
+#### Gitlab composer registry publish
 
 ```yaml
 ...
-  - https://plugins.studer-raimann.ch/Customizing/global/auto_version_tag_ci/build/gitlab_composer_publish_ci.yml
+  - https://plugins.studer-raimann.ch/Customizing/global/auto_version_tag_ci/build/gitlab_composer_registry_publish_ci.yml
 ```
 
-#### Docker build
+#### Gitlab docker registry publish
 
 ```yaml
 ...
-  - https://plugins.studer-raimann.ch/Customizing/global/auto_version_tag_ci/build/gitlab_docker_publish_ci.yml
+  - https://plugins.studer-raimann.ch/Customizing/global/auto_version_tag_ci/build/gitlab_docker_registry_publish_ci.yml
 ```
 
-#### NPM build
+#### Gitlab npm registry publish
 
 ```yaml
 ...
-  - https://plugins.studer-raimann.ch/Customizing/global/auto_version_tag_ci/build/gitlab_npm_publish_ci.yml
+  - https://plugins.studer-raimann.ch/Customizing/global/auto_version_tag_ci/build/gitlab_npm_registry_publish_ci.yml
 ```
 
 ### CI variables
