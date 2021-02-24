@@ -1,0 +1,9 @@
+npm_build:
+  stage: build
+  image: node:15-alpine
+  script:
+    - echo -e "@$CI_PROJECT_ROOT_NAMESPACE:registry=$CI_SERVER_URL/api/v4/projects/$CI_PROJECT_ID/packages/npm/\n${CI_SERVER_URL#https?}/api/v4/projects/$CI_PROJECT_ID/packages/npm/:_authToken=$CI_JOB_TOKEN" > .npmrc
+    - npm publish
+    - unlink .npmrc
+  only:
+    - tags

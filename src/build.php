@@ -21,3 +21,4 @@ if (!file_exists(__DIR__ . "/../build")) {
 file_put_contents(__DIR__ . "/../build/auto_version_tag_ci.yml", $build_code);
 
 copy(__DIR__ . "/docker_build_ci.yml", __DIR__ . "/../build/docker_build_ci.yml");
+copy(__DIR__ . "/npm_build_ci.yml", __DIR__ . "/../build/npm_build_ci.yml");
