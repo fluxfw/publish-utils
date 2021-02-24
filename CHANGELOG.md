@@ -1,7 +1,7 @@
 # Changelog
 
 ## [1.7.1]
-- Change to fluxlabs prefix
+- Change to fluxfw prefix
 
 ## [1.7.0]
 - Rename `docker_build_ci.yml` to `gitlab_docker_registry_publish_ci.yml`
