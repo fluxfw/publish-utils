@@ -1,9 +1,9 @@
 # Changelog
 
 ## [1.7.0]
-- Rename `docker_build_ci.yml` to `gitlab_docker_publish_ci.yml`
-- `gitlab_composer_publish_ci.yml`
-- `gitlab_npm_publish_ci.yml`
+- Rename `docker_build_ci.yml` to `gitlab_docker_registry_publish_ci.yml`
+- `gitlab_composer_registry_publish_ci.yml`
+- `gitlab_npm_registry_publish_ci.yml`
 
 ## [1.6.2]
 - Ensure `AUTO_VERSION_TAG_TOKEN_GITHUB` exists, if remote mirror is enabled, without do partially changes

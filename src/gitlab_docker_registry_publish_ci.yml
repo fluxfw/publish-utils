@@ -1,4 +1,4 @@
-gitlab_docker_publish_ci:
+gitlab_docker_registry_publish_ci:
   stage: build
   image: docker:20
   script:

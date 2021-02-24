@@ -1,4 +1,4 @@
-gitlab_composer_publish_ci:
+gitlab_composer_registry_publish_ci:
   stage: build
   image: composer:1.10
   script:
