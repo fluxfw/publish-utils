@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.7.3]
+- Docker build: Use same image for the version and latest tag
+
 ## [1.7.2]
 - Ensure "Enable 'Delete source branch' option by default" is disabled
 
