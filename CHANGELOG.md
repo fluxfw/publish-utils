@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.7.6]
+- Try again with docker build cache
+
 ## [1.7.5]
 - Disable docker build cache
 
