@@ -19,6 +19,7 @@ Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
     - Short description from `composer.json`|`package.json` > `description`
     - Topics from `composer.json`|`package.json` > `keywords`
     - Homepage from `composer.json`|`package.json` > `homepage`
+- Ensure "Enable 'Delete source branch' option by default" is disabled
 - Auto recreate gitlab pull request `develop` to `master`
     - Assigned user is first maintainer in gitlab project members
 

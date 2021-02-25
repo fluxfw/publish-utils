@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.7.2]
+- Ensure "Enable 'Delete source branch' option by default" is disabled
+
 ## [1.7.1]
 - Change to fluxfw prefix
 
