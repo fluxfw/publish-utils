@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.7.5]
+- Disable docker build cache
+
 ## [1.7.4]
 - `gitlab_docker_registry_publish_one_version_ci.yml`
 
