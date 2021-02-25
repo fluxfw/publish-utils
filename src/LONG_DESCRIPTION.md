@@ -36,6 +36,13 @@ include:
   - https://auto-version-tag-ci.fluxlabs.ch/gitlab_docker_registry_publish_ci.yml
 ```
 
+#### Gitlab docker registry publish (One version)
+
+```yaml
+...
+  - https://auto-version-tag-ci.fluxlabs.ch/gitlab_docker_registry_publish_one_version_ci.yml
+```
+
 #### Gitlab npm registry publish
 
 ```yaml
