@@ -1,0 +1,10 @@
+gitlab_docker_registry_publish_one_version_ci:
+  stage: build
+  image: docker:20
+  script:
+    - echo -n $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build . --pull -t $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker logout $CI_REGISTRY
+  only:
+    - /^master$/
