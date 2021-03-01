@@ -1,7 +1,7 @@
 {
-  "name": "fluxfw/auto_version_tag_ci",
+  "name": "srag/auto_version_tag_ci",
   "description": "Auto create version tag gitlab ci on merge `develop` to `master`, among other things",
-  "version": "1.7.6",
+  "version": "1.7.7",
   "extra": {
     "generate_plugin_readme_template": "SRAG_LIBRARY",
     "long_description_template": "src/LONG_DESCRIPTION.md"

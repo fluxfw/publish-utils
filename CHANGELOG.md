@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.7.7]
+- Revert change to fluxfw prefix
+
 ## [1.7.6]
 - Try again with docker build cache
 
