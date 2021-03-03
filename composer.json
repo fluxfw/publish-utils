@@ -27,7 +27,7 @@
     "update",
     "version"
   ],
-  "homepage": "https://github.com/studer-raimann/auto_version_tag_ci",
+  "homepage": "https://github.com/fluxfw/auto_version_tag_ci",
   "license": "GPL-3.0-only",
   "authors": [
     {
