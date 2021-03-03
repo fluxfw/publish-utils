@@ -54,4 +54,4 @@ include:
 
 Set `AUTO_VERSION_TAG_TOKEN` ci variable, protected and masked
 
-Set `AUTO_VERSION_TAG_TOKEN_GITHUB` ci variable (`user:token`), protected and masked
+Set `AUTO_VERSION_TAG_TOKEN_GITHUB` ci variable (Token), protected and masked

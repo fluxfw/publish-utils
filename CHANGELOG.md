@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.7.9]
+- Update readme
+
 ## [1.7.8]
 - Update project url
 
