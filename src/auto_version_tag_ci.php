@@ -234,7 +234,7 @@ githubRequest("topics", 200, "PUT", [
     "names" => $keywords
 ]);
 
-echo "Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
+echo "> Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
 gitlabRequest("", 200, "PUT", [
     "remove_source_branch_after_merge" => false
 ]);
