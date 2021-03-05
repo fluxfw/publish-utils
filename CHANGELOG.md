@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.7.10]
+- Typo
+
 ## [1.7.9]
 - Update readme
 
