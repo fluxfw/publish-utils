@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.7.12]
+- install vendor first (Speed up docker build cache)
+
 ## [1.7.11]
 - Fix
 
