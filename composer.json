@@ -56,7 +56,7 @@
     "sort-packages": true
   },
   "scripts": {
-    "pre-autoload-dump": [
+    "build": [
       "php src/build.php"
     ],
     "generate-plugin-readme": [

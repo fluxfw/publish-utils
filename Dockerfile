@@ -9,6 +9,7 @@ RUN composer install --no-dev
 
 COPY . .
 
+RUN composer build
 RUN cp -r build /build
 WORKDIR /build
 RUN rm -rf /src
