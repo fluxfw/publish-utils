@@ -3,9 +3,9 @@ FROM php:7.4-alpine AS build
 COPY . /src
 WORKDIR /src
 
-RUN curl -sS https://getcomposer.org/installer | php -- --version=1.10.19 --install-dir=/usr/local/bin --filename=composer
+COPY --from=composer:1.10 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev
-RUN unlink /usr/local/bin/composer
+RUN unlink /usr/bin/composer
 
 RUN cp -r build /build
 WORKDIR /build
