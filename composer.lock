@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "615a21d66da9ef40329d248437817522",
+    "content-hash": "94028da2c596b8cf5b6add06cee9bcd6",
     "packages": [],
     "packages-dev": [
         {
             "name": "srag/generateplugininfoshelper",
-            "version": "2.8.0",
+            "version": "2.10.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/studer-raimann/GeneratePluginInfosHelper.git",
-                "reference": "7ff2f5e06faf8e4f4562724a758633d8d11b9fac"
+                "url": "https://github.com/fluxfw/GeneratePluginInfosHelper.git",
+                "reference": "53b1ad2d1ccf3e90182262b9421024fe11ee00f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/GeneratePluginInfosHelper/zipball/7ff2f5e06faf8e4f4562724a758633d8d11b9fac",
-                "reference": "7ff2f5e06faf8e4f4562724a758633d8d11b9fac",
+                "url": "https://api.github.com/repos/fluxfw/GeneratePluginInfosHelper/zipball/53b1ad2d1ccf3e90182262b9421024fe11ee00f9",
+                "reference": "53b1ad2d1ccf3e90182262b9421024fe11ee00f9",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
             },
             "type": "library",
             "extra": {
-                "generate_plugin_readme_template": "SRAG_LIBRARY",
+                "generate_plugin_readme_template": "LIBRARY",
                 "long_description_template": "src/LONG_DESCRIPTION.md"
             },
             "autoload": {
@@ -47,14 +47,14 @@
                 }
             ],
             "description": "Automatic generate plugin infos such README.md, plugin.php, plugin.xml, ... from composer.json",
-            "homepage": "https://github.com/studer-raimann/GeneratePluginInfosHelper",
+            "homepage": "https://github.com/fluxfw/GeneratePluginInfosHelper",
             "keywords": [
                 "Infos",
                 "generate",
                 "helper",
                 "plugin"
             ],
-            "time": "2021-01-25T06:24:01+00:00"
+            "time": "2021-03-23T12:25:52+00:00"
         }
     ],
     "aliases": [],
