@@ -69,9 +69,3 @@ Set `AUTO_VERSION_TAG_TOKEN_GITHUB` ci variable (Token), protected and masked
 ## Requirements
 
 * PHP >=7.4
-
-## Adjustment suggestions
-
-You can report bugs or suggestions at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LAVTCI
-
-There is no guarantee this can be fixed or implemented
