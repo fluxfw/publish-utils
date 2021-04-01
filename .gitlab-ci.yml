@@ -1,3 +1,12 @@
 include:
   - https://auto-version-tag-ci.fluxlabs.ch/auto_version_tag_ci.yml
-  - /src/gitlab_docker_registry_publish_ci.yml
+
+build:
+  stage: build
+  script:
+    - echo -n $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build . --pull -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - docker logout $CI_REGISTRY
+  only:
+    - tags

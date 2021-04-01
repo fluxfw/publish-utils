@@ -19,8 +19,3 @@ if (!file_exists(__DIR__ . "/../build")) {
 }
 
 file_put_contents(__DIR__ . "/../build/auto_version_tag_ci.yml", $build_code);
-
-copy(__DIR__ . "/gitlab_composer_registry_publish_ci.yml", __DIR__ . "/../build/gitlab_composer_registry_publish_ci.yml");
-copy(__DIR__ . "/gitlab_docker_registry_publish_ci.yml", __DIR__ . "/../build/gitlab_docker_registry_publish_ci.yml");
-copy(__DIR__ . "/gitlab_docker_registry_publish_one_version_ci.yml", __DIR__ . "/../build/gitlab_docker_registry_publish_one_version_ci.yml");
-copy(__DIR__ . "/gitlab_npm_registry_publish_ci.yml", __DIR__ . "/../build/gitlab_npm_registry_publish_ci.yml");

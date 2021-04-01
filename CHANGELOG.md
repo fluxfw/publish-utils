@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.8.0]
+- General `metadata.json` file support
+- Create tag is now optional
+- Remove registry build ci
+- Remove `latest` build
+
 ## [1.7.13]
 - Update readme
 
