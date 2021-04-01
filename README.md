@@ -12,13 +12,13 @@ This project is licensed under the GPL-3.0-only license
 
 Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
 
-- Auto create version tag
-    - Version from `composer.json`|`package.json` > `version`
+- Auto create version tag (Optional)
+    - Version from `composer.json`|`package.json`|`metadata.json` > `version`
     - Changelog from `CHANGELOG.md`
 - Auto update gitlab and github project description, topics and homepage
-    - Short description from `composer.json`|`package.json` > `description`
-    - Topics from `composer.json`|`package.json` > `keywords`
-    - Homepage from `composer.json`|`package.json` > `homepage`
+    - Short description from `composer.json`|`package.json`|`metadata.json` > `description`
+    - Topics from `composer.json`|`package.json`|`metadata.json` > `keywords`
+    - Homepage from `composer.json`|`package.json`|`metadata.json` > `homepage`
 - Ensure "Enable 'Delete source branch' option by default" is disabled
 - Auto recreate gitlab pull request `develop` to `master`
     - Assigned user is first maintainer in gitlab project members
@@ -30,34 +30,6 @@ Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
 ```yaml
 include:
   - https://auto-version-tag-ci.fluxlabs.ch/auto_version_tag_ci.yml
-```
-
-#### Gitlab composer registry publish
-
-```yaml
-...
-  - https://auto-version-tag-ci.fluxlabs.ch/gitlab_composer_registry_publish_ci.yml
-```
-
-#### Gitlab docker registry publish
-
-```yaml
-...
-  - https://auto-version-tag-ci.fluxlabs.ch/gitlab_docker_registry_publish_ci.yml
-```
-
-#### Gitlab docker registry publish (One version)
-
-```yaml
-...
-  - https://auto-version-tag-ci.fluxlabs.ch/gitlab_docker_registry_publish_one_version_ci.yml
-```
-
-#### Gitlab npm registry publish
-
-```yaml
-...
-  - https://auto-version-tag-ci.fluxlabs.ch/gitlab_npm_registry_publish_ci.yml
 ```
 
 ### CI variables

@@ -139,17 +139,20 @@ echo "> Collect needed infos\n";
 
 if (!file_exists($info_json_file = getcwd() . "/composer.json")) {
     if (!file_exists($info_json_file = getcwd() . "/package.json")) {
-        echo "Neither composer.json or package.json found!\n";
-        die(1);
+        if (!file_exists($info_json_file = getcwd() . "/metadata.json")) {
+            echo "Neither composer.json or package.json or metadata.json found!\n";
+            die(1);
+        };
     }
 }
 
 $info_json = json_decode(file_get_contents($info_json_file));
 
+$create_tag = true;
+
 $version = $info_json->version;
 if (empty($version)) {
-    echo "Version not available in " . basename($info_json_file) . " > version!\n";
-    die(1);
+    $create_tag = false;
 }
 
 $description = $info_json->description;
@@ -170,19 +173,25 @@ if (empty($homepage)) {
     die(1);
 }
 
-$changelog_md = file_get_contents(getcwd() . "/CHANGELOG.md");
-$changelog_header = "## [" . $version . "]";
-$changelog_header_pos = strpos($changelog_md, $changelog_header);
-if ($changelog_header_pos === false) {
-    echo "Changelog for " . $version . " not found!\n";
-    die(1);
+if ($create_tag) {
+    if (file_exists($changelog_file = getcwd() . "/CHANGELOG.md")) {
+        $changelog_md = file_get_contents($changelog_file);
+        $changelog_header = "## [" . $version . "]";
+        $changelog_header_pos = strpos($changelog_md, $changelog_header);
+        if ($changelog_header_pos !== false) {
+            $changelog = substr($changelog_md, $changelog_header_pos + strlen($changelog_header));
+            $changelog_end_pos = strpos($changelog, "\n\n");
+            if ($changelog_end_pos !== false) {
+                $changelog = substr($changelog, 0, $changelog_end_pos);
+            }
+            $changelog = trim($changelog);
+        } else {
+            $create_tag = false;
+        }
+    } else {
+        $create_tag = false;
+    }
 }
-$changelog = substr($changelog_md, $changelog_header_pos + strlen($changelog_header));
-$changelog_end_pos = strpos($changelog, "\n\n");
-if ($changelog_end_pos !== false) {
-    $changelog = substr($changelog, 0, $changelog_end_pos);
-}
-$changelog = trim($changelog);
 
 $maintainer_user_id = gitlabRequest("members", 200);
 if (empty($maintainer_user_id) || empty($maintainer_user_id = json_decode($maintainer_user_id, true)) || !is_array($maintainer_user_id)) {
@@ -215,11 +224,13 @@ if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) 
     $github_token = null;
 }
 
-$COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
+if ($create_tag) {
+    $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
 
-echo "> Auto create version tag\n";
-gitlabRequest("repository/tags?tag_name=" . rawurlencode("v" . $version) . "&ref=" . rawurlencode($COMMIT_ID) . "&message=" . rawurlencode($changelog) . "&release_description="
-    . rawurlencode($changelog), 201, "POST");
+    echo "> Auto create version tag\n";
+    gitlabRequest("repository/tags?tag_name=" . rawurlencode("v" . $version) . "&ref=" . rawurlencode($COMMIT_ID) . "&message=" . rawurlencode($changelog) . "&release_description="
+        . rawurlencode($changelog), 201, "POST");
+}
 
 echo "> Auto update gitlab and github project description\n";
 gitlabRequest("", 200, "PUT", [
