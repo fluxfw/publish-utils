@@ -28,7 +28,7 @@ else
 fi
 echo "server_tokens $NGINX_SERVER_TOKENS;
 types {
-	application/yaml	yml;
+	text/plain	yml;
 }
 server {
 	index index.html;
