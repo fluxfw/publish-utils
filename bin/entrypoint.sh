@@ -28,7 +28,7 @@ else
 fi
 echo "server_tokens $NGINX_SERVER_TOKENS;
 server {
-  index index.html;
+	index index.html;
 
 	$listen
 
