@@ -1,12 +1,26 @@
 include:
   - https://auto-version-tag-ci.fluxlabs.ch/auto_version_tag_ci.yml
 
+variables:
+  GITHUB_DOCKER_REGISTRY_URL: ghcr.io
+  GITHUB_DOCKER_REGISTRY_IMAGE: $GITHUB_DOCKER_REGISTRY_URL/fluxfw/auto_version_tag_ci
+
 build:
   stage: build
   script:
     - echo -n $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-    - docker build . --pull -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - docker build . --pull -t $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
     - docker logout $CI_REGISTRY
   only:
-    - tags
+    - /^develop$/
+
+publish:
+  stage: deploy
+  script:
+    - echo -n $GITHUB_DOCKER_REGISTRY_PASSWORD | docker login -u $GITHUB_DOCKER_REGISTRY_USER --password-stdin $GITHUB_DOCKER_REGISTRY_URL
+    - docker tag $CI_REGISTRY_IMAGE:latest $GITHUB_DOCKER_REGISTRY_IMAGE:latest
+    - docker push $GITHUB_DOCKER_REGISTRY_IMAGE:latest
+    - docker logout $GITHUB_DOCKER_REGISTRY_URL
+  only:
+    - /^master$/

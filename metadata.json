@@ -1,6 +1,5 @@
 {
   "description": "Auto create version tag gitlab ci on merge `develop` to `master`, among other things",
-  "version": "1.8.0",
   "keywords": [
     "auto",
     "changelog",
