@@ -1,15 +1,11 @@
 FROM php:7.4-alpine AS build
 
-COPY --from=composer:1.10 /usr/bin/composer /usr/bin/composer
-
 WORKDIR /src
-
-COPY composer.json composer.lock ./
-RUN composer install --no-dev
 
 COPY . .
 
-RUN composer build
+RUN chmod +x bin/build.php
+RUN bin/build.php
 RUN cp -r build /build
 WORKDIR /build
 RUN rm -rf /src

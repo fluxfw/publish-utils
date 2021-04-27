@@ -1,8 +1,6 @@
 {
-  "name": "srag/auto_version_tag_ci",
   "description": "Auto create version tag gitlab ci on merge `develop` to `master`, among other things",
   "version": "1.8.0",
-  "type": "project",
   "keywords": [
     "auto",
     "changelog",
@@ -25,21 +23,5 @@
     "update",
     "version"
   ],
-  "homepage": "https://github.com/fluxfw/auto_version_tag_ci",
-  "license": "GPL-3.0-only",
-  "require": {
-    "php": ">=7.4",
-    "ext-curl": "*",
-    "ext-json": "*"
-  },
-  "config": {
-    "classmap-authoritative": true,
-    "optimize-autoloader": true,
-    "sort-packages": true
-  },
-  "scripts": {
-    "build": [
-      "php src/build.php"
-    ]
-  }
+  "homepage": "https://github.com/fluxfw/auto_version_tag_ci"
 }

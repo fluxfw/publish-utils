@@ -1,12 +1,4 @@
-# srag/auto_version_tag_ci Library
-
-Auto create version tag gitlab ci on merge `develop` to `master`, among other things
-
-This is an OpenSource project by studer + raimann ag, CH-Burgdorf (https://studer-raimann.ch)
-
-This project is licensed under the GPL-3.0-only license
-
-## Description
+# auto_version_tag_ci
 
 Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
 
@@ -35,7 +27,3 @@ include:
 Set `AUTO_VERSION_TAG_TOKEN` ci variable, protected and masked
 
 Set `AUTO_VERSION_TAG_TOKEN_GITHUB` ci variable (Token), protected and masked
-
-## Requirements
-
-* PHP >=7.4

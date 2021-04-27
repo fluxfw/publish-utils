@@ -22,7 +22,7 @@ function request(string $request_url, callable $set_token, int $expect_status_co
         $curl = curl_init($request_url);
 
         $headers = [
-            "User-Agent" => "%COMPOSER_NAME%"
+            "User-Agent" => "auto_version_tag_ci"
         ];
 
         $set_token($curl, $headers);
