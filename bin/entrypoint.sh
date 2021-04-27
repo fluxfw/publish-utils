@@ -36,4 +36,4 @@ server {
 }" > /etc/nginx/conf.d/nginx.conf
 
 echo "Start nginx"
-/docker-entrypoint.sh nginx -g "daemon off;"
+exec /docker-entrypoint.sh nginx -g "daemon off;"
