@@ -27,6 +27,9 @@ else
   listen="listen $NGINX_LISTEN:$NGINX_HTTP_PORT;"
 fi
 echo "server_tokens $NGINX_SERVER_TOKENS;
+types {
+	application/yaml	yml;
+}
 server {
 	index index.html;
 
