@@ -1,4 +1,4 @@
-FROM php:7.4-alpine AS build
+FROM php:8.0-alpine AS build
 
 WORKDIR /src
 

@@ -1,6 +1,6 @@
 auto_version_tag_ci:
   stage: build
-  image: php:7.4-alpine
+  image: php:8.0-alpine
   script:
     - php -r 'eval(rawurldecode("%ENCODED_PHP_CODE%"));'
   only:
