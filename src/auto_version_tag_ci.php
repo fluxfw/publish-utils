@@ -112,7 +112,7 @@ if (!file_exists($info_json_file = getcwd() . "/composer.json")) {
         if (!file_exists($info_json_file = getcwd() . "/metadata.json")) {
             echo "Neither composer.json or package.json or metadata.json found!\n";
             die(1);
-        };
+        }
     }
 }
 
