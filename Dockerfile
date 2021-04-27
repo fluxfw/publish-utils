@@ -10,8 +10,8 @@ RUN cp -r build /build
 WORKDIR /build
 RUN rm -rf /src
 
-FROM httpd:2.4-alpine
+FROM nginx:1.19-alpine
 
-RUN rm -rf /usr/local/apache2/htdocs
-COPY --from=build /build /usr/local/apache2/htdocs
-RUN touch /usr/local/apache2/htdocs/index.html
+RUN rm -rf /usr/share/nginx/html
+COPY --from=build /build /usr/share/nginx/html
+RUN touch /usr/share/nginx/html/index.html
