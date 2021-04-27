@@ -1,0 +1,26 @@
+{
+  "description": "Auto create version tag gitlab ci on merge `develop` to `master`, among other things",
+  "keywords": [
+    "auto",
+    "changelog",
+    "ci",
+    "composer",
+    "description",
+    "docker",
+    "github",
+    "gitlab",
+    "homepage",
+    "json",
+    "keywords",
+    "maintainer",
+    "npm",
+    "pull",
+    "request",
+    "short",
+    "tag",
+    "topics",
+    "update",
+    "version"
+  ],
+  "homepage": "https://github.com/fluxfw/auto_version_tag_ci"
+}

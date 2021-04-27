@@ -1,9 +1,4 @@
 <?php
-/**
- * @param string $variable
- *
- * @return string
- */
 function getEnvironmentVariable(string $variable) : string
 {
     $value = strval(filter_input(INPUT_ENV, $variable));
@@ -16,15 +11,6 @@ function getEnvironmentVariable(string $variable) : string
     return $value;
 }
 
-/**
- * @param string     $request_url
- * @param callable   $set_token
- * @param int        $expect_status_code
- * @param string     $method
- * @param array|null $body_data
- *
- * @return string|null
- */
 function request(string $request_url, callable $set_token, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
 {
     $curl = null;
@@ -36,7 +22,7 @@ function request(string $request_url, callable $set_token, int $expect_status_co
         $curl = curl_init($request_url);
 
         $headers = [
-            "User-Agent" => "%COMPOSER_NAME%"
+            "User-Agent" => "auto_version_tag_ci"
         ];
 
         $set_token($curl, $headers);
@@ -76,14 +62,6 @@ function request(string $request_url, callable $set_token, int $expect_status_co
     return $response;
 }
 
-/**
- * @param string     $api_url
- * @param int        $expect_status_code
- * @param string     $method
- * @param array|null $body_data
- *
- * @return string|null
- */
 function gitlabRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
 {
     static $AUTO_VERSION_TAG_TOKEN = null;
@@ -108,14 +86,6 @@ function gitlabRequest(string $api_url, int $expect_status_code, string $method 
     }, $expect_status_code, $method, $body_data);
 }
 
-/**
- * @param string     $api_url
- * @param int        $expect_status_code
- * @param string     $method
- * @param array|null $body_data
- *
- * @return string|null
- */
 function githubRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
 {
     global $github_url, $github_token;
@@ -142,7 +112,7 @@ if (!file_exists($info_json_file = getcwd() . "/composer.json")) {
         if (!file_exists($info_json_file = getcwd() . "/metadata.json")) {
             echo "Neither composer.json or package.json or metadata.json found!\n";
             die(1);
-        };
+        }
     }
 }
 
