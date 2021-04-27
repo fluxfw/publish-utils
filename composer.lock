@@ -4,59 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94028da2c596b8cf5b6add06cee9bcd6",
+    "content-hash": "22bc52be4d6dc03eb101970c2335a2c3",
     "packages": [],
-    "packages-dev": [
-        {
-            "name": "srag/generateplugininfoshelper",
-            "version": "2.10.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fluxfw/GeneratePluginInfosHelper.git",
-                "reference": "53b1ad2d1ccf3e90182262b9421024fe11ee00f9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fluxfw/GeneratePluginInfosHelper/zipball/53b1ad2d1ccf3e90182262b9421024fe11ee00f9",
-                "reference": "53b1ad2d1ccf3e90182262b9421024fe11ee00f9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "generate_plugin_readme_template": "LIBRARY",
-                "long_description_template": "src/LONG_DESCRIPTION.md"
-            },
-            "autoload": {
-                "psr-4": {
-                    "srag\\GeneratePluginInfosHelper\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "studer + raimann ag - Team Custom 1",
-                    "email": "support-custom1@studer-raimann.ch",
-                    "homepage": "https://studer-raimann.ch",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Automatic generate plugin infos such README.md, plugin.php, plugin.xml, ... from composer.json",
-            "homepage": "https://github.com/fluxfw/GeneratePluginInfosHelper",
-            "keywords": [
-                "Infos",
-                "generate",
-                "helper",
-                "plugin"
-            ],
-            "time": "2021-03-23T12:25:52+00:00"
-        }
-    ],
+    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
