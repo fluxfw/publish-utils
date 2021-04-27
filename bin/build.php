@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
-$yml_code = file_get_contents(__DIR__ . "/auto_version_tag_ci.yml");
+$yml_code = file_get_contents(__DIR__ . "/../src/auto_version_tag_ci.yml");
 
-$php_code = trim(exec("php -w " . escapeshellarg(__DIR__ . "/auto_version_tag_ci.php")));
+$php_code = trim(exec("php -w " . escapeshellarg(__DIR__ . "/../src/auto_version_tag_ci.php")));
 
 $encode = ["%", '"', "'", "$", ":"];
 
