@@ -27,3 +27,10 @@ publish:
       docker logout $GITHUB_DOCKER_REGISTRY_URL;
   only:
     - /^master$/
+
+deploy:
+  stage: deploy
+  script:
+    - curl $JELASTIC_API_URL/1.0/environment/control/rest/redeploycontainers?tag=latest&useExistingVolumes=true&session=$JELASTIC_TOKEN&envName=$JELASTIC_ENV_NAME&nodeId=$JELASTIC_NODE_ID
+  only:
+    - /^master$/
