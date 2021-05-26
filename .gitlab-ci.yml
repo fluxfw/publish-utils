@@ -3,7 +3,7 @@ include:
 
 variables:
   GITHUB_DOCKER_REGISTRY_URL: ghcr.io
-  GITHUB_DOCKER_REGISTRY_IMAGE: $GITHUB_DOCKER_REGISTRY_URL/fluxfw/auto_version_tag_ci
+  GITHUB_DOCKER_REGISTRY_IMAGE: $GITHUB_DOCKER_REGISTRY_URL/fluxapps/auto_version_tag_ci
 
 stages:
   - build
