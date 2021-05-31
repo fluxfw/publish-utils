@@ -2,6 +2,7 @@ include:
   - https://auto-version-tag-ci.fluxlabs.ch/auto_version_tag_ci.yml
 
 variables:
+  DEV_DOCKER_REGISTRY_IMAGE: $DEV_DOCKER_REGISTRY_URL/$CI_PROJECT_PATH
   GITHUB_DOCKER_REGISTRY_URL: ghcr.io
   GITHUB_DOCKER_REGISTRY_IMAGE: $GITHUB_DOCKER_REGISTRY_URL/fluxapps/auto_version_tag_ci
 
@@ -13,21 +14,21 @@ stages:
 build:
   stage: build
   script:
-    - echo -n $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY;
-      docker build . --pull -t $CI_REGISTRY_IMAGE:latest;
-      docker push $CI_REGISTRY_IMAGE:latest;
-      docker logout $CI_REGISTRY;
+    - echo -n $DEV_DOCKER_REGISTRY_PASSWORD | docker login -u $DEV_DOCKER_REGISTRY_USER --password-stdin $DEV_DOCKER_REGISTRY_URL;
+      docker build . --pull -t $DEV_DOCKER_REGISTRY_IMAGE:latest;
+      docker push $DEV_DOCKER_REGISTRY_IMAGE:latest;
+      docker logout $DEV_DOCKER_REGISTRY_URL;
   only:
     - /^develop$/
 
 publish:
   stage: publish
   script:
-    - echo -n $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY;
-      docker pull $CI_REGISTRY_IMAGE:latest;
-      docker logout $CI_REGISTRY;
+    - echo -n $DEV_DOCKER_REGISTRY_PASSWORD | docker login -u $DEV_DOCKER_REGISTRY_USER --password-stdin $DEV_DOCKER_REGISTRY_URL;
+      docker pull $DEV_DOCKER_REGISTRY_IMAGE:latest;
+      docker logout $DEV_DOCKER_REGISTRY_URL;
     - echo -n $GITHUB_DOCKER_REGISTRY_PASSWORD | docker login -u $GITHUB_DOCKER_REGISTRY_USER --password-stdin $GITHUB_DOCKER_REGISTRY_URL;
-      docker tag $CI_REGISTRY_IMAGE:latest $GITHUB_DOCKER_REGISTRY_IMAGE:latest;
+      docker tag $DEV_DOCKER_REGISTRY_IMAGE:latest $GITHUB_DOCKER_REGISTRY_IMAGE:latest;
       docker push $GITHUB_DOCKER_REGISTRY_IMAGE:latest;
       docker logout $GITHUB_DOCKER_REGISTRY_URL;
   only:
