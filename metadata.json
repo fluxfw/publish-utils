@@ -15,6 +15,7 @@
     "maintainer",
     "npm",
     "pull",
+    "publish",
     "request",
     "short",
     "tag",
@@ -22,5 +23,5 @@
     "update",
     "version"
   ],
-  "homepage": "https://github.com/fluxapps/FluxAutoVersionTagCi"
+  "homepage": "https://github.com/fluxapps/FluxPublishUtils"
 }

@@ -1,4 +1,4 @@
-FluxAutoVersionTagCi:
+FluxPublishUtils:
   stage: build
   image: php:8.0-alpine
   script:

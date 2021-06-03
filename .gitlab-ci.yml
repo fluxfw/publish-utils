@@ -2,7 +2,7 @@ include:
   - https://auto-version-tag-ci.fluxlabs.ch/auto_version_tag_ci.yml
 
 variables:
-  DOCKER_REGISTRY_NAME: flux-auto-version-tag-ci
+  DOCKER_REGISTRY_NAME: flux-publish-utils
   DEV_DOCKER_REGISTRY_IMAGE: $DEV_DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_NAME
   DOCKER_REGISTRY_IMAGE: $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_NAME
 
