@@ -1,4 +1,4 @@
-# auto_version_tag_ci
+# FluxAutoVersionTagCi
 
 Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
 
@@ -19,7 +19,7 @@ Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
 
 ```yaml
 include:
-  - https://auto-version-tag-ci.fluxlabs.ch/auto_version_tag_ci.yml
+  - https://auto-version-tag-ci.fluxlabs.ch/FluxAutoVersionTagCi.yml
 ```
 
 ### CI variables

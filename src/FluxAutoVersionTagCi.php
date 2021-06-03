@@ -22,7 +22,7 @@ function request(string $request_url, callable $set_token, int $expect_status_co
         $curl = curl_init($request_url);
 
         $headers = [
-            "User-Agent" => "auto_version_tag_ci"
+            "User-Agent" => "FluxAutoVersionTagCi"
         ];
 
         $set_token($curl, $headers);

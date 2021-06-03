@@ -1,4 +1,4 @@
-auto_version_tag_ci:
+FluxAutoVersionTagCi:
   stage: build
   image: php:8.0-alpine
   script:
