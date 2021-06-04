@@ -64,9 +64,9 @@ function request(string $request_url, callable $set_token, int $expect_status_co
 
 function gitlabRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
 {
-    static $AUTO_VERSION_TAG_TOKEN = null;
-    if ($AUTO_VERSION_TAG_TOKEN === null) {
-        $AUTO_VERSION_TAG_TOKEN = getEnvironmentVariable("AUTO_VERSION_TAG_TOKEN");
+    static $FLUX_PUBLISH_UTILS_TOKEN = null;
+    if ($FLUX_PUBLISH_UTILS_TOKEN === null) {
+        $FLUX_PUBLISH_UTILS_TOKEN = getEnvironmentVariable("FLUX_PUBLISH_UTILS_TOKEN");
     }
 
     static $SERVER_URL = null;
@@ -81,8 +81,8 @@ function gitlabRequest(string $api_url, int $expect_status_code, string $method 
 
     $request_url = $SERVER_URL . "/api/v4/projects/" . $PROJECT_ID . (!empty($api_url) ? "/" . $api_url : "");
 
-    return request($request_url, function ($curl, array &$headers) use ($AUTO_VERSION_TAG_TOKEN) : void {
-        $headers["PRIVATE-TOKEN"] = $AUTO_VERSION_TAG_TOKEN;
+    return request($request_url, function ($curl, array &$headers) use ($FLUX_PUBLISH_UTILS_TOKEN) : void {
+        $headers["PRIVATE-TOKEN"] = $FLUX_PUBLISH_UTILS_TOKEN;
     }, $expect_status_code, $method, $body_data);
 }
 
@@ -187,7 +187,7 @@ if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) 
         die(1);
     }
     $github_url = "https://" . str_replace([".git", "github.com"], ["", "api.github.com/repos"], $github_url);
-    $github_token = getEnvironmentVariable("AUTO_VERSION_TAG_TOKEN_GITHUB");
+    $github_token = getEnvironmentVariable("FLUX_PUBLISH_UTILS_TOKEN_GITHUB");
 } else {
     echo "No project remote mirror found!\n";
     $github_url = null;
