@@ -15,12 +15,12 @@
     "maintainer",
     "npm",
     "pull",
-    "publish",
     "request",
     "short",
     "tag",
     "topics",
     "update",
+    "utils",
     "version"
   ],
   "homepage": "https://github.com/fluxapps/FluxPublishUtils"
