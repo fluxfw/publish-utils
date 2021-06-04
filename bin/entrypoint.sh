@@ -2,23 +2,24 @@
 set -e
 
 echo "Generate nginx config"
-if [ -n "$NGINX_HTTPS_CERT" ]; then
-  if [ "$NGINX_HTTPS_PORT" != "443" ]; then
-    https_redirect_port=:$NGINX_HTTPS_PORT
+if [ -n "$FLUX_NGINX_HTTPS_CERT" ]; then
+  if [ "$FLUX_NGINX_HTTPS_PORT" != "443" ]; then
+    https_redirect_port=:$FLUX_NGINX_HTTPS_PORT
   fi
-  if [ -n "$NGINX_HTTPS_DHPARAM" ]; then
+  if [ -n "$FLUX_NGINX_HTTPS_DHPARAM" ]; then
     ssl_dhparam="
-	ssl_dhparam $NGINX_HTTPS_DHPARAM;"
+	ssl_dhparam $FLUX_NGINX_HTTPS_DHPARAM;"
   fi
-  listen="listen $NGINX_LISTEN:$NGINX_HTTP_PORT;
+  listen="listen $FLUX_NGINX_LISTEN:$FLUX_NGINX_HTTP_PORT;
   return 301 https://\$host$https_redirect_port\$request_uri;
 }
+
 server {
-  listen $NGINX_LISTEN:$NGINX_HTTPS_PORT ssl;
-	ssl_certificate $NGINX_HTTPS_CERT;
-	ssl_certificate_key $NGINX_HTTPS_KEY;$ssl_dhparam"
+  listen $FLUX_NGINX_LISTEN:$FLUX_NGINX_HTTPS_PORT ssl;
+	ssl_certificate $FLUX_NGINX_HTTPS_CERT;
+	ssl_certificate_key $FLUX_NGINX_HTTPS_KEY;$ssl_dhparam"
 else
-  listen="listen $NGINX_LISTEN:$NGINX_HTTP_PORT;"
+  listen="listen $FLUX_NGINX_LISTEN:$FLUX_NGINX_HTTP_PORT;"
 fi
 echo "server_tokens off;
 
@@ -31,7 +32,7 @@ server {
 
 	$listen
 
-	root $NGINX_WEB_DIR/;
+	root $FLUX_NGINX_WEB_DIR/;
 }" > /etc/nginx/conf.d/nginx.conf
 
 echo "Start nginx"
