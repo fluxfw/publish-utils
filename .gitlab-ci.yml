@@ -2,41 +2,29 @@ include:
   - https://auto-version-tag-ci.fluxlabs.ch/auto_version_tag_ci.yml
 
 variables:
-  GITHUB_DOCKER_REGISTRY_URL: ghcr.io
-  GITHUB_DOCKER_REGISTRY_IMAGE: $GITHUB_DOCKER_REGISTRY_URL/fluxapps/auto_version_tag_ci
-
-stages:
-  - build
-  - publish
-  - deploy
+  DOCKER_REGISTRY_NAME: flux-publish-utils
+  DEV_DOCKER_REGISTRY_IMAGE: $DEV_DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_NAME
+  DOCKER_REGISTRY_IMAGE: $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_NAME
 
 build:
   stage: build
   script:
-    - echo -n $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY;
-      docker build . --pull -t $CI_REGISTRY_IMAGE:latest;
-      docker push $CI_REGISTRY_IMAGE:latest;
-      docker logout $CI_REGISTRY;
+    - echo -n $DEV_DOCKER_REGISTRY_PASSWORD | docker login -u $DEV_DOCKER_REGISTRY_USER --password-stdin $DEV_DOCKER_REGISTRY_URL;
+      docker build . --pull -t $DEV_DOCKER_REGISTRY_IMAGE:latest;
+      docker push $DEV_DOCKER_REGISTRY_IMAGE:latest;
+      docker logout $DEV_DOCKER_REGISTRY_URL;
   only:
     - /^develop$/
 
 publish:
-  stage: publish
-  script:
-    - echo -n $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY;
-      docker pull $CI_REGISTRY_IMAGE:latest;
-      docker logout $CI_REGISTRY;
-    - echo -n $GITHUB_DOCKER_REGISTRY_PASSWORD | docker login -u $GITHUB_DOCKER_REGISTRY_USER --password-stdin $GITHUB_DOCKER_REGISTRY_URL;
-      docker tag $CI_REGISTRY_IMAGE:latest $GITHUB_DOCKER_REGISTRY_IMAGE:latest;
-      docker push $GITHUB_DOCKER_REGISTRY_IMAGE:latest;
-      docker logout $GITHUB_DOCKER_REGISTRY_URL;
-  only:
-    - /^master$/
-
-deploy:
   stage: deploy
   script:
-    - apk add --no-cache curl
-    - curl "$JELASTIC_API_URL/1.0/environment/control/rest/redeploycontainers?tag=latest&useExistingVolumes=true&session=$JELASTIC_TOKEN&envName=$JELASTIC_ENV_NAME&nodeId=$JELASTIC_NODE_ID"
+    - echo -n $DEV_DOCKER_REGISTRY_PASSWORD | docker login -u $DEV_DOCKER_REGISTRY_USER --password-stdin $DEV_DOCKER_REGISTRY_URL;
+      docker pull $DEV_DOCKER_REGISTRY_IMAGE:latest;
+      docker logout $DEV_DOCKER_REGISTRY_URL;
+    - echo -n $DOCKER_REGISTRY_PASSWORD | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY_URL;
+      docker tag $DEV_DOCKER_REGISTRY_IMAGE:latest $DOCKER_REGISTRY_IMAGE:latest;
+      docker push $DOCKER_REGISTRY_IMAGE:latest;
+      docker logout $DOCKER_REGISTRY_URL;
   only:
     - /^master$/
