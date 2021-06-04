@@ -24,6 +24,6 @@ include:
 
 ### CI variables
 
-Set `AUTO_VERSION_TAG_TOKEN` ci variable, protected and masked
+Set `FLUX_PUBLISH_UTILS_TOKEN` ci variable, protected and masked
 
-Set `AUTO_VERSION_TAG_TOKEN_GITHUB` ci variable (Token), protected and masked
+Set `FLUX_PUBLISH_UTILS_TOKEN_GITHUB` ci variable (Token), protected and masked
