@@ -13,6 +13,26 @@ Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
 - Auto recreate gitlab pull request `develop` to `master`
     - Assigned user is first maintainer in gitlab project members
 
+## Server
+
+### Environment variables
+
+| Variable | Description | Default value |
+| -------- | ----------- | ------------- |
+| FLUX_NGINX_WEB_DIR | Web directory | /var/www/html |
+| FLUX_NGINX_HTTPS_CERT | Path to HTTPS certificate file<br>Set this will enable listen on HTTPS and redirect HTTP to HTTPS<br>Should be on a volume | - |
+| FLUX_NGINX_HTTPS_KEY | Path to HTTPS key file<br>Should be on a volume | - |
+| FLUX_NGINX_HTTPS_DHPARAM | Path to HTTPS pem file<br>Should be on a volume | - |
+| FLUX_NGINX_HTTP_PORT | Listen HTTP port | 80 |
+| FLUX_NGINX_HTTPS_PORT | Listen HTTPS port | 443 |
+| FLUX_NGINX_LISTEN | Listen IP | 0.0.0.0 |
+
+Minimal variables required to set are **bold**
+
+### Example
+
+[examples/docker-compose.yml](examples/docker-compose.yml)
+
 ## Usage
 
 ### `.gitlab-ci.yml`
