@@ -15,3 +15,5 @@ if (!file_exists(__DIR__ . "/../build")) {
 file_put_contents(__DIR__ . "/../build/FluxPublishUtils.yml", $build_code);
 
 file_put_contents(__DIR__ . "/../build/index.html", "");
+
+copy(__DIR__ . "/../src/FluxDockerRegistryMirrorCiHelper.yml", __DIR__ . "/../build/FluxDockerRegistryMirrorCiHelper.yml");
