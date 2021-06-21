@@ -1,7 +1,0 @@
-FluxDockerRegistryMirrorCiHelper:
-  stage: deploy
-  image: docker-registry.fluxpublisher.ch/flux-docker-registry-mirror-ci-helper:latest
-  script:
-    - echo
-  only:
-    - /^master$/
