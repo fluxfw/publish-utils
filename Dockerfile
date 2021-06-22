@@ -38,4 +38,3 @@ COPY --from=build /build $FLUX_NGINX_WEB_DIR
 COPY ./bin/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-
