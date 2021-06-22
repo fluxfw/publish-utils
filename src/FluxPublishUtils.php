@@ -194,6 +194,8 @@ if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) 
     $github_token = null;
 }
 
+$default_branch = gitlabRequest("", 200)["default_branch"];
+
 if ($create_tag) {
     $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
 
@@ -221,5 +223,5 @@ gitlabRequest("", 200, "PUT", [
 ]);
 
 echo "> Auto recreate gitlab pull request `develop` to `main`\n";
-gitlabRequest("merge_requests?source_branch=" . rawurlencode("develop") . "&target_branch=" . rawurlencode("main") . "&title=" . rawurlencode("WIP: Develop") . "&assignee_id="
+gitlabRequest("merge_requests?source_branch=" . rawurlencode("develop") . "&target_branch=" . rawurlencode($default_branch) . "&title=" . rawurlencode("WIP: Develop") . "&assignee_id="
     . rawurlencode($maintainer_user_id), 201, "POST");
