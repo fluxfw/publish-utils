@@ -4,4 +4,4 @@ FluxPublishUtils:
   script:
     - php -r 'eval(rawurldecode("%ENCODED_PHP_CODE%"));'
   only:
-    - /^master$/
+    - /^(main|master)$/
