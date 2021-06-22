@@ -194,7 +194,12 @@ if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) 
     $github_token = null;
 }
 
-$default_branch = gitlabRequest("", 200)["default_branch"];
+$project_infos = gitlabRequest("", 200);
+if (empty($project_infos) || empty($project_infos = json_decode($project_infos, true)) || !is_array($project_infos)) {
+    echo "No project infos found!\n";
+    die(1);
+}
+$default_branch = $project_infos["default_branch"];
 
 if ($create_tag) {
     $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
