@@ -27,4 +27,4 @@ publish:
       docker push $DOCKER_REGISTRY_IMAGE:latest;
       docker logout $DOCKER_REGISTRY_URL;
   only:
-    - /^master$/
+    - /^main$/

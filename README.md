@@ -1,6 +1,6 @@
 # FluxPublishUtils
 
-Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
+Auto run the follow tasks on merge `develop` to `main` (gitlab ci)
 
 - Auto create version tag (Optional)
     - Version from `composer.json`|`package.json`|`metadata.json` > `version`
@@ -10,7 +10,7 @@ Auto run the follow tasks on merge `develop` to `master` (gitlab ci)
     - Topics from `composer.json`|`package.json`|`metadata.json` > `keywords`
     - Homepage from `composer.json`|`package.json`|`metadata.json` > `homepage`
 - Ensure "Enable 'Delete source branch' option by default" is disabled
-- Auto recreate gitlab pull request `develop` to `master`
+- Auto recreate gitlab pull request `develop` to `main`
     - Assigned user is first maintainer in gitlab project members
 
 ## Server

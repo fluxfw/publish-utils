@@ -220,6 +220,6 @@ gitlabRequest("", 200, "PUT", [
     "remove_source_branch_after_merge" => false
 ]);
 
-echo "> Auto recreate gitlab pull request `develop` to `master`\n";
-gitlabRequest("merge_requests?source_branch=" . rawurlencode("develop") . "&target_branch=" . rawurlencode("master") . "&title=" . rawurlencode("WIP: Develop") . "&assignee_id="
+echo "> Auto recreate gitlab pull request `develop` to `main`\n";
+gitlabRequest("merge_requests?source_branch=" . rawurlencode("develop") . "&target_branch=" . rawurlencode("main") . "&title=" . rawurlencode("WIP: Develop") . "&assignee_id="
     . rawurlencode($maintainer_user_id), 201, "POST");
