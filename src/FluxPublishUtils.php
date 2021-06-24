@@ -36,9 +36,7 @@ function request(string $request_url, callable $set_token, int $expect_status_co
         }
 
         //echo "Headers: " . json_encode($headers) . "\n";
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array_map(function (string $key, string $value) : string {
-            return ($key . ": " . $value);
-        }, array_keys($headers), $headers));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array_map(fn(string $key, string $value) : string => $key . ": " . $value, array_keys($headers), $headers));
 
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 
@@ -168,9 +166,7 @@ if (empty($maintainer_user_id) || empty($maintainer_user_id = json_decode($maint
     echo "No project members found!\n";
     die(1);
 }
-$maintainer_user_id = array_filter($maintainer_user_id, function (array $member) : bool {
-    return ($member["access_level"] === 40);
-});
+$maintainer_user_id = array_filter($maintainer_user_id, fn(array $member) : bool => $member["access_level"] === 40);
 if (empty($maintainer_user_id)) {
     echo "No project maintainer found!\n";
     die(1);
