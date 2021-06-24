@@ -178,7 +178,7 @@ if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) 
     && !empty($github_url = current($github_url)["url"])
 ) {
     $github_url = explode("@", $github_url)[1];
-    if (strpos($github_url, "github.com/") !== 0) {
+    if (!str_starts_with($github_url, "github.com/")) {
         echo "Project remote mirror is not github!\n";
         die(1);
     }
