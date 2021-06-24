@@ -32,7 +32,7 @@ function request(string $request_url, callable $set_token, int $expect_status_co
         if (!empty($body_data)) {
             //echo "Body data: " . json_encode($body_data) . "\n";
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($body_data));
-            $headers["Content-Type"] = "application/json";
+            $headers["Content-Type"] = "application/json;charset=utf-8";
         }
 
         //echo "Headers: " . json_encode($headers) . "\n";
