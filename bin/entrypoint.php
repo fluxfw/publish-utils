@@ -1,4 +1,6 @@
+#!/usr/bin/env php
 <?php
+
 function getEnvironmentVariable(string $variable) : string
 {
     $value = strval(filter_input(INPUT_ENV, $variable));

@@ -1,7 +1,0 @@
-FluxPublishUtils:
-  stage: build
-  image: php:8.0-alpine
-  script:
-    - php -r 'eval(rawurldecode("%ENCODED_PHP_CODE%"));'
-  only:
-    - /^(main|master)$/
