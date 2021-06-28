@@ -105,11 +105,13 @@ if (php_sapi_name() !== "cli") {
     die();
 }
 
+$build_dir = getEnvironmentVariable("CI_PROJECT_DIR");
+
 echo "> Collect needed infos\n";
 
-if (!file_exists($info_json_file = getcwd() . "/composer.json")) {
-    if (!file_exists($info_json_file = getcwd() . "/package.json")) {
-        if (!file_exists($info_json_file = getcwd() . "/metadata.json")) {
+if (!file_exists($info_json_file = $build_dir . "/composer.json")) {
+    if (!file_exists($info_json_file = $build_dir . "/package.json")) {
+        if (!file_exists($info_json_file = $build_dir . "/metadata.json")) {
             echo "Neither composer.json or package.json or metadata.json found!\n";
             die(1);
         }
@@ -144,7 +146,7 @@ if (empty($homepage)) {
 }
 
 if ($create_tag) {
-    if (file_exists($changelog_file = getcwd() . "/CHANGELOG.md")) {
+    if (file_exists($changelog_file = $build_dir . "/CHANGELOG.md")) {
         $changelog_md = file_get_contents($changelog_file);
         $changelog_header = "## [" . $version . "]";
         $changelog_header_pos = strpos($changelog_md, $changelog_header);
