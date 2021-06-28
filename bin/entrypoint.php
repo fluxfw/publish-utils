@@ -105,9 +105,9 @@ if (php_sapi_name() !== "cli") {
     die();
 }
 
-$build_dir = getEnvironmentVariable("CI_PROJECT_DIR");
-
 echo "> Collect needed infos\n";
+
+$build_dir = getEnvironmentVariable("CI_PROJECT_DIR");
 
 if (!file_exists($info_json_file = $build_dir . "/composer.json")) {
     if (!file_exists($info_json_file = $build_dir . "/package.json")) {
@@ -201,6 +201,15 @@ if (empty($project_infos) || empty($project_infos = json_decode($project_infos, 
 }
 $default_branch = $project_infos["default_branch"];
 
+echo "> Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
+gitlabRequest("", 200, "PUT", [
+    "remove_source_branch_after_merge" => false
+]);
+
+echo "> Auto recreate gitlab pull request `develop` to `main`\n";
+gitlabRequest("merge_requests?source_branch=" . rawurlencode("develop") . "&target_branch=" . rawurlencode($default_branch) . "&title=" . rawurlencode("WIP: Develop") . "&assignee_id="
+    . rawurlencode($maintainer_user_id), 201, "POST");
+
 if ($create_tag) {
     $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
 
@@ -221,12 +230,3 @@ githubRequest("", 200, "PATCH", [
 githubRequest("topics", 200, "PUT", [
     "names" => $keywords
 ]);
-
-echo "> Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
-gitlabRequest("", 200, "PUT", [
-    "remove_source_branch_after_merge" => false
-]);
-
-echo "> Auto recreate gitlab pull request `develop` to `main`\n";
-gitlabRequest("merge_requests?source_branch=" . rawurlencode("develop") . "&target_branch=" . rawurlencode($default_branch) . "&title=" . rawurlencode("WIP: Develop") . "&assignee_id="
-    . rawurlencode($maintainer_user_id), 201, "POST");
