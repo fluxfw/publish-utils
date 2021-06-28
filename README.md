@@ -2,6 +2,9 @@
 
 Auto run the follow tasks on merge `develop` to `main` (gitlab ci)
 
+- Ensure "Enable 'Delete source branch' option by default" is disabled
+- Auto recreate gitlab pull request `develop` to `main` (Default branch)
+  - Assigned user is first maintainer in gitlab project members
 - Auto create version tag (Optional)
     - Version from `composer.json`|`package.json`|`metadata.json` > `version`
     - Changelog from `CHANGELOG.md`
@@ -9,9 +12,6 @@ Auto run the follow tasks on merge `develop` to `main` (gitlab ci)
     - Short description from `composer.json`|`package.json`|`metadata.json` > `description`
     - Topics from `composer.json`|`package.json`|`metadata.json` > `keywords`
     - Homepage from `composer.json`|`package.json`|`metadata.json` > `homepage`
-- Ensure "Enable 'Delete source branch' option by default" is disabled
-- Auto recreate gitlab pull request `develop` to `main`
-    - Assigned user is first maintainer in gitlab project members
 
 ## Example
 
