@@ -214,7 +214,7 @@ if ($create_tag) {
     $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
 
     echo "> Auto create version tag\n";
-    gitlabRequest("repository/releases?tag_name=" . rawurlencode("v" . $version) . "&ref=" . rawurlencode($COMMIT_ID) . "&description=" . rawurlencode($changelog), 201, "POST");
+    gitlabRequest("releases?tag_name=" . rawurlencode("v" . $version) . "&ref=" . rawurlencode($COMMIT_ID) . "&description=" . rawurlencode($changelog), 201, "POST");
 }
 
 echo "> Auto update gitlab and github project description\n";
