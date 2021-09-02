@@ -34,7 +34,7 @@ function request(string $request_url, callable $set_token, int $expect_status_co
         if (!empty($body_data)) {
             //echo "Body data: " . json_encode($body_data) . "\n";
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($body_data));
-            $headers["Content-Type"] = "application/json;charset=utf-8";
+            $headers["Content-Type"] = "application/json";
         }
 
         //echo "Headers: " . json_encode($headers) . "\n";
@@ -81,7 +81,7 @@ function gitlabRequest(string $api_url, int $expect_status_code, string $method 
 
     $request_url = $SERVER_URL . "/api/v4/projects/" . $PROJECT_ID . (!empty($api_url) ? "/" . $api_url : "");
 
-    return request($request_url, function ($curl, array &$headers) use ($FLUX_PUBLISH_UTILS_TOKEN) : void {
+    return request($request_url, function (CurlHandle $curl, array &$headers) use ($FLUX_PUBLISH_UTILS_TOKEN) : void {
         $headers["PRIVATE-TOKEN"] = $FLUX_PUBLISH_UTILS_TOKEN;
     }, $expect_status_code, $method, $body_data);
 }
@@ -95,7 +95,7 @@ function githubRequest(string $api_url, int $expect_status_code, string $method 
 
     $request_url = $github_url . (!empty($api_url) ? "/" . $api_url : "");
 
-    return request($request_url, function ($curl, array &$headers) use ($github_token) : void {
+    return request($request_url, function (CurlHandle $curl, array &$headers) use ($github_token) : void {
         curl_setopt($curl, CURLOPT_USERPWD, $github_token);
         $headers["Accept"] = "application/vnd.github.mercy-preview+json";
     }, $expect_status_code, $method, $body_data);
