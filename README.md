@@ -2,7 +2,7 @@
 
 Auto run the follow tasks on merge `develop` to `main` (gitlab ci)
 
-- Auto recreate gitlab pull request `develop` (If exists) to `main` (Default branch)
+- Auto recreate gitlab pull request `develop` (If exists) to `main` (Default branch) (Optional)
   - Ensure "Enable 'Delete source branch' option by default" is disabled
   - Assigned user is first maintainer in gitlab project members
 - Auto create version tag/release (Optional)

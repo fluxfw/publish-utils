@@ -122,24 +122,24 @@ $info_json = json_decode(file_get_contents($info_json_file));
 
 $create_tag = true;
 
-$version = $info_json->version;
+$version = $info_json->version ?? null;
 if (empty($version)) {
     $create_tag = false;
 }
 
-$description = $info_json->description;
+$description = $info_json->description ?? null;
 if (empty($description)) {
     echo "Short description not available in " . basename($info_json_file) . " > description!\n";
     die(1);
 }
 
-$keywords = $info_json->keywords;
+$keywords = $info_json->keywords ?? null;
 if (empty($keywords)) {
     echo "Keywords not available in " . basename($info_json_file) . " > keywords!\n";
     die(1);
 }
 
-$homepage = $info_json->homepage;
+$homepage = $info_json->homepage ?? null;
 if (empty($homepage)) {
     echo "Homepage not available in " . basename($info_json_file) . " > homepage!\n";
     die(1);
