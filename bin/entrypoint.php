@@ -165,12 +165,13 @@ if ($create_tag) {
     }
 }
 
-$maintainer_user_id = gitlabRequest("members", 200);
-if (empty($maintainer_user_id) || empty($maintainer_user_id = json_decode($maintainer_user_id, true)) || !is_array($maintainer_user_id)) {
+$members = gitlabRequest("members", 200);
+if (empty($members) || empty($members = json_decode($members, true)) || !is_array($members)) {
     echo "No project members found!\n";
     die(1);
 }
-$maintainer_user_id = array_filter($maintainer_user_id, fn(array $member) : bool => $member["access_level"] === 40);
+
+$maintainer_user_id = array_filter($members, fn(array $member) : bool => $member["access_level"] === 40);
 if (empty($maintainer_user_id)) {
     echo "No project maintainer found!\n";
     die(1);
@@ -201,14 +202,25 @@ if (empty($project_infos) || empty($project_infos = json_decode($project_infos, 
 }
 $default_branch = $project_infos["default_branch"];
 
-echo "> Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
-gitlabRequest("", 200, "PUT", [
-    "remove_source_branch_after_merge" => false
-]);
+$branches = gitlabRequest("repository/branches", 200);
+if (empty($branches) || empty($branches = json_decode($branches, true)) || !is_array($branches)) {
+    echo "No project branches found!\n";
+    die(1);
+}
 
-echo "> Auto recreate gitlab pull request `develop` to `main`\n";
-gitlabRequest("merge_requests?source_branch=" . rawurlencode("develop") . "&target_branch=" . rawurlencode($default_branch) . "&title=" . rawurlencode("WIP: Develop") . "&assignee_id="
-    . rawurlencode($maintainer_user_id), 201, "POST");
+$develop_branch = current(array_filter($branches, fn(array $branch) : bool => $branch["name"] === "develop")) ?: null;
+
+if ($develop_branch !== null) {
+    echo "> Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
+    gitlabRequest("", 200, "PUT", [
+        "remove_source_branch_after_merge" => false
+    ]);
+
+    echo "> Auto recreate gitlab pull request `" . $develop_branch["name"] . "` to `" . $default_branch . "`\n";
+    gitlabRequest("merge_requests?source_branch=" . rawurlencode($develop_branch["name"]) . "&target_branch=" . rawurlencode($default_branch) . "&title=" . rawurlencode("WIP: "
+            . ucfirst($develop_branch["name"])) . "&assignee_id="
+        . rawurlencode($maintainer_user_id), 201, "POST");
+}
 
 if ($create_tag) {
     $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
