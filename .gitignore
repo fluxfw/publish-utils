@@ -1,1 +1,11 @@
-.idea
+*
+!bin
+!bin/**
+!examples
+!examples/**
+!.dockerignore
+!.gitignore
+!.gitlab-ci.yml
+!Dockerfile
+!metadata.json
+!README.md
