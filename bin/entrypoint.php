@@ -112,7 +112,7 @@ $build_dir = getEnvironmentVariable("CI_PROJECT_DIR");
 if (!file_exists($info_json_file = $build_dir . "/metadata.json")) {
     if (!file_exists($info_json_file = $build_dir . "/composer.json")) {
         if (!file_exists($info_json_file = $build_dir . "/package.json")) {
-            echo "Neither composer.json or package.json or metadata.json found!\n";
+            echo "Neither metadata.json or composer.json or package.json found!\n";
             die(1);
         }
     }
