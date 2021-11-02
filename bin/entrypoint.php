@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+require_once __DIR__ . "/../autoload.php";
+
 function getEnvironmentVariable(string $variable) : string
 {
     $value = strval(filter_input(INPUT_ENV, $variable));

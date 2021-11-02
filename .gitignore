@@ -3,9 +3,12 @@
 !bin/**
 !examples
 !examples/**
+!src
+!src/**
 !.dockerignore
 !.gitignore
 !.gitlab-ci.yml
+!autoload.php
 !Dockerfile
 !metadata.json
 !README.md
