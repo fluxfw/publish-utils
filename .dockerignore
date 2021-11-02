@@ -1,3 +1,6 @@
 *
 !bin
 !bin/**
+!src
+!src/**
+!autoload.php
