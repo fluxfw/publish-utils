@@ -2,12 +2,21 @@
 
 namespace FluxPublishUtils;
 
-if (version_compare(PHP_VERSION, ($min_php_version = "8.0"), "<")) {
-    die(__NAMESPACE__ . " needs at least PHP " . $min_php_version);
-}
+require_once __DIR__ . "/../libs/FluxAutoloadApi/autoload.php";
 
-foreach (["curl", "json"] as $ext) {
-    if (!extension_loaded($ext)) {
-        die(__NAMESPACE__ . " needs PHP ext " . $ext);
-    }
-}
+use FluxAutoloadApi\Adapter\Autoload\PhpExtChecker;
+use FluxAutoloadApi\Adapter\Autoload\PhpVersionChecker;
+
+PhpVersionChecker::new(
+    ">=8.0",
+    __NAMESPACE__
+)
+    ->check();
+PhpExtChecker::new(
+    [
+        "curl",
+        "json"
+    ],
+    __NAMESPACE__
+)
+    ->check();
