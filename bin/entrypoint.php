@@ -3,6 +3,11 @@
 
 require_once __DIR__ . "/../autoload.php";
 
+use FluxRestBaseApi\Body\BodyType;
+use FluxRestBaseApi\Header\Header;
+use FluxRestBaseApi\Method\Method;
+use FluxRestBaseApi\Status\Status;
+
 function getEnvironmentVariable(string $variable) : string
 {
     $value = strval(filter_input(INPUT_ENV, $variable));
@@ -15,7 +20,7 @@ function getEnvironmentVariable(string $variable) : string
     return $value;
 }
 
-function request(string $request_url, callable $set_token, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
+function request(string $request_url, callable $set_token, int $expect_status_code, string $method = Method::GET, ?array $body_data = null) : ?string
 {
     $curl = null;
     $response = null;
@@ -26,7 +31,7 @@ function request(string $request_url, callable $set_token, int $expect_status_co
         $curl = curl_init($request_url);
 
         $headers = [
-            "User-Agent" => "FluxPublishUtils"
+            Header::USER_AGENT => "FluxPublishUtils"
         ];
 
         $set_token($curl, $headers);
@@ -36,7 +41,7 @@ function request(string $request_url, callable $set_token, int $expect_status_co
         if (!empty($body_data)) {
             //echo "Body data: " . json_encode($body_data) . "\n";
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($body_data));
-            $headers["Content-Type"] = "application/json";
+            $headers[Header::CONTENT_TYPE] = BodyType::JSON;
         }
 
         //echo "Headers: " . json_encode($headers) . "\n";
@@ -64,7 +69,7 @@ function request(string $request_url, callable $set_token, int $expect_status_co
     return $response;
 }
 
-function gitlabRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
+function gitlabRequest(string $api_url, int $expect_status_code, string $method = Method::GET, ?array $body_data = null) : ?string
 {
     static $FLUX_PUBLISH_UTILS_TOKEN = null;
     if ($FLUX_PUBLISH_UTILS_TOKEN === null) {
@@ -88,7 +93,7 @@ function gitlabRequest(string $api_url, int $expect_status_code, string $method 
     }, $expect_status_code, $method, $body_data);
 }
 
-function githubRequest(string $api_url, int $expect_status_code, string $method = "GET", ?array $body_data = null) : ?string
+function githubRequest(string $api_url, int $expect_status_code, string $method = Method::GET, ?array $body_data = null) : ?string
 {
     global $github_url, $github_token;
     if (empty($github_url) || empty($github_token)) {
@@ -99,7 +104,7 @@ function githubRequest(string $api_url, int $expect_status_code, string $method 
 
     return request($request_url, function (CurlHandle $curl, array &$headers) use ($github_token) : void {
         curl_setopt($curl, CURLOPT_USERPWD, $github_token);
-        $headers["Accept"] = "application/vnd.github.mercy-preview+json";
+        $headers[Header::ACCEPT] = "application/vnd.github.mercy-preview+json";
     }, $expect_status_code, $method, $body_data);
 }
 
@@ -167,7 +172,7 @@ if ($create_tag) {
     }
 }
 
-$members = gitlabRequest("members", 200);
+$members = gitlabRequest("members", Status::_200);
 if (empty($members) || empty($members = json_decode($members, true)) || !is_array($members)) {
     echo "No project members found!\n";
     die(1);
@@ -180,7 +185,7 @@ if (empty($maintainer_user_id)) {
 }
 $maintainer_user_id = current($maintainer_user_id)["id"];
 
-$github_url = gitlabRequest("remote_mirrors", 200);
+$github_url = gitlabRequest("remote_mirrors", Status::_200);
 if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) && is_array($github_url)
     && !empty($github_url = current($github_url)["url"])
 ) {
@@ -197,14 +202,14 @@ if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) 
     $github_token = null;
 }
 
-$project_infos = gitlabRequest("", 200);
+$project_infos = gitlabRequest("", Status::_200);
 if (empty($project_infos) || empty($project_infos = json_decode($project_infos, true)) || !is_array($project_infos)) {
     echo "No project infos found!\n";
     die(1);
 }
 $default_branch = $project_infos["default_branch"];
 
-$branches = gitlabRequest("repository/branches", 200);
+$branches = gitlabRequest("repository/branches", Status::_200);
 if (empty($branches) || empty($branches = json_decode($branches, true)) || !is_array($branches)) {
     echo "No project branches found!\n";
     die(1);
@@ -214,33 +219,33 @@ $develop_branch = current(array_filter($branches, fn(array $branch) : bool => $b
 
 if ($develop_branch !== null) {
     echo "> Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
-    gitlabRequest("", 200, "PUT", [
+    gitlabRequest("", Status::_200, Method::PUT, [
         "remove_source_branch_after_merge" => false
     ]);
 
     echo "> Auto recreate gitlab pull request `" . $develop_branch["name"] . "` to `" . $default_branch . "`\n";
     gitlabRequest("merge_requests?source_branch=" . rawurlencode($develop_branch["name"]) . "&target_branch=" . rawurlencode($default_branch) . "&title=" . rawurlencode("WIP: "
             . ucfirst($develop_branch["name"])) . "&assignee_id="
-        . rawurlencode($maintainer_user_id), 201, "POST");
+        . rawurlencode($maintainer_user_id), Status::_201, Method::POST);
 }
 
 if ($create_tag) {
     $COMMIT_ID = getEnvironmentVariable("CI_COMMIT_SHA");
 
     echo "> Auto create version tag\n";
-    gitlabRequest("repository/tags?tag_name=" . rawurlencode("v" . $version) . "&ref=" . rawurlencode($COMMIT_ID) . "&message=" . rawurlencode($changelog), 201, "POST");
-    gitlabRequest("releases?tag_name=" . rawurlencode("v" . $version) . "&description=" . rawurlencode($changelog), 201, "POST");
+    gitlabRequest("repository/tags?tag_name=" . rawurlencode("v" . $version) . "&ref=" . rawurlencode($COMMIT_ID) . "&message=" . rawurlencode($changelog), Status::_201, Method::POST);
+    gitlabRequest("releases?tag_name=" . rawurlencode("v" . $version) . "&description=" . rawurlencode($changelog), Status::_201, Method::POST);
 }
 
 echo "> Auto update gitlab and github project description\n";
-gitlabRequest("", 200, "PUT", [
+gitlabRequest("", Status::_200, Method::PUT, [
     "description" => $description,
     "tag_list"    => $keywords
 ]);
-githubRequest("", 200, "PATCH", [
+githubRequest("", Status::_200, Method::PATCH, [
     "description" => $description,
     "homepage"    => $homepage
 ]);
-githubRequest("topics", 200, "PUT", [
+githubRequest("topics", Status::_200, Method::PUT, [
     "names" => $keywords
 ]);
