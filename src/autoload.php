@@ -2,7 +2,7 @@
 
 namespace FluxPublishUtils;
 
-require_once __DIR__ . "/../libs/FluxRestBaseApi/autoload.php";
+require_once __DIR__ . "/../libs/flux-rest-base-api/autoload.php";
 
 use FluxAutoloadApi\Adapter\Checker\PhpExtChecker;
 use FluxAutoloadApi\Adapter\Checker\PhpVersionChecker;
