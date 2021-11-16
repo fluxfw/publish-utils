@@ -1,4 +1,4 @@
-# FluxPublishUtils
+# flux-publish-utils
 
 Auto run the follow tasks on merge `develop` to `main` (gitlab ci)
 
