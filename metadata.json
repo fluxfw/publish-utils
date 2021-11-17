@@ -1,6 +1,7 @@
 {
   "description": "Auto create version tag gitlab ci on merge `develop` to `main`, among other things",
   "keywords": [
+    "alpine",
     "auto",
     "changelog",
     "ci",
@@ -13,6 +14,8 @@
     "json",
     "keywords",
     "maintainer",
+    "metadata",
+    "php",
     "pull",
     "release",
     "request",
