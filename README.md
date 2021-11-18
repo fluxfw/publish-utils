@@ -9,7 +9,7 @@ All are optional, only done if the needed infos are available
     - Ensure "Enable 'Delete source branch' option by default" is disabled
 - Create gitlab version tag/release
     - Version from `metadata.json`|`composer.json`|`package.json` > `version`
-    - Changelog from `CHANGELOG.md`
+    - Description is cut changelog from `CHANGELOG.md`
 - Update project description, topics and homepage on gitlab/github
     - Description from `metadata.json`|`composer.json`|`package.json` > `description`
     - Topics from `metadata.json` > `topics`|`keywords` / `composer.json`|`package.json` > `keywords`
