@@ -1,8 +1,7 @@
 {
-  "description": "Auto create version tag gitlab ci on merge `develop` to `main`, among other things",
-  "keywords": [
+  "description": "Run publish tasks (gitlab ci)",
+  "topics": [
     "alpine",
-    "auto",
     "changelog",
     "ci",
     "description",
