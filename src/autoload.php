@@ -4,6 +4,7 @@ namespace FluxPublishUtils;
 
 require_once __DIR__ . "/../libs/flux-rest-base-api/autoload.php";
 
+use FluxAutoloadApi\Adapter\Autoload\Psr4Autoload;
 use FluxAutoloadApi\Adapter\Checker\PhpExtChecker;
 use FluxAutoloadApi\Adapter\Checker\PhpVersionChecker;
 
@@ -20,3 +21,10 @@ PhpExtChecker::new(
     __NAMESPACE__
 )
     ->check();
+
+Psr4Autoload::new(
+    [
+        __NAMESPACE__ => __DIR__
+    ]
+)
+    ->autoload();

@@ -1,17 +1,17 @@
 # flux-publish-utils
 
-Auto run the follow tasks on merge `develop` to `main` (gitlab ci)
+Run the follow tasks on merge `develop` to `main` (gitlab ci), if available
 
-- Auto recreate gitlab pull request `develop` (If exists) to `main` (Default branch) (Optional)
-  - Ensure "Enable 'Delete source branch' option by default" is disabled
+- Create gitlab pull request `develop` to `main` (Default branch)
   - Assigned user is first maintainer in gitlab project members
-- Auto create version tag/release (Optional)
-    - Version from `composer.json`|`package.json`|`metadata.json` > `version`
+  - Ensure "Enable 'Delete source branch' option by default" is disabled
+- Create gitlab version tag/release
+    - Version from `metadata.json`|`composer.json`|`package.json` > `version`
     - Changelog from `CHANGELOG.md`
-- Auto update gitlab and github project description, topics and homepage
-    - Short description from `composer.json`|`package.json`|`metadata.json` > `description`
-    - Topics from `composer.json`|`package.json`|`metadata.json` > `keywords`
-    - Homepage from `composer.json`|`package.json`|`metadata.json` > `homepage`
+- Update project description, topics and homepage on gitlab/github
+    - Description from `metadata.json`|`composer.json`|`package.json` > `description`
+    - Topics from `metadata.json`|`composer.json`|`package.json` > `keywords`
+    - Homepage from `metadata.json`|`composer.json`|`package.json` > `homepage`
 
 ## Example
 
@@ -20,5 +20,7 @@ Auto run the follow tasks on merge `develop` to `main` (gitlab ci)
 ## CI variables
 
 Set `FLUX_PUBLISH_UTILS_TOKEN` ci variable, protected and masked
+
+Set `FLUX_PUBLISH_UTILS_TRUST_SELF_SIGNED_CERTIFICATE` ci variable (If it's the case), protected
 
 Set `FLUX_PUBLISH_UTILS_TOKEN_GITHUB` ci variable (Token), protected and masked
