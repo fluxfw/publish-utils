@@ -11,22 +11,22 @@ class InfoDto implements JsonSerializable
     private ?string $commit_id;
     private ?string $default_branch;
     private ?string $description;
-    private ?string $develop_branch;
     private ?string $github_token;
     private ?string $github_url;
+    private ?string $gitlab_develop_branch;
+    private ?int $gitlab_maintainer_user_id;
+    private ?string $gitlab_token;
+    private bool $gitlab_trust_self_signed_certificate;
+    private ?string $gitlab_url;
     private ?string $homepage;
-    private ?int $maintainer_user_id;
-    private ?string $token;
     private ?array $topics;
-    private bool $trust_self_signed_certificate;
-    private ?string $url;
     private ?string $version;
 
 
     public static function new(
-        ?string $url,
-        ?string $token,
-        bool $trust_self_signed_certificate,
+        ?string $gitlab_url,
+        ?string $gitlab_token,
+        bool $gitlab_trust_self_signed_certificate,
         ?string $github_url,
         ?string $github_token,
         ?string $version,
@@ -34,16 +34,16 @@ class InfoDto implements JsonSerializable
         ?array $topics,
         ?string $homepage,
         ?string $changelog,
-        ?int $maintainer_user_id,
+        ?int $gitlab_maintainer_user_id,
         ?string $default_branch,
-        ?string $develop_branch,
+        ?string $gitlab_develop_branch,
         ?string $commit_id
     ) : static {
         $dto = new static();
 
-        $dto->url = $url;
-        $dto->token = $token;
-        $dto->trust_self_signed_certificate = $trust_self_signed_certificate;
+        $dto->gitlab_url = $gitlab_url;
+        $dto->gitlab_token = $gitlab_token;
+        $dto->gitlab_trust_self_signed_certificate = $gitlab_trust_self_signed_certificate;
         $dto->github_url = $github_url;
         $dto->github_token = $github_token;
         $dto->version = $version;
@@ -51,9 +51,9 @@ class InfoDto implements JsonSerializable
         $dto->topics = $topics;
         $dto->homepage = $homepage;
         $dto->changelog = $changelog;
-        $dto->maintainer_user_id = $maintainer_user_id;
+        $dto->gitlab_maintainer_user_id = $gitlab_maintainer_user_id;
         $dto->default_branch = $default_branch;
-        $dto->develop_branch = $develop_branch;
+        $dto->gitlab_develop_branch = $gitlab_develop_branch;
         $dto->commit_id = $commit_id;
 
         return $dto;
@@ -84,12 +84,6 @@ class InfoDto implements JsonSerializable
     }
 
 
-    public function getDevelopBranch() : ?string
-    {
-        return $this->develop_branch;
-    }
-
-
     public function getGithubToken() : ?string
     {
         return $this->github_token;
@@ -102,21 +96,33 @@ class InfoDto implements JsonSerializable
     }
 
 
+    public function getGitlabDevelopBranch() : ?string
+    {
+        return $this->gitlab_develop_branch;
+    }
+
+
+    public function getGitlabMaintainerUserId() : ?int
+    {
+        return $this->gitlab_maintainer_user_id;
+    }
+
+
+    public function getGitlabToken() : ?string
+    {
+        return $this->gitlab_token;
+    }
+
+
+    public function getGitlabUrl() : ?string
+    {
+        return $this->gitlab_url;
+    }
+
+
     public function getHomepage() : ?string
     {
         return $this->homepage;
-    }
-
-
-    public function getMaintainerUserId() : ?int
-    {
-        return $this->maintainer_user_id;
-    }
-
-
-    public function getToken() : ?string
-    {
-        return $this->token;
     }
 
 
@@ -126,21 +132,15 @@ class InfoDto implements JsonSerializable
     }
 
 
-    public function getUrl() : ?string
-    {
-        return $this->url;
-    }
-
-
     public function getVersion() : ?string
     {
         return $this->version;
     }
 
 
-    public function isTrustSelfSignedCertificate() : bool
+    public function isGitlabTrustSelfSignedCertificate() : bool
     {
-        return $this->trust_self_signed_certificate;
+        return $this->gitlab_trust_self_signed_certificate;
     }
 
 
@@ -148,8 +148,8 @@ class InfoDto implements JsonSerializable
     {
         $json = get_object_vars($this);
 
-        if (!empty($json["token"])) {
-            $json["token"] = "***";
+        if (!empty($json["gitlab_token"])) {
+            $json["gitlab_token"] = "***";
         }
         if (!empty($json["github_token"])) {
             $json["github_token"] = "***";
