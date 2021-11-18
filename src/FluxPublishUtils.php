@@ -40,13 +40,13 @@ class FluxPublishUtils
             }
 
             if (!empty($info->getVersion()) && !empty($info->getChangelog()) && !empty($info->getCommitId())) {
-                echo "> Create gitlab version tag\n";
+                echo "> Create gitlab version tag `v" . $info->getVersion() . "`\n";
                 $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(),
                     "repository/tags?tag_name=" . rawurlencode("v" . $info->getVersion()) . "&ref=" . rawurlencode($info->getCommitId()) . "&message="
                     . rawurlencode($info->getChangelog()),
                     Status::_201, Method::POST);
 
-                echo "> Create gitlab version release\n";
+                echo "> Create gitlab version release `v" . $info->getVersion() . "`\n";
                 $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(),
                     "releases?tag_name=" . rawurlencode("v" . $info->getVersion()) . "&description=" . rawurlencode($info->getChangelog()), Status::_201, Method::POST);
             }
