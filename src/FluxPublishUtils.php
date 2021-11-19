@@ -266,6 +266,7 @@ class FluxPublishUtils
         $curl = null;
         $response = null;
         $status_code = null;
+        
         try {
             $curl = curl_init($request_url);
 
