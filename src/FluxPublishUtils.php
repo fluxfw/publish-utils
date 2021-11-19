@@ -304,9 +304,9 @@ class FluxPublishUtils
 
         if ($status_code !== $expect_status_code) {
             echo "curl " . $method . " request: " . $request_url . "\n";
-            //echo "Body data: " . json_encode($body_data, JSON_UNESCAPED_SLASHES) . "\n";
+            echo "Body data: " . json_encode($body_data, JSON_UNESCAPED_SLASHES) . "\n";
             //echo "Headers: " . json_encode($headers, JSON_UNESCAPED_SLASHES) . "\n";
-            //echo "Response: " . $response . "\n";
+            echo "Response: " . $response . "\n";
             echo "Response status code: " . $status_code . "\n";
             echo "Expect status code: " . $expect_status_code . "\n";
             die(1);
