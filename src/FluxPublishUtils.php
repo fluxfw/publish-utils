@@ -75,12 +75,12 @@ class FluxPublishUtils
 
     private function collectInfo() : InfoDto
     {
-        $gitlab_server_url = $_ENV["CI_SERVER_URL"] ?? null;
+        $gitlab_api_url = $_ENV["CI_API_V4_URL"] ?? null;
 
         $gitlab_project_id = $_ENV["CI_PROJECT_ID"] ?? null;
 
-        if (!empty($gitlab_server_url) && !empty($gitlab_project_id)) {
-            $gitlab_url = $gitlab_server_url . "/api/v4/projects/" . $gitlab_project_id;
+        if (!empty($gitlab_api_url) && !empty($gitlab_project_id)) {
+            $gitlab_url = $gitlab_api_url . "/projects/" . $gitlab_project_id;
         } else {
             $gitlab_url = null;
         }
@@ -172,16 +172,7 @@ class FluxPublishUtils
             }
         }
 
-        $project_infos = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "", Status::_200);
-        if (empty($project_infos) || empty($project_infos = json_decode($project_infos, true)) || !is_array($project_infos)) {
-            $project_infos = null;
-        }
-
-        if (!empty($project_infos)) {
-            $default_branch = $project_infos["default_branch"];
-        } else {
-            $default_branch = null;
-        }
+        $default_branch = $_ENV["CI_DEFAULT_BRANCH"] ?? null;
 
         $branches = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "repository/branches", Status::_200);
         if (empty($branches) || empty($branches = json_decode($branches, true)) || !is_array($branches)) {
@@ -266,7 +257,7 @@ class FluxPublishUtils
         $curl = null;
         $response = null;
         $status_code = null;
-        
+
         try {
             $curl = curl_init($request_url);
 
