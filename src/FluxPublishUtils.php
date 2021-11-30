@@ -3,9 +3,12 @@
 namespace FluxPublishUtils;
 
 use CurlHandle;
-use FluxRestBaseApi\Body\BodyType;
-use FluxRestBaseApi\Header\Header;
+use FluxRestBaseApi\Body\DefaultBodyType;
+use FluxRestBaseApi\Header\DefaultHeader;
+use FluxRestBaseApi\Method\DefaultMethod;
 use FluxRestBaseApi\Method\Method;
+use FluxRestBaseApi\Status\CustomStatus;
+use FluxRestBaseApi\Status\DefaultStatus;
 use FluxRestBaseApi\Status\Status;
 
 class FluxPublishUtils
@@ -28,7 +31,7 @@ class FluxPublishUtils
         if (!empty($info->getGitlabUrl()) && !empty($info->getGitlabToken())) {
             if (!empty($info->getDefaultBranch()) && !empty($info->getGitlabDevelopBranch()) && !empty($info->getGitlabMaintainerUserId())) {
                 echo "> Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
-                $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(), "", Status::_200, Method::PUT, [
+                $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(), "", DefaultStatus::_200, DefaultMethod::PUT, [
                     "remove_source_branch_after_merge" => false
                 ]);
 
@@ -36,7 +39,8 @@ class FluxPublishUtils
                     . $info->getGitlabMaintainerUserId() . "`\n";
                 $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(),
                     "merge_requests?source_branch=" . rawurlencode($info->getGitlabDevelopBranch()) . "&target_branch=" . rawurlencode($info->getDefaultBranch()) . "&title="
-                    . rawurlencode("WIP: " . ucfirst($info->getGitlabDevelopBranch())) . "&assignee_id=" . rawurlencode($info->getGitlabMaintainerUserId()), Status::_201, Method::POST);
+                    . rawurlencode("WIP: " . ucfirst($info->getGitlabDevelopBranch())) . "&assignee_id=" . rawurlencode($info->getGitlabMaintainerUserId()), DefaultStatus::_201,
+                    DefaultMethod::POST);
             }
 
             if (!empty($info->getVersion()) && !empty($info->getChangelog()) && !empty($info->getCommitId())) {
@@ -44,27 +48,27 @@ class FluxPublishUtils
                 $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(),
                     "repository/tags?tag_name=" . rawurlencode("v" . $info->getVersion()) . "&ref=" . rawurlencode($info->getCommitId()) . "&message="
                     . rawurlencode($info->getChangelog()),
-                    Status::_201, Method::POST);
+                    DefaultStatus::_201, DefaultMethod::POST);
 
                 echo "> Create gitlab version release `v" . $info->getVersion() . "`\n";
                 $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(),
-                    "releases?tag_name=" . rawurlencode("v" . $info->getVersion()) . "&description=" . rawurlencode($info->getChangelog()), Status::_201, Method::POST);
+                    "releases?tag_name=" . rawurlencode("v" . $info->getVersion()) . "&description=" . rawurlencode($info->getChangelog()), DefaultStatus::_201, DefaultMethod::POST);
             }
 
             if (!empty($info->getDescription() || !empty($info->getTopics()) || !empty($info->getHomepage()))) {
                 echo "> Update project description and topics on gitlab\n";
-                $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(), "", Status::_200, Method::PUT, [
+                $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(), "", DefaultStatus::_200, DefaultMethod::PUT, [
                     "description" => $info->getDescription() ?? "",
                     "topics"      => $info->getTopics() ?? []
                 ]);
 
                 if (!empty($info->getGithubUrl()) && !empty($info->getGithubToken())) {
                     echo "> Update project description, topics and homepage on github\n";
-                    $this->githubRequest($info->getGithubUrl(), $info->getGithubToken(), "", Status::_200, Method::PATCH, [
+                    $this->githubRequest($info->getGithubUrl(), $info->getGithubToken(), "", DefaultStatus::_200, DefaultMethod::PATCH, [
                         "description" => $info->getDescription() ?? "",
                         "homepage"    => $info->getHomepage() ?? ""
                     ]);
-                    $this->githubRequest($info->getGithubUrl(), $info->getGithubToken(), "topics", Status::_200, Method::PUT, [
+                    $this->githubRequest($info->getGithubUrl(), $info->getGithubToken(), "topics", DefaultStatus::_200, DefaultMethod::PUT, [
                         "names" => $info->getTopics() ?? []
                     ]);
                 }
@@ -90,7 +94,7 @@ class FluxPublishUtils
         $gitlab_trust_self_signed_certificate = ($gitlab_trust_self_signed_certificate = $_ENV["FLUX_PUBLISH_UTILS_TRUST_SELF_SIGNED_CERTIFICATE"] ?? null) !== null
             && in_array($gitlab_trust_self_signed_certificate, ["true", "1"]);
 
-        $github_url = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "remote_mirrors", Status::_200);
+        $github_url = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "remote_mirrors");
         if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) && is_array($github_url) && !empty($github_url = current($github_url)["url"])
         ) {
             $github_url = explode("@", $github_url)[1];
@@ -157,7 +161,7 @@ class FluxPublishUtils
             }
         }
 
-        $members = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "members", Status::_200);
+        $members = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "members");
         if (empty($members) || empty($members = json_decode($members, true)) || !is_array($members)) {
             $members = null;
         }
@@ -174,7 +178,7 @@ class FluxPublishUtils
 
         $default_branch = $_ENV["CI_DEFAULT_BRANCH"] ?? null;
 
-        $branches = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "repository/branches", Status::_200);
+        $branches = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "repository/branches");
         if (empty($branches) || empty($branches = json_decode($branches, true)) || !is_array($branches)) {
             $branches = null;
         }
@@ -210,7 +214,7 @@ class FluxPublishUtils
     }
 
 
-    private function githubRequest(?string $github_url, ?string $github_token, string $api_url, int $expect_status_code, string $method = Method::GET, ?array $body_data = null) : ?string
+    private function githubRequest(?string $github_url, ?string $github_token, string $api_url, ?Status $expect_status = null, ?Method $method = null, ?array $body_data = null) : ?string
     {
         if (empty($github_url) || empty($github_token)) {
             return null;
@@ -220,8 +224,8 @@ class FluxPublishUtils
 
         return $this->request($request_url, function (CurlHandle $curl, array &$headers) use ($github_token) : void {
             curl_setopt($curl, CURLOPT_USERPWD, $github_token);
-            $headers[Header::ACCEPT] = "application/vnd.github.mercy-preview+json";
-        }, $expect_status_code, $method, $body_data);
+            $headers[DefaultHeader::ACCEPT->value] = "application/vnd.github.mercy-preview+json";
+        }, $expect_status, $method, $body_data);
     }
 
 
@@ -230,8 +234,8 @@ class FluxPublishUtils
         ?string $gitlab_token,
         bool $gitlab_trust_self_signed_certificate,
         string $api_url,
-        int $expect_status_code,
-        string $method = Method::GET,
+        ?Status $expect_status = null,
+        ?Method $method = null,
         ?array $body_data = null
     ) : ?string {
         if (empty($gitlab_url) || empty($gitlab_token)) {
@@ -242,36 +246,39 @@ class FluxPublishUtils
 
         return $this->request($request_url, function (CurlHandle $curl, array &$headers) use ($gitlab_token) : void {
             $headers["PRIVATE-TOKEN"] = $gitlab_token;
-        }, $expect_status_code, $method, $body_data, $gitlab_trust_self_signed_certificate);
+        }, $expect_status, $method, $body_data, $gitlab_trust_self_signed_certificate);
     }
 
 
     private function request(
         string $request_url,
         callable $set_token,
-        int $expect_status_code,
-        string $method = Method::GET,
+        ?Status $expect_status = null,
+        ?Method $method = null,
         ?array $body_data = null,
         bool $trust_self_signed_certificate = false
     ) : ?string {
+        $expect_status = $expect_status ?? DefaultStatus::_200;
+        $method = $method ?? DefaultMethod::GET;
+
         $curl = null;
         $response = null;
-        $status_code = null;
+        $status = null;
 
         try {
             $curl = curl_init($request_url);
 
             $headers = [
-                Header::USER_AGENT => __NAMESPACE__
+                DefaultHeader::USER_AGENT->value => __NAMESPACE__
             ];
 
             $set_token($curl, $headers);
 
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method->value);
 
             if (!empty($body_data)) {
                 curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($body_data, JSON_UNESCAPED_SLASHES));
-                $headers[Header::CONTENT_TYPE] = BodyType::JSON;
+                $headers[DefaultHeader::CONTENT_TYPE->value] = DefaultBodyType::JSON->value;
             }
 
             curl_setopt($curl, CURLOPT_HTTPHEADER, array_map(fn(string $key, string $value) : string => $key . ": " . $value, array_keys($headers), $headers));
@@ -287,20 +294,20 @@ class FluxPublishUtils
 
             $response = curl_exec($curl);
 
-            $status_code = intval(curl_getinfo($curl, CURLINFO_HTTP_CODE));
+            $status = CustomStatus::factory(curl_getinfo($curl, CURLINFO_HTTP_CODE));
         } finally {
             if ($curl !== null) {
                 curl_close($curl);
             }
         }
 
-        if ($status_code !== $expect_status_code) {
-            echo "curl " . $method . " request: " . $request_url . "\n";
+        if ($status !== $expect_status) {
+            echo "curl " . $method->value . " request: " . $request_url . "\n";
             echo "Body data: " . json_encode($body_data, JSON_UNESCAPED_SLASHES) . "\n";
             //echo "Headers: " . json_encode($headers, JSON_UNESCAPED_SLASHES) . "\n";
             echo "Response: " . $response . "\n";
-            echo "Response status code: " . $status_code . "\n";
-            echo "Expect status code: " . $expect_status_code . "\n";
+            echo "Response status code: " . $status->value . "\n";
+            echo "Expect status code: " . $expect_status->value . "\n";
             die(1);
         }
 

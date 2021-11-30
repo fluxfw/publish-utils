@@ -7,20 +7,20 @@ use JsonSerializable;
 class InfoDto implements JsonSerializable
 {
 
-    private ?string $changelog;
-    private ?string $commit_id;
-    private ?string $default_branch;
-    private ?string $description;
-    private ?string $github_token;
-    private ?string $github_url;
-    private ?string $gitlab_develop_branch;
-    private ?int $gitlab_maintainer_user_id;
-    private ?string $gitlab_token;
-    private bool $gitlab_trust_self_signed_certificate;
-    private ?string $gitlab_url;
-    private ?string $homepage;
-    private ?array $topics;
-    private ?string $version;
+    private readonly ?string $changelog;
+    private readonly ?string $commit_id;
+    private readonly ?string $default_branch;
+    private readonly ?string $description;
+    private readonly ?string $github_token;
+    private readonly ?string $github_url;
+    private readonly ?string $gitlab_develop_branch;
+    private readonly ?int $gitlab_maintainer_user_id;
+    private readonly ?string $gitlab_token;
+    private readonly bool $gitlab_trust_self_signed_certificate;
+    private readonly ?string $gitlab_url;
+    private readonly ?string $homepage;
+    private readonly ?array $topics;
+    private readonly ?string $version;
 
 
     public static function new(
