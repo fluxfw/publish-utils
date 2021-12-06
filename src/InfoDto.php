@@ -7,20 +7,20 @@ use JsonSerializable;
 class InfoDto implements JsonSerializable
 {
 
-    private readonly ?string $changelog;
-    private readonly ?string $commit_id;
-    private readonly ?string $default_branch;
-    private readonly ?string $description;
-    private readonly ?string $github_token;
-    private readonly ?string $github_url;
-    private readonly ?string $gitlab_develop_branch;
-    private readonly ?int $gitlab_maintainer_user_id;
-    private readonly ?string $gitlab_token;
-    private readonly bool $gitlab_trust_self_signed_certificate;
-    private readonly ?string $gitlab_url;
-    private readonly ?string $homepage;
-    private readonly ?array $topics;
-    private readonly ?string $version;
+    public readonly ?string $changelog;
+    public readonly ?string $commit_id;
+    public readonly ?string $default_branch;
+    public readonly ?string $description;
+    public readonly ?string $github_token;
+    public readonly ?string $github_url;
+    public readonly ?string $gitlab_develop_branch;
+    public readonly ?int $gitlab_maintainer_user_id;
+    public readonly ?string $gitlab_token;
+    public readonly bool $gitlab_trust_self_signed_certificate;
+    public readonly ?string $gitlab_url;
+    public readonly ?string $homepage;
+    public readonly ?array $topics;
+    public readonly ?string $version;
 
 
     public static function new(
@@ -57,90 +57,6 @@ class InfoDto implements JsonSerializable
         $dto->commit_id = $commit_id;
 
         return $dto;
-    }
-
-
-    public function getChangelog() : ?string
-    {
-        return $this->changelog;
-    }
-
-
-    public function getCommitId() : ?string
-    {
-        return $this->commit_id;
-    }
-
-
-    public function getDefaultBranch() : ?string
-    {
-        return $this->default_branch;
-    }
-
-
-    public function getDescription() : ?string
-    {
-        return $this->description;
-    }
-
-
-    public function getGithubToken() : ?string
-    {
-        return $this->github_token;
-    }
-
-
-    public function getGithubUrl() : ?string
-    {
-        return $this->github_url;
-    }
-
-
-    public function getGitlabDevelopBranch() : ?string
-    {
-        return $this->gitlab_develop_branch;
-    }
-
-
-    public function getGitlabMaintainerUserId() : ?int
-    {
-        return $this->gitlab_maintainer_user_id;
-    }
-
-
-    public function getGitlabToken() : ?string
-    {
-        return $this->gitlab_token;
-    }
-
-
-    public function getGitlabUrl() : ?string
-    {
-        return $this->gitlab_url;
-    }
-
-
-    public function getHomepage() : ?string
-    {
-        return $this->homepage;
-    }
-
-
-    public function getTopics() : ?array
-    {
-        return $this->topics;
-    }
-
-
-    public function getVersion() : ?string
-    {
-        return $this->version;
-    }
-
-
-    public function isGitlabTrustSelfSignedCertificate() : bool
-    {
-        return $this->gitlab_trust_self_signed_certificate;
     }
 
 
