@@ -2,6 +2,7 @@
 
 namespace FluxPublishUtils;
 
+require_once __DIR__ . "/../libs/flux-autoload-api/autoload.php";
 require_once __DIR__ . "/../libs/flux-rest-base-api/autoload.php";
 
 use FluxAutoloadApi\Adapter\Autoload\Psr4Autoload;
