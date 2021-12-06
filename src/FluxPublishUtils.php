@@ -28,48 +28,45 @@ class FluxPublishUtils
         $info = $this->collectInfo();
         echo json_encode($info, JSON_UNESCAPED_SLASHES) . "\n";
 
-        if (!empty($info->getGitlabUrl()) && !empty($info->getGitlabToken())) {
-            if (!empty($info->getDefaultBranch()) && !empty($info->getGitlabDevelopBranch()) && !empty($info->getGitlabMaintainerUserId())) {
+        if (!empty($info->gitlab_url) && !empty($info->gitlab_token)) {
+            if (!empty($info->default_branch) && !empty($info->gitlab_develop_branch) && !empty($info->gitlab_maintainer_user_id)) {
                 echo "> Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
-                $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(), "", DefaultStatus::_200, DefaultMethod::PUT, [
+                $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate, "", DefaultStatus::_200, DefaultMethod::PUT, [
                     "remove_source_branch_after_merge" => false
                 ]);
 
-                echo "> Create gitlab pull request `" . $info->getGitlabDevelopBranch() . "` to `" . $info->getDefaultBranch() . "` and assign it to user `"
-                    . $info->getGitlabMaintainerUserId() . "`\n";
-                $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(),
-                    "merge_requests?source_branch=" . rawurlencode($info->getGitlabDevelopBranch()) . "&target_branch=" . rawurlencode($info->getDefaultBranch()) . "&title="
-                    . rawurlencode("WIP: " . ucfirst($info->getGitlabDevelopBranch())) . "&assignee_id=" . rawurlencode($info->getGitlabMaintainerUserId()), DefaultStatus::_201,
+                echo "> Create gitlab pull request `" . $info->gitlab_develop_branch . "` to `" . $info->default_branch . "` and assign it to user `" . $info->gitlab_maintainer_user_id . "`\n";
+                $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate,
+                    "merge_requests?source_branch=" . rawurlencode($info->gitlab_develop_branch) . "&target_branch=" . rawurlencode($info->default_branch) . "&title=" . rawurlencode("WIP: "
+                        . ucfirst($info->gitlab_develop_branch)) . "&assignee_id=" . rawurlencode($info->gitlab_maintainer_user_id), DefaultStatus::_201, DefaultMethod::POST);
+            }
+
+            if (!empty($info->version) && !empty($info->changelog) && !empty($info->commit_id)) {
+                echo "> Create gitlab version tag `v" . $info->version . "`\n";
+                $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate,
+                    "repository/tags?tag_name=" . rawurlencode("v" . $info->version) . "&ref=" . rawurlencode($info->commit_id) . "&message=" . rawurlencode($info->changelog), DefaultStatus::_201,
                     DefaultMethod::POST);
+
+                echo "> Create gitlab version release `v" . $info->version . "`\n";
+                $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate,
+                    "releases?tag_name=" . rawurlencode("v" . $info->version) . "&description=" . rawurlencode($info->changelog), DefaultStatus::_201, DefaultMethod::POST);
             }
 
-            if (!empty($info->getVersion()) && !empty($info->getChangelog()) && !empty($info->getCommitId())) {
-                echo "> Create gitlab version tag `v" . $info->getVersion() . "`\n";
-                $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(),
-                    "repository/tags?tag_name=" . rawurlencode("v" . $info->getVersion()) . "&ref=" . rawurlencode($info->getCommitId()) . "&message="
-                    . rawurlencode($info->getChangelog()),
-                    DefaultStatus::_201, DefaultMethod::POST);
-
-                echo "> Create gitlab version release `v" . $info->getVersion() . "`\n";
-                $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(),
-                    "releases?tag_name=" . rawurlencode("v" . $info->getVersion()) . "&description=" . rawurlencode($info->getChangelog()), DefaultStatus::_201, DefaultMethod::POST);
-            }
-
-            if (!empty($info->getDescription() || !empty($info->getTopics()) || !empty($info->getHomepage()))) {
+            if (!empty($info->description || !empty($info->topics) || !empty($info->homepage))) {
                 echo "> Update project description and topics on gitlab\n";
-                $this->gitlabRequest($info->getGitlabUrl(), $info->getGitlabToken(), $info->isGitlabTrustSelfSignedCertificate(), "", DefaultStatus::_200, DefaultMethod::PUT, [
-                    "description" => $info->getDescription() ?? "",
-                    "topics"      => $info->getTopics() ?? []
+                $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate, "", DefaultStatus::_200, DefaultMethod::PUT, [
+                    "description" => $info->description ?? "",
+                    "topics"      => $info->topics ?? []
                 ]);
 
-                if (!empty($info->getGithubUrl()) && !empty($info->getGithubToken())) {
+                if (!empty($info->github_url) && !empty($info->github_token)) {
                     echo "> Update project description, topics and homepage on github\n";
-                    $this->githubRequest($info->getGithubUrl(), $info->getGithubToken(), "", DefaultStatus::_200, DefaultMethod::PATCH, [
-                        "description" => $info->getDescription() ?? "",
-                        "homepage"    => $info->getHomepage() ?? ""
+                    $this->githubRequest($info->github_url, $info->github_token, "", DefaultStatus::_200, DefaultMethod::PATCH, [
+                        "description" => $info->description ?? "",
+                        "homepage"    => $info->homepage ?? ""
                     ]);
-                    $this->githubRequest($info->getGithubUrl(), $info->getGithubToken(), "topics", DefaultStatus::_200, DefaultMethod::PUT, [
-                        "names" => $info->getTopics() ?? []
+                    $this->githubRequest($info->github_url, $info->github_token, "topics", DefaultStatus::_200, DefaultMethod::PUT, [
+                        "names" => $info->topics ?? []
                     ]);
                 }
             }
