@@ -15,3 +15,5 @@ COPY --from=flux_rest_base_api /flux-rest-base-api /flux-publish-utils/libs/flux
 COPY . /flux-publish-utils
 
 ENTRYPOINT ["/flux-publish-utils/bin/entrypoint.php"]
+
+USER www-data:www-data
