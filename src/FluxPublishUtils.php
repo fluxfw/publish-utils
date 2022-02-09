@@ -3,6 +3,7 @@
 namespace FluxPublishUtils;
 
 use CurlHandle;
+use Exception;
 use FluxRestBaseApi\Body\DefaultBodyType;
 use FluxRestBaseApi\Header\DefaultHeader;
 use FluxRestBaseApi\Method\DefaultMethod;
@@ -290,6 +291,10 @@ class FluxPublishUtils
             }
 
             $response = curl_exec($curl);
+
+            if (curl_errno($curl) !== 0) {
+                throw new Exception(curl_error($curl));
+            }
 
             $status = CustomStatus::factory(curl_getinfo($curl, CURLINFO_HTTP_CODE));
         } finally {
