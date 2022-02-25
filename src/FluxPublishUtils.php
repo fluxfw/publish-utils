@@ -38,7 +38,7 @@ class FluxPublishUtils
 
                 echo "> Create gitlab pull request `" . $info->gitlab_develop_branch . "` to `" . $info->default_branch . "` and assign it to user `" . $info->gitlab_maintainer_user_id . "`\n";
                 $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate,
-                    "merge_requests?source_branch=" . rawurlencode($info->gitlab_develop_branch) . "&target_branch=" . rawurlencode($info->default_branch) . "&title=" . rawurlencode("WIP: "
+                    "merge_requests?source_branch=" . rawurlencode($info->gitlab_develop_branch) . "&target_branch=" . rawurlencode($info->default_branch) . "&title=" . rawurlencode("Draft: "
                         . ucfirst($info->gitlab_develop_branch)) . "&assignee_id=" . rawurlencode($info->gitlab_maintainer_user_id), DefaultStatus::_201, DefaultMethod::POST);
             }
 
