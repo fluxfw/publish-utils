@@ -19,12 +19,12 @@ All are optional, only done if the needed infos are available
 
 ```yaml
 flux-publish-utils:
-  stage: build
-  image: docker-registry.fluxpublisher.ch/flux-publish-utils:latest
-  script:
-    - "false"
-  only:
-    - main
+    stage: build
+    image: docker-registry.fluxpublisher.ch/flux-publish-utils:latest
+    script:
+        - "false"
+    only:
+        - main
 ```
 
 ## CI variables

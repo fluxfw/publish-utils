@@ -4,22 +4,26 @@ namespace FluxPublishUtils;
 
 use CurlHandle;
 use Exception;
-use FluxRestBaseApi\Body\DefaultBodyType;
-use FluxRestBaseApi\Header\DefaultHeader;
-use FluxRestBaseApi\Method\DefaultMethod;
-use FluxRestBaseApi\Method\Method;
-use FluxRestBaseApi\Status\CustomStatus;
-use FluxRestBaseApi\Status\DefaultStatus;
-use FluxRestBaseApi\Status\Status;
+use FluxPublishUtils\Libs\FluxRestBaseApi\Body\DefaultBodyType;
+use FluxPublishUtils\Libs\FluxRestBaseApi\Header\DefaultHeader;
+use FluxPublishUtils\Libs\FluxRestBaseApi\Method\DefaultMethod;
+use FluxPublishUtils\Libs\FluxRestBaseApi\Method\Method;
+use FluxPublishUtils\Libs\FluxRestBaseApi\Status\CustomStatus;
+use FluxPublishUtils\Libs\FluxRestBaseApi\Status\DefaultStatus;
+use FluxPublishUtils\Libs\FluxRestBaseApi\Status\Status;
 
 class FluxPublishUtils
 {
 
+    private function __construct()
+    {
+
+    }
+
+
     public static function new() : static
     {
-        $command = new static();
-
-        return $command;
+        return new static();
     }
 
 

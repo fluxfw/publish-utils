@@ -1,25 +1,25 @@
 {
-  "description": "Run publish tasks (gitlab ci)",
-  "topics": [
-    "alpine",
-    "changelog",
-    "ci",
-    "description",
-    "docker",
-    "github",
-    "gitlab",
-    "homepage",
-    "keywords",
-    "maintainer",
-    "metadata",
-    "php",
-    "pull",
-    "release",
-    "request",
-    "tag",
-    "topics",
-    "update",
-    "version"
-  ],
-  "homepage": "https://github.com/fluxapps/flux-publish-utils"
+    "description": "Run publish tasks (gitlab ci)",
+    "topics": [
+        "alpine",
+        "changelog",
+        "ci",
+        "description",
+        "docker",
+        "github",
+        "gitlab",
+        "homepage",
+        "keywords",
+        "maintainer",
+        "metadata",
+        "php",
+        "pull",
+        "release",
+        "request",
+        "tag",
+        "topics",
+        "update",
+        "version"
+    ],
+    "homepage": "https://github.com/fluxapps/flux-publish-utils"
 }
