@@ -5,9 +5,9 @@ namespace FluxPublishUtils;
 require_once __DIR__ . "/../libs/flux-autoload-api/autoload.php";
 require_once __DIR__ . "/../libs/flux-rest-base-api/autoload.php";
 
-use FluxPublishUtils\Libs\Adapter\FluxAutoloadApi\Autoload\Psr4Autoload;
-use FluxPublishUtils\Libs\Adapter\FluxAutoloadApi\Checker\PhpExtChecker;
-use FluxPublishUtils\Libs\Adapter\FluxAutoloadApi\Checker\PhpVersionChecker;
+use FluxPublishUtils\Libs\FluxAutoloadApi\Adapter\Autoload\Psr4Autoload;
+use FluxPublishUtils\Libs\FluxAutoloadApi\Adapter\Checker\PhpExtChecker;
+use FluxPublishUtils\Libs\FluxAutoloadApi\Adapter\Checker\PhpVersionChecker;
 
 PhpVersionChecker::new(
     ">=8.1"
