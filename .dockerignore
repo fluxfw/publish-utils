@@ -1,6 +1,5 @@
 *
-!bin
-!bin/**
+!bin/docker-entrypoint.php
 !src
 !src/**
 !autoload.php
