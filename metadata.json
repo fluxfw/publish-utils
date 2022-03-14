@@ -1,7 +1,6 @@
 {
     "description": "Run publish tasks (gitlab ci)",
     "topics": [
-        "alpine",
         "changelog",
         "ci",
         "description",
