@@ -26,7 +26,7 @@ COPY . /flux-publish-utils
 
 FROM $PHP_CLI_IMAGE
 
-LABEL org.opencontainers.image.source="https://github.com/fluxapps/flux-publish-utils"
+LABEL org.opencontainers.image.source="https://github.com/flux-eco/flux-publish-utils"
 LABEL maintainer="fluxlabs <support@fluxlabs.ch> (https://fluxlabs.ch)"
 
 USER www-data:www-data
