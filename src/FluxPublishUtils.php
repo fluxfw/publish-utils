@@ -46,15 +46,37 @@ class FluxPublishUtils
                         . ucfirst($info->gitlab_develop_branch)) . "&assignee_id=" . rawurlencode($info->gitlab_maintainer_user_id), DefaultStatus::_201, DefaultMethod::POST);
             }
 
-            if (!empty($info->version) && !empty($info->changelog) && !empty($info->commit_id)) {
-                echo "> Create gitlab version tag `v" . $info->version . "`\n";
+            if (!empty($info->tag_name) && !empty($info->changelog) && !empty($info->commit_id)) {
+                echo "> Create gitlab tag `" . $info->tag_name . "`\n";
                 $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate,
-                    "repository/tags?tag_name=" . rawurlencode("v" . $info->version) . "&ref=" . rawurlencode($info->commit_id) . "&message=" . rawurlencode($info->changelog), DefaultStatus::_201,
+                    "repository/tags?tag_name=" . rawurlencode($info->tag_name) . "&ref=" . rawurlencode($info->commit_id) . "&message=" . rawurlencode($info->changelog), DefaultStatus::_201,
                     DefaultMethod::POST);
 
-                echo "> Create gitlab version release `v" . $info->version . "`\n";
+                echo "> Create gitlab release `" . $info->tag_name . "`\n";
                 $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate,
-                    "releases?tag_name=" . rawurlencode("v" . $info->version) . "&description=" . rawurlencode($info->changelog), DefaultStatus::_201, DefaultMethod::POST);
+                    "releases?tag_name=" . rawurlencode($info->tag_name) . "&description=" . rawurlencode($info->changelog), DefaultStatus::_201, DefaultMethod::POST);
+
+                if (!empty($info->github_url) && !empty($info->github_token)) {
+                    echo "> Check github tag `" . $info->tag_name . "` exists\n";
+                    $check_github_tag = function () use ($info) : bool {
+                        $tags = $this->githubRequest($info->github_url, $info->github_token, "tags");
+                        if (empty($tags) || empty($tags = json_decode($tags, true)) || !is_array($tags)) {
+                            return false;
+                        }
+
+                        return !empty(array_filter($tags, fn(array $tag) : bool => $tag["name"] === $info->tag_name));
+                    };
+                    while (!$check_github_tag()) {
+                        echo "Missing github tag " . $info->tag_name . " - Waiting 30 seconds for check again (Mirroring is may delayed)\n";
+                        sleep(30);
+                    }
+
+                    echo "> Create github release `" . $info->tag_name . "`\n";
+                    $this->githubRequest($info->github_url, $info->github_token, "releases", DefaultStatus::_201, DefaultMethod::POST, [
+                        "tag_name" => $info->tag_name,
+                        "body"     => $info->changelog,
+                    ]);
+                }
             }
 
             if (!empty($info->description || !empty($info->topics) || !empty($info->homepage))) {
@@ -117,6 +139,7 @@ class FluxPublishUtils
         $description = null;
         $topics = null;
         $homepage = null;
+        $tag_name = null;
         if (!empty($build_dir)) {
             if (file_exists($info_json_file = $build_dir . "/metadata.json")) {
                 $info_json = json_decode(file_get_contents($info_json_file));
@@ -143,6 +166,9 @@ class FluxPublishUtils
                         $homepage = $info_json->homepage ?? null;
                     }
                 }
+            }
+            if ($version !== null) {
+                $tag_name = "v" . $version;
             }
         }
 
@@ -211,7 +237,8 @@ class FluxPublishUtils
             $gitlab_maintainer_user_id,
             $default_branch,
             $gitlab_develop_branch,
-            $commit_id
+            $commit_id,
+            $tag_name
         );
     }
 
