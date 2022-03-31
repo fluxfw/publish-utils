@@ -21,7 +21,8 @@ class InfoDto implements JsonSerializable
         public readonly ?int $gitlab_maintainer_user_id,
         public readonly ?string $default_branch,
         public readonly ?string $gitlab_develop_branch,
-        public readonly ?string $commit_id
+        public readonly ?string $commit_id,
+        public readonly ?string $tag_name
     ) {
 
     }
@@ -41,7 +42,8 @@ class InfoDto implements JsonSerializable
         ?int $gitlab_maintainer_user_id,
         ?string $default_branch,
         ?string $gitlab_develop_branch,
-        ?string $commit_id
+        ?string $commit_id,
+        ?string $tag_name
     ) : static {
         return new static(
             $gitlab_url,
@@ -57,7 +59,8 @@ class InfoDto implements JsonSerializable
             $gitlab_maintainer_user_id,
             $default_branch,
             $gitlab_develop_branch,
-            $commit_id
+            $commit_id,
+            $tag_name
         );
     }
 
