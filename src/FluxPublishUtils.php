@@ -196,7 +196,10 @@ class FluxPublishUtils
 
         $gitlab_maintainer_user_id = null;
         if (!empty($members)) {
-            $gitlab_maintainer_user_id = array_filter($members, fn(array $member) : bool => $member["access_level"] === 40);
+            $gitlab_maintainer_user_id = array_filter($members, fn(array $member) : bool => $member["access_level"] === 50);
+            if (empty($gitlab_maintainer_user_id)) {
+                $gitlab_maintainer_user_id = array_filter($members, fn(array $member) : bool => $member["access_level"] === 40);
+            }
             if (!empty($gitlab_maintainer_user_id)) {
                 $gitlab_maintainer_user_id = current($gitlab_maintainer_user_id)["id"];
             } else {
