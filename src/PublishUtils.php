@@ -12,7 +12,7 @@ use FluxPublishUtils\Libs\FluxRestBaseApi\Status\CustomStatus;
 use FluxPublishUtils\Libs\FluxRestBaseApi\Status\DefaultStatus;
 use FluxPublishUtils\Libs\FluxRestBaseApi\Status\Status;
 
-class FluxPublishUtils
+class PublishUtils
 {
 
     private function __construct()
@@ -36,65 +36,111 @@ class FluxPublishUtils
         if (!empty($info->gitlab_url) && !empty($info->gitlab_token)) {
             if (!empty($info->default_branch) && !empty($info->gitlab_develop_branch) && !empty($info->gitlab_maintainer_user_id)) {
                 echo "> Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
-                $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate, "", DefaultStatus::_200, DefaultMethod::PUT, [
-                    "remove_source_branch_after_merge" => false
-                ]);
+                $this->gitlabRequest(
+                    $info->gitlab_url,
+                    $info->gitlab_token,
+                    $info->gitlab_trust_self_signed_certificate,
+                    "",
+                    DefaultStatus::_200,
+                    DefaultMethod::PUT,
+                    [
+                        "remove_source_branch_after_merge" => false
+                    ]
+                );
 
                 echo "> Create gitlab pull request `" . $info->gitlab_develop_branch . "` to `" . $info->default_branch . "` and assign it to user `" . $info->gitlab_maintainer_user_id . "`\n";
-                $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate,
+                $this->gitlabRequest(
+                    $info->gitlab_url,
+                    $info->gitlab_token,
+                    $info->gitlab_trust_self_signed_certificate,
                     "merge_requests?source_branch=" . rawurlencode($info->gitlab_develop_branch) . "&target_branch=" . rawurlencode($info->default_branch) . "&title=" . rawurlencode("Draft: "
-                        . ucfirst($info->gitlab_develop_branch)) . "&assignee_id=" . rawurlencode($info->gitlab_maintainer_user_id), DefaultStatus::_201, DefaultMethod::POST);
+                        . ucfirst($info->gitlab_develop_branch)) . "&assignee_id=" . rawurlencode($info->gitlab_maintainer_user_id),
+                    DefaultStatus::_201,
+                    DefaultMethod::POST
+                );
             }
 
             if (!empty($info->tag_name) && !empty($info->changelog) && !empty($info->commit_id)) {
                 echo "> Create gitlab tag `" . $info->tag_name . "`\n";
-                $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate,
-                    "repository/tags?tag_name=" . rawurlencode($info->tag_name) . "&ref=" . rawurlencode($info->commit_id) . "&message=" . rawurlencode($info->changelog), DefaultStatus::_201,
-                    DefaultMethod::POST);
+                $this->gitlabRequest(
+                    $info->gitlab_url,
+                    $info->gitlab_token,
+                    $info->gitlab_trust_self_signed_certificate,
+                    "repository/tags?tag_name=" . rawurlencode($info->tag_name) . "&ref=" . rawurlencode($info->commit_id) . "&message=" . rawurlencode($info->changelog),
+                    DefaultStatus::_201,
+                    DefaultMethod::POST
+                );
 
                 echo "> Create gitlab release `" . $info->tag_name . "`\n";
-                $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate,
-                    "releases?tag_name=" . rawurlencode($info->tag_name) . "&description=" . rawurlencode($info->changelog), DefaultStatus::_201, DefaultMethod::POST);
+                $this->gitlabRequest(
+                    $info->gitlab_url,
+                    $info->gitlab_token,
+                    $info->gitlab_trust_self_signed_certificate,
+                    "releases?tag_name=" . rawurlencode($info->tag_name) . "&description=" . rawurlencode($info->changelog),
+                    DefaultStatus::_201,
+                    DefaultMethod::POST
+                );
 
-                if (!empty($info->github_url) && !empty($info->github_token)) {
+                if (!empty($info->github_url) && !empty($info->github_token) && $info->check_github_tag !== null) {
                     echo "> Check github tag `" . $info->tag_name . "` exists\n";
-                    $check_github_tag = function () use ($info) : bool {
-                        $tags = $this->githubRequest($info->github_url, $info->github_token, "tags");
-                        if (empty($tags) || empty($tags = json_decode($tags, true)) || !is_array($tags)) {
-                            return false;
-                        }
-
-                        return !empty(array_filter($tags, fn(array $tag) : bool => $tag["name"] === $info->tag_name));
-                    };
-                    while (!$check_github_tag()) {
+                    while (!($info->check_github_tag)()) {
                         echo "Missing github tag " . $info->tag_name . " - Waiting 30 seconds for check again (Mirroring is may delayed)\n";
                         sleep(30);
                     }
 
                     echo "> Create github release `" . $info->tag_name . "`\n";
-                    $this->githubRequest($info->github_url, $info->github_token, "releases", DefaultStatus::_201, DefaultMethod::POST, [
-                        "tag_name" => $info->tag_name,
-                        "body"     => $info->changelog,
-                    ]);
+                    $this->githubRequest(
+                        $info->github_url,
+                        $info->github_token,
+                        "releases",
+                        DefaultStatus::_201,
+                        DefaultMethod::POST,
+                        [
+                            "tag_name" => $info->tag_name,
+                            "body"     => $info->changelog,
+                        ]
+                    );
                 }
             }
 
             if (!empty($info->description || !empty($info->topics) || !empty($info->homepage))) {
                 echo "> Update project description and topics on gitlab\n";
-                $this->gitlabRequest($info->gitlab_url, $info->gitlab_token, $info->gitlab_trust_self_signed_certificate, "", DefaultStatus::_200, DefaultMethod::PUT, [
-                    "description" => $info->description ?? "",
-                    "topics"      => $info->topics ?? []
-                ]);
+                $this->gitlabRequest(
+                    $info->gitlab_url,
+                    $info->gitlab_token,
+                    $info->gitlab_trust_self_signed_certificate,
+                    "",
+                    DefaultStatus::_200,
+                    DefaultMethod::PUT,
+                    [
+                        "description" => $info->description,
+                        "topics"      => $info->topics
+                    ]
+                );
 
                 if (!empty($info->github_url) && !empty($info->github_token)) {
                     echo "> Update project description, topics and homepage on github\n";
-                    $this->githubRequest($info->github_url, $info->github_token, "", DefaultStatus::_200, DefaultMethod::PATCH, [
-                        "description" => $info->description ?? "",
-                        "homepage"    => $info->homepage ?? ""
-                    ]);
-                    $this->githubRequest($info->github_url, $info->github_token, "topics", DefaultStatus::_200, DefaultMethod::PUT, [
-                        "names" => $info->topics ?? []
-                    ]);
+                    $this->githubRequest(
+                        $info->github_url,
+                        $info->github_token,
+                        "",
+                        DefaultStatus::_200,
+                        DefaultMethod::PATCH,
+                        [
+                            "description" => $info->description,
+                            "homepage"    => $info->homepage
+                        ]
+                    );
+                    $this->githubRequest(
+                        $info->github_url,
+                        $info->github_token,
+                        "topics",
+                        DefaultStatus::_200,
+                        DefaultMethod::PUT,
+                        [
+                            "names" => $info->topics
+                        ]
+                    );
                 }
             }
         }
@@ -118,7 +164,12 @@ class FluxPublishUtils
         $gitlab_trust_self_signed_certificate = ($gitlab_trust_self_signed_certificate = $_ENV["FLUX_PUBLISH_UTILS_TRUST_SELF_SIGNED_CERTIFICATE"] ?? null) !== null
             && in_array($gitlab_trust_self_signed_certificate, ["true", "1"]);
 
-        $github_url = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "remote_mirrors");
+        $github_url = $this->gitlabRequest(
+            $gitlab_url,
+            $gitlab_token,
+            $gitlab_trust_self_signed_certificate,
+            "remote_mirrors"
+        );
         if (!empty($github_url) && !empty($github_url = json_decode($github_url, true)) && is_array($github_url) && !empty($github_url = current($github_url)["url"])
         ) {
             $github_url = explode("@", $github_url)[1];
@@ -176,10 +227,10 @@ class FluxPublishUtils
         if (!empty($build_dir) && !empty($version)) {
             if (file_exists($changelog_file = $build_dir . "/CHANGELOG.md")) {
                 $changelog_md = file_get_contents($changelog_file);
-                $changelog_header_pos = [];
-                preg_match("/##.*" . preg_quote($version) . ".*\n/", $changelog_md, $changelog_header_pos, PREG_OFFSET_CAPTURE);
-                if (!empty($changelog_header_pos)) {
-                    $changelog = ltrim(substr($changelog_md, $changelog_header_pos[0][1] + strlen($changelog_header_pos[0][0])));
+                $changelog_header = [];
+                preg_match("/##.*" . preg_quote($version) . ".*\n/", $changelog_md, $changelog_header, PREG_OFFSET_CAPTURE);
+                if (!empty($changelog_header)) {
+                    $changelog = ltrim(substr($changelog_md, $changelog_header[0][1] + strlen($changelog_header[0][0])));
                     $changelog_end_pos = strpos($changelog, "\n\n");
                     if ($changelog_end_pos !== false) {
                         $changelog = substr($changelog, 0, $changelog_end_pos);
@@ -189,7 +240,12 @@ class FluxPublishUtils
             }
         }
 
-        $members = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "members");
+        $members = $this->gitlabRequest(
+            $gitlab_url,
+            $gitlab_token,
+            $gitlab_trust_self_signed_certificate,
+            "members"
+        );
         if (empty($members) || empty($members = json_decode($members, true)) || !is_array($members)) {
             $members = null;
         }
@@ -209,7 +265,12 @@ class FluxPublishUtils
 
         $default_branch = $_ENV["CI_DEFAULT_BRANCH"] ?? null;
 
-        $branches = $this->gitlabRequest($gitlab_url, $gitlab_token, $gitlab_trust_self_signed_certificate, "repository/branches");
+        $branches = $this->gitlabRequest(
+            $gitlab_url,
+            $gitlab_token,
+            $gitlab_trust_self_signed_certificate,
+            "repository/branches"
+        );
         if (empty($branches) || empty($branches = json_decode($branches, true)) || !is_array($branches)) {
             $branches = null;
         }
@@ -241,7 +302,19 @@ class FluxPublishUtils
             $default_branch,
             $gitlab_develop_branch,
             $commit_id,
-            $tag_name
+            $tag_name,
+            $github_url !== null && $github_token !== null && $tag_name !== null ? function () use ($github_url, $github_token, $tag_name) : bool {
+                $tags = $this->githubRequest(
+                    $github_url,
+                    $github_token,
+                    "tags"
+                );
+                if (empty($tags) || empty($tags = json_decode($tags, true)) || !is_array($tags)) {
+                    return false;
+                }
+
+                return !empty(array_filter($tags, fn(array $tag) : bool => $tag["name"] === $tag_name));
+            } : null
         );
     }
 
@@ -254,10 +327,16 @@ class FluxPublishUtils
 
         $request_url = $github_url . (!empty($api_url) ? "/" . $api_url : "");
 
-        return $this->request($request_url, function (CurlHandle $curl, array &$headers) use ($github_token) : void {
-            curl_setopt($curl, CURLOPT_USERPWD, $github_token);
-            $headers[DefaultHeader::ACCEPT->value] = "application/vnd.github.mercy-preview+json";
-        }, $expect_status, $method, $body_data);
+        return $this->request(
+            $request_url,
+            function (CurlHandle $curl, array &$headers) use ($github_token) : void {
+                curl_setopt($curl, CURLOPT_USERPWD, $github_token);
+                $headers[DefaultHeader::ACCEPT->value] = "application/vnd.github.mercy-preview+json";
+            },
+            $expect_status,
+            $method,
+            $body_data
+        );
     }
 
 
@@ -276,9 +355,16 @@ class FluxPublishUtils
 
         $request_url = $gitlab_url . (!empty($api_url) ? "/" . $api_url : "");
 
-        return $this->request($request_url, function (CurlHandle $curl, array &$headers) use ($gitlab_token) : void {
-            $headers["PRIVATE-TOKEN"] = $gitlab_token;
-        }, $expect_status, $method, $body_data, $gitlab_trust_self_signed_certificate);
+        return $this->request(
+            $request_url,
+            function (CurlHandle $curl, array &$headers) use ($gitlab_token) : void {
+                $headers["PRIVATE-TOKEN"] = $gitlab_token;
+            },
+            $expect_status,
+            $method,
+            $body_data,
+            $gitlab_trust_self_signed_certificate
+        );
     }
 
 

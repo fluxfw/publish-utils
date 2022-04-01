@@ -7,6 +7,10 @@ use JsonSerializable;
 class InfoDto implements JsonSerializable
 {
 
+    /**
+     * @param string[]|null $topics
+     * @param callable|null $check_github_tag
+     */
     private function __construct(
         public readonly ?string $gitlab_url,
         public readonly ?string $gitlab_token,
@@ -22,12 +26,16 @@ class InfoDto implements JsonSerializable
         public readonly ?string $default_branch,
         public readonly ?string $gitlab_develop_branch,
         public readonly ?string $commit_id,
-        public readonly ?string $tag_name
+        public readonly ?string $tag_name,
+        public readonly mixed $check_github_tag
     ) {
 
     }
 
 
+    /**
+     * @param string[]|null $topics
+     */
     public static function new(
         ?string $gitlab_url,
         ?string $gitlab_token,
@@ -43,7 +51,8 @@ class InfoDto implements JsonSerializable
         ?string $default_branch,
         ?string $gitlab_develop_branch,
         ?string $commit_id,
-        ?string $tag_name
+        ?string $tag_name,
+        ?callable $check_github_tag
     ) : static {
         return new static(
             $gitlab_url,
@@ -60,22 +69,25 @@ class InfoDto implements JsonSerializable
             $default_branch,
             $gitlab_develop_branch,
             $commit_id,
-            $tag_name
+            $tag_name,
+            $check_github_tag
         );
     }
 
 
     public function jsonSerialize() : array
     {
-        $json = get_object_vars($this);
+        $data = get_object_vars($this);
 
-        if (!empty($json["gitlab_token"])) {
-            $json["gitlab_token"] = "***";
+        if (!empty($data["gitlab_token"])) {
+            $data["gitlab_token"] = "***";
         }
-        if (!empty($json["github_token"])) {
-            $json["github_token"] = "***";
+        if (!empty($data["github_token"])) {
+            $data["github_token"] = "***";
         }
 
-        return $json;
+        unset($data["check_github_tag"]);
+
+        return $data;
     }
 }
