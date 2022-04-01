@@ -176,10 +176,10 @@ class FluxPublishUtils
         if (!empty($build_dir) && !empty($version)) {
             if (file_exists($changelog_file = $build_dir . "/CHANGELOG.md")) {
                 $changelog_md = file_get_contents($changelog_file);
-                $changelog_header = "## [" . $version . "]";
-                $changelog_header_pos = strpos($changelog_md, $changelog_header);
-                if ($changelog_header_pos !== false) {
-                    $changelog = ltrim(substr($changelog_md, $changelog_header_pos + strlen($changelog_header)));
+                $changelog_header_pos = [];
+                preg_match("/##.*" . preg_quote($version) . ".*\n/", $changelog_md, $changelog_header_pos, PREG_OFFSET_CAPTURE);
+                if (!empty($changelog_header_pos)) {
+                    $changelog = ltrim(substr($changelog_md, $changelog_header_pos[0][1] + strlen($changelog_header_pos[0][0])));
                     $changelog_end_pos = strpos($changelog, "\n\n");
                     if ($changelog_end_pos !== false) {
                         $changelog = substr($changelog, 0, $changelog_end_pos);
