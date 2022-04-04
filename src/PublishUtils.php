@@ -60,7 +60,7 @@ class PublishUtils
                 );
             }
 
-            if (!empty($info->tag_name) && !empty($info->changelog) && !empty($info->commit_id)) {
+            if (!empty($info->tag_name) && !empty($info->release_title) && !empty($info->changelog) && !empty($info->commit_id)) {
                 echo "> Create gitlab tag `" . $info->tag_name . "`\n";
                 $this->gitlabRequest(
                     $info->gitlab_url,
@@ -76,8 +76,7 @@ class PublishUtils
                     $info->gitlab_url,
                     $info->gitlab_token,
                     $info->gitlab_trust_self_signed_certificate,
-                    "releases?tag_name=" . rawurlencode($info->tag_name) . (!empty($info->release_title) ? "&name=" . rawurlencode($info->release_title) : "") . "&description="
-                    . rawurlencode($info->changelog),
+                    "releases?tag_name=" . rawurlencode($info->tag_name) . "&name=" . rawurlencode($info->release_title) . "&description=" . rawurlencode($info->changelog),
                     DefaultStatus::_201,
                     DefaultMethod::POST
                 );
@@ -98,9 +97,7 @@ class PublishUtils
                         DefaultMethod::POST,
                         [
                             "tag_name" => $info->tag_name,
-                            ...(!empty($info->release_title) ? [
-                                "name" => $info->release_title
-                            ] : []),
+                            "name"     => $info->release_title,
                             "body"     => $info->changelog
                         ]
                     );
@@ -244,6 +241,9 @@ class PublishUtils
                     $release_title = substr($changelog_md, $changelog_header[1][1] + strlen($changelog_header[1][0]));
                     $release_title = trim(substr($release_title, 0, strpos($release_title, "\n")));
                     $release_title = trim(ltrim($release_title, ")]}:-/\\ "));
+                    if (empty($release_title)) {
+                        $release_title = $tag_name;
+                    }
                 }
             }
         }
