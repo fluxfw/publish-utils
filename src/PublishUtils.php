@@ -76,7 +76,8 @@ class PublishUtils
                     $info->gitlab_url,
                     $info->gitlab_token,
                     $info->gitlab_trust_self_signed_certificate,
-                    "releases?tag_name=" . rawurlencode($info->tag_name) . "&name=" . rawurlencode($info->release_title ?? "") . "&description=" . rawurlencode($info->changelog),
+                    "releases?tag_name=" . rawurlencode($info->tag_name) . (!empty($info->release_title) ? "&name=" . rawurlencode($info->release_title) : "") . "&description="
+                    . rawurlencode($info->changelog),
                     DefaultStatus::_201,
                     DefaultMethod::POST
                 );
@@ -97,7 +98,9 @@ class PublishUtils
                         DefaultMethod::POST,
                         [
                             "tag_name" => $info->tag_name,
-                            "name"     => $info->release_title ?? "",
+                            ...(!empty($info->release_title) ? [
+                                "name" => $info->release_title
+                            ] : []),
                             "body"     => $info->changelog
                         ]
                     );
