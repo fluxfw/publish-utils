@@ -76,7 +76,8 @@ class PublishUtils
                     $info->gitlab_url,
                     $info->gitlab_token,
                     $info->gitlab_trust_self_signed_certificate,
-                    "releases?tag_name=" . rawurlencode($info->tag_name) . "&description=" . rawurlencode($info->changelog),
+                    "releases?tag_name=" . rawurlencode($info->tag_name) . (!empty($info->release_title) ? "&name=" . rawurlencode($info->release_title) : "") . "&description="
+                    . rawurlencode($info->changelog),
                     DefaultStatus::_201,
                     DefaultMethod::POST
                 );
@@ -97,7 +98,10 @@ class PublishUtils
                         DefaultMethod::POST,
                         [
                             "tag_name" => $info->tag_name,
-                            "body"     => $info->changelog,
+                            ...(!empty($info->release_title) ? [
+                                "name" => $info->release_title
+                            ] : []),
+                            "body"     => $info->changelog
                         ]
                     );
                 }
@@ -224,11 +228,12 @@ class PublishUtils
         }
 
         $changelog = null;
+        $release_title = null;
         if (!empty($build_dir) && !empty($version)) {
             if (file_exists($changelog_file = $build_dir . "/CHANGELOG.md")) {
                 $changelog_md = file_get_contents($changelog_file);
                 $changelog_header = [];
-                preg_match("/##.*" . preg_quote($version) . ".*\n/", $changelog_md, $changelog_header, PREG_OFFSET_CAPTURE);
+                preg_match("/##.*(" . preg_quote($version) . ").*\n/", $changelog_md, $changelog_header, PREG_OFFSET_CAPTURE);
                 if (!empty($changelog_header)) {
                     $changelog = ltrim(substr($changelog_md, $changelog_header[0][1] + strlen($changelog_header[0][0])));
                     $changelog_end_pos = strpos($changelog, "\n\n");
@@ -236,6 +241,9 @@ class PublishUtils
                         $changelog = substr($changelog, 0, $changelog_end_pos);
                     }
                     $changelog = trim($changelog);
+                    $release_title = substr($changelog_md, $changelog_header[1][1] + strlen($changelog_header[1][0]));
+                    $release_title = trim(substr($release_title, 0, strpos($release_title, "\n")));
+                    $release_title = trim(ltrim($release_title, ")]}:-/\\ "));
                 }
             }
         }
@@ -303,6 +311,7 @@ class PublishUtils
             $gitlab_develop_branch,
             $commit_id,
             $tag_name,
+            $release_title,
             $github_url !== null && $github_token !== null && $tag_name !== null ? function () use ($github_url, $github_token, $tag_name) : bool {
                 $tags = $this->githubRequest(
                     $github_url,
