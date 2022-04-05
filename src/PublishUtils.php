@@ -4,13 +4,13 @@ namespace FluxPublishUtils;
 
 use CurlHandle;
 use Exception;
-use FluxPublishUtils\Libs\FluxRestBaseApi\Body\DefaultBodyType;
-use FluxPublishUtils\Libs\FluxRestBaseApi\Header\DefaultHeader;
-use FluxPublishUtils\Libs\FluxRestBaseApi\Method\DefaultMethod;
-use FluxPublishUtils\Libs\FluxRestBaseApi\Method\Method;
-use FluxPublishUtils\Libs\FluxRestBaseApi\Status\CustomStatus;
-use FluxPublishUtils\Libs\FluxRestBaseApi\Status\DefaultStatus;
-use FluxPublishUtils\Libs\FluxRestBaseApi\Status\Status;
+use FluxPublishUtils\Libs\FluxRestApi\Body\DefaultBodyType;
+use FluxPublishUtils\Libs\FluxRestApi\Header\DefaultHeader;
+use FluxPublishUtils\Libs\FluxRestApi\Method\DefaultMethod;
+use FluxPublishUtils\Libs\FluxRestApi\Method\Method;
+use FluxPublishUtils\Libs\FluxRestApi\Status\CustomStatus;
+use FluxPublishUtils\Libs\FluxRestApi\Status\DefaultStatus;
+use FluxPublishUtils\Libs\FluxRestApi\Status\Status;
 
 class PublishUtils
 {
