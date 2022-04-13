@@ -2,28 +2,31 @@
 
 namespace FluxPublishUtils;
 
-use CurlHandle;
-use Exception;
-use FluxPublishUtils\Libs\FluxRestApi\Body\DefaultBodyType;
-use FluxPublishUtils\Libs\FluxRestApi\Header\DefaultHeader;
-use FluxPublishUtils\Libs\FluxRestApi\Method\DefaultMethod;
-use FluxPublishUtils\Libs\FluxRestApi\Method\Method;
-use FluxPublishUtils\Libs\FluxRestApi\Status\CustomStatus;
-use FluxPublishUtils\Libs\FluxRestApi\Status\DefaultStatus;
-use FluxPublishUtils\Libs\FluxRestApi\Status\Status;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\HttpBasic\HttpBasic;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\Type\DefaultBodyType;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeader;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Status\DefaultStatus;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Status\Status;
 
 class PublishUtils
 {
 
-    private function __construct()
-    {
+    private function __construct(
+        private readonly RestApi $rest_api
+    ) {
 
     }
 
 
     public static function new() : static
     {
-        return new static();
+        return new static(
+            RestApi::new()
+        );
     }
 
 
@@ -338,9 +341,11 @@ class PublishUtils
 
         return $this->request(
             $request_url,
-            function (CurlHandle $curl, array &$headers) use ($github_token) : void {
-                curl_setopt($curl, CURLOPT_USERPWD, $github_token);
-                $headers[DefaultHeader::ACCEPT->value] = "application/vnd.github.mercy-preview+json";
+            function (array &$headers) use ($github_token) : void {
+                $headers += [
+                    DefaultHeader::ACCEPT->value        => "application/vnd.github.mercy-preview+json",
+                    DefaultHeader::AUTHORIZATION->value => HttpBasic::BASIC_AUTHORIZATION . " " . base64_encode($github_token)
+                ];
             },
             $expect_status,
             $method,
@@ -366,7 +371,7 @@ class PublishUtils
 
         return $this->request(
             $request_url,
-            function (CurlHandle $curl, array &$headers) use ($gitlab_token) : void {
+            function (array &$headers) use ($gitlab_token) : void {
                 $headers["PRIVATE-TOKEN"] = $gitlab_token;
             },
             $expect_status,
@@ -385,59 +390,43 @@ class PublishUtils
         ?array $body_data = null,
         bool $trust_self_signed_certificate = false
     ) : ?string {
-        $expect_status = $expect_status ?? DefaultStatus::_200;
-        $method = $method ?? DefaultMethod::GET;
+        $expect_status ??= DefaultStatus::_200;
+        $method ??= DefaultMethod::GET;
 
-        $curl = null;
-        $response = null;
-        $status = null;
+        $headers = [
+            DefaultHeader::USER_AGENT->value => "flux-publish-utils"
+        ];
 
-        try {
-            $curl = curl_init($request_url);
+        $set_token($headers);
 
-            $headers = [
-                DefaultHeader::USER_AGENT->value => __NAMESPACE__
-            ];
-
-            $set_token($curl, $headers);
-
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method->value);
-
-            if (!empty($body_data)) {
-                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($body_data, JSON_UNESCAPED_SLASHES));
-                $headers[DefaultHeader::CONTENT_TYPE->value] = DefaultBodyType::JSON->value;
-            }
-
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array_map(fn(string $key, string $value) : string => $key . ": " . $value, array_keys($headers), $headers));
-
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-            if ($trust_self_signed_certificate) {
-                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($curl, CURLOPT_PROXY_SSL_VERIFYHOST, false);
-            }
-
-            $response = curl_exec($curl);
-
-            if (curl_errno($curl) !== 0) {
-                throw new Exception(curl_error($curl));
-            }
-
-            $status = CustomStatus::factory(curl_getinfo($curl, CURLINFO_HTTP_CODE));
-        } finally {
-            if ($curl !== null) {
-                curl_close($curl);
-            }
+        if ($body_data !== null) {
+            $headers[DefaultHeader::CONTENT_TYPE->value] = DefaultBodyType::JSON->value;
+            $body_data = json_encode($body_data, JSON_UNESCAPED_SLASHES);
         }
 
+        $response = $this->rest_api->makeRequest(
+            ClientRequestDto::new(
+                $request_url,
+                $method,
+                null,
+                $body_data,
+                $headers,
+                true,
+                false,
+                true,
+                $trust_self_signed_certificate
+            )
+        );
+
+        $status = $response?->getStatus();
+        $response = $response?->getBody();
+
         if ($status !== $expect_status) {
-            echo "curl " . $method->value . " request: " . $request_url . "\n";
+            echo "request " . $method->value . " request: " . $request_url . "\n";
             echo "Body data: " . json_encode($body_data, JSON_UNESCAPED_SLASHES) . "\n";
             //echo "Headers: " . json_encode($headers, JSON_UNESCAPED_SLASHES) . "\n";
             echo "Response: " . $response . "\n";
-            echo "Response status code: " . $status->value . "\n";
+            echo "Response status code: " . $status?->value . "\n";
             echo "Expect status code: " . $expect_status->value . "\n";
             die(1);
         }
