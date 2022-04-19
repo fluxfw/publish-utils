@@ -3,7 +3,7 @@
 
 require_once __DIR__ . "/../autoload.php";
 
-use FluxPublishUtils\PublishUtils;
+use FluxPublishUtils\Adapter\PublishUtils;
 
 PublishUtils::new()
     ->run();

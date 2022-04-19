@@ -1,6 +1,6 @@
 <?php
 
-namespace FluxPublishUtils;
+namespace FluxPublishUtils\Adapter\Info;
 
 use JsonSerializable;
 
@@ -12,10 +12,11 @@ class InfoDto implements JsonSerializable
      * @param callable|null $check_github_tag
      */
     private function __construct(
+        public readonly ?int $gitlab_project_id,
         public readonly ?string $gitlab_url,
         public readonly ?string $gitlab_token,
         public readonly bool $gitlab_trust_self_signed_certificate,
-        public readonly ?string $github_url,
+        public readonly ?string $github_repository,
         public readonly ?string $github_token,
         public readonly ?string $version,
         public readonly ?string $description,
@@ -38,10 +39,11 @@ class InfoDto implements JsonSerializable
      * @param string[]|null $topics
      */
     public static function new(
+        ?int $gitlab_project_id,
         ?string $gitlab_url,
         ?string $gitlab_token,
         bool $gitlab_trust_self_signed_certificate,
-        ?string $github_url,
+        ?string $github_repository,
         ?string $github_token,
         ?string $version,
         ?string $description,
@@ -57,10 +59,11 @@ class InfoDto implements JsonSerializable
         ?callable $check_github_tag
     ) : static {
         return new static(
+            $gitlab_project_id,
             $gitlab_url,
             $gitlab_token,
             $gitlab_trust_self_signed_certificate,
-            $github_url,
+            $github_repository,
             $github_token,
             $version,
             $description,
