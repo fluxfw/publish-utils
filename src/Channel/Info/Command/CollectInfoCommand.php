@@ -61,6 +61,7 @@ class CollectInfoCommand
         $topics = null;
         $homepage = null;
         $tag_name = null;
+        $pre_release = false;
         if (!empty($build_dir)) {
             if (file_exists($info_json_file = $build_dir . "/metadata.json")) {
                 $info_json = json_decode(file_get_contents($info_json_file));
@@ -88,8 +89,9 @@ class CollectInfoCommand
                     }
                 }
             }
-            if ($version !== null) {
+            if (!empty($version)) {
                 $tag_name = "v" . $version;
+                $pre_release = str_contains($version, "pre") || str_contains($version, "rc") || str_contains($version, "alpha") || str_contains($version, "beta");
             }
         }
 
@@ -99,20 +101,14 @@ class CollectInfoCommand
             if (file_exists($changelog_file = $build_dir . "/CHANGELOG.md")) {
                 $changelog_md = file_get_contents($changelog_file);
                 $changelog_header = [];
-                preg_match("/##.*(" . preg_quote($version) . ").*\n/", $changelog_md, $changelog_header, PREG_OFFSET_CAPTURE);
+                preg_match("/(\n|^)##(.*" . preg_quote($version) . ".*)(\n)/", $changelog_md, $changelog_header, PREG_OFFSET_CAPTURE);
                 if (!empty($changelog_header)) {
-                    $changelog = ltrim(substr($changelog_md, $changelog_header[0][1] + strlen($changelog_header[0][0])));
-                    $changelog_end_pos = strpos($changelog, "\n\n");
-                    if ($changelog_end_pos !== false) {
+                    $changelog = substr($changelog_md, $changelog_header[3][1] + strlen($changelog_header[3][0]));
+                    if (($changelog_end_pos = strpos($changelog, "\n\n")) !== false) {
                         $changelog = substr($changelog, 0, $changelog_end_pos);
                     }
                     $changelog = trim($changelog);
-                    $release_title = substr($changelog_md, $changelog_header[1][1] + strlen($changelog_header[1][0]));
-                    $release_title = trim(substr($release_title, 0, strpos($release_title, "\n")));
-                    $release_title = trim(ltrim($release_title, ")]}:-/\\ "));
-                    if (empty($release_title)) {
-                        $release_title = $tag_name;
-                    }
+                    $release_title = trim(substr($changelog_md, $changelog_header[2][1], strlen($changelog_header[2][0])));
                 }
             }
         }
@@ -182,7 +178,7 @@ class CollectInfoCommand
             $commit_id,
             $tag_name,
             $release_title,
-            $github_repository !== null && $github_token !== null && $tag_name !== null ? function () use ($github_repository, $github_token, $tag_name) : bool {
+            !empty($github_repository) && !empty($github_token) && !empty($tag_name) ? function () use ($github_repository, $github_token, $tag_name) : bool {
                 $tags = $this->github_service->getGithubRepositoryTags(
                     $github_repository,
                     $github_token
@@ -192,7 +188,9 @@ class CollectInfoCommand
                 }
 
                 return !empty(array_filter($tags, fn(array $tag) : bool => $tag["name"] === $tag_name));
-            } : null
+            } : null,
+            $pre_release,
+            empty($gitlab_develop_branch)
         );
     }
 }
