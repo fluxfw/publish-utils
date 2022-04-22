@@ -4,9 +4,9 @@ Run publish tasks (gitlab ci)
 
 All are optional, only done if the needed infos are available
 
+- Enable/Disable "Enable 'Delete source branch' option by default"
 - Create gitlab pull request `develop` to `main` (Default branch)
     - Assigned user is first maintainer in gitlab project members
-    - Ensure "Enable 'Delete source branch' option by default" is disabled
 - Create gitlab/github version tag/release
     - Version from `metadata.json`|`composer.json`|`package.json` > `version`
     - Description is cut changelog from `CHANGELOG.md`

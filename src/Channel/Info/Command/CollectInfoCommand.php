@@ -89,7 +89,7 @@ class CollectInfoCommand
                     }
                 }
             }
-            if ($version !== null) {
+            if (!empty($version)) {
                 $tag_name = "v" . $version;
                 $pre_release = str_contains($version, "pre") || str_contains($version, "rc") || str_contains($version, "alpha") || str_contains($version, "beta");
             }
@@ -178,7 +178,7 @@ class CollectInfoCommand
             $commit_id,
             $tag_name,
             $release_title,
-            $github_repository !== null && $github_token !== null && $tag_name !== null ? function () use ($github_repository, $github_token, $tag_name) : bool {
+            !empty($github_repository) && !empty($github_token) && !empty($tag_name) ? function () use ($github_repository, $github_token, $tag_name) : bool {
                 $tags = $this->github_service->getGithubRepositoryTags(
                     $github_repository,
                     $github_token
@@ -189,7 +189,8 @@ class CollectInfoCommand
 
                 return !empty(array_filter($tags, fn(array $tag) : bool => $tag["name"] === $tag_name));
             } : null,
-            $pre_release
+            $pre_release,
+            empty($gitlab_develop_branch)
         );
     }
 }

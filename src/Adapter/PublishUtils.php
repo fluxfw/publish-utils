@@ -32,18 +32,22 @@ class PublishUtils
             echo json_encode($info, JSON_UNESCAPED_SLASHES) . "\n";
 
             if (!empty($info->gitlab_url) && !empty($info->gitlab_project_id) && !empty($info->gitlab_token)) {
-                if (!empty($info->default_branch) && !empty($info->gitlab_develop_branch) && !empty($info->gitlab_maintainer_user_id)) {
-                    echo "> Ensure \"Enable 'Delete source branch' option by default\" is disabled\n";
-                    $this->publish_utils_api->updateGitlabRepositorySettings(
-                        $info->gitlab_project_id,
-                        [
-                            "remove_source_branch_after_merge" => false
-                        ],
-                        $info->gitlab_url,
-                        $info->gitlab_token,
-                        $info->gitlab_trust_self_signed_certificate
-                    );
+                if ($info->single_branch_mode) {
+                    echo "> Enable \"Enable 'Delete source branch' option by default\"\n";
+                } else {
+                    echo "> Disable \"Enable 'Delete source branch' option by default\"\n";
+                }
+                $this->publish_utils_api->updateGitlabRepositorySettings(
+                    $info->gitlab_project_id,
+                    [
+                        "remove_source_branch_after_merge" => $info->single_branch_mode
+                    ],
+                    $info->gitlab_url,
+                    $info->gitlab_token,
+                    $info->gitlab_trust_self_signed_certificate
+                );
 
+                if (!empty($info->default_branch) && !empty($info->gitlab_develop_branch) && !empty($info->gitlab_maintainer_user_id)) {
                     echo "> Create gitlab pull request `" . $info->gitlab_develop_branch . "` to `" . $info->default_branch . "` and assign it to user `" . $info->gitlab_maintainer_user_id . "`\n";
                     $this->publish_utils_api->createGitlabRepositoryMergeRequest(
                         $info->gitlab_project_id,
