@@ -99,20 +99,14 @@ class CollectInfoCommand
             if (file_exists($changelog_file = $build_dir . "/CHANGELOG.md")) {
                 $changelog_md = file_get_contents($changelog_file);
                 $changelog_header = [];
-                preg_match("/##.*(" . preg_quote($version) . ").*\n/", $changelog_md, $changelog_header, PREG_OFFSET_CAPTURE);
+                preg_match("/(\n|^)##(.*" . preg_quote($version) . ".*)(\n)/", $changelog_md, $changelog_header, PREG_OFFSET_CAPTURE);
                 if (!empty($changelog_header)) {
-                    $changelog = ltrim(substr($changelog_md, $changelog_header[0][1] + strlen($changelog_header[0][0])));
-                    $changelog_end_pos = strpos($changelog, "\n\n");
-                    if ($changelog_end_pos !== false) {
+                    $changelog = substr($changelog_md, $changelog_header[3][1] + strlen($changelog_header[3][0]));
+                    if (($changelog_end_pos = strpos($changelog, "\n\n")) !== false) {
                         $changelog = substr($changelog, 0, $changelog_end_pos);
                     }
                     $changelog = trim($changelog);
-                    $release_title = substr($changelog_md, $changelog_header[1][1] + strlen($changelog_header[1][0]));
-                    $release_title = trim(substr($release_title, 0, strpos($release_title, "\n")));
-                    $release_title = trim(ltrim($release_title, ")]}:-/\\ "));
-                    if (empty($release_title)) {
-                        $release_title = $tag_name;
-                    }
+                    $release_title = trim(substr($changelog_md, $changelog_header[2][1], strlen($changelog_header[2][0])));
                 }
             }
         }
