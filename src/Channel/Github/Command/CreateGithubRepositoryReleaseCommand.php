@@ -24,7 +24,7 @@ class CreateGithubRepositoryReleaseCommand
     }
 
 
-    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, string $token) : void
+    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, bool $pre_release, string $token) : void
     {
         $this->github_service->githubRequest(
             $repository,
@@ -32,9 +32,10 @@ class CreateGithubRepositoryReleaseCommand
             $token,
             DefaultMethod::POST,
             [
-                "tag_name" => $tag_name,
-                "name"     => $title,
-                "body"     => $description
+                "tag_name"   => $tag_name,
+                "name"       => $title,
+                "body"       => $description,
+                "prerelease" => $pre_release
             ]
         );
     }

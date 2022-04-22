@@ -61,6 +61,7 @@ class CollectInfoCommand
         $topics = null;
         $homepage = null;
         $tag_name = null;
+        $pre_release = false;
         if (!empty($build_dir)) {
             if (file_exists($info_json_file = $build_dir . "/metadata.json")) {
                 $info_json = json_decode(file_get_contents($info_json_file));
@@ -90,6 +91,7 @@ class CollectInfoCommand
             }
             if ($version !== null) {
                 $tag_name = "v" . $version;
+                $pre_release = str_contains($version, "pre") || str_contains($version, "rc") || str_contains($version, "alpha") || str_contains($version, "beta");
             }
         }
 
@@ -186,7 +188,8 @@ class CollectInfoCommand
                 }
 
                 return !empty(array_filter($tags, fn(array $tag) : bool => $tag["name"] === $tag_name));
-            } : null
+            } : null,
+            $pre_release
         );
     }
 }

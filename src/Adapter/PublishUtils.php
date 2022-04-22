@@ -92,6 +92,7 @@ class PublishUtils
                             $info->tag_name,
                             $info->release_title,
                             $info->changelog,
+                            $info->pre_release,
                             $info->github_token
                         );
                     }
