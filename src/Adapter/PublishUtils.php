@@ -25,6 +25,7 @@ class PublishUtils
 
     public function run() : void
     {
+        $info = null;
         try {
             echo "> Collect infos\n";
             $info = $this->publish_utils_api->collectInfo();
@@ -132,7 +133,20 @@ class PublishUtils
                 }
             }
         } catch (Throwable $ex) {
-            echo $ex->getMessage();
+            $message = $ex->__toString();
+            if ($info !== null) {
+                if (!empty($info->gitlab_token)) {
+                    for ($i = strlen($info->gitlab_token); $i >= 4; $i--) {
+                        $message = str_replace(substr($info->gitlab_token, 0, $i), "", $message);
+                    }
+                }
+                if (!empty($info->github_token)) {
+                    for ($i = strlen($info->github_token); $i >= 4; $i--) {
+                        $message = str_replace(substr($info->github_token, 0, $i), "", $message);
+                    }
+                }
+            }
+            echo $message;
             die(1);
         }
     }
