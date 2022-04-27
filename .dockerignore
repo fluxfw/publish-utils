@@ -1,5 +1,5 @@
 *
-!bin/docker-entrypoint.php
+!bin/publish-utils.php
 !src
 !src/**
 !autoload.php
