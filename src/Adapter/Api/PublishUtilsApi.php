@@ -30,8 +30,16 @@ class PublishUtilsApi
     }
 
 
-    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, bool $pre_release, string $token) : void
-    {
+    public function createGithubRepositoryRelease(
+        string $repository,
+        string $tag_name,
+        string $title,
+        string $description,
+        bool $pre_release,
+        ?string $asset_path,
+        ?string $asset_name,
+        string $token
+    ) : void {
         $this->getGithubService()
             ->createGithubRepositoryRelease(
                 $repository,
@@ -39,6 +47,8 @@ class PublishUtilsApi
                 $title,
                 $description,
                 $pre_release,
+                $asset_path,
+                $asset_name,
                 $token
             );
     }

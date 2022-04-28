@@ -22,7 +22,7 @@ flux-publish-utils:
     stage: build
     image: docker-registry.fluxpublisher.ch/flux-publish-utils:latest
     script:
-        - "false"
+        - publish-utils
     only:
         - main
 ```

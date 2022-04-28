@@ -98,6 +98,8 @@ class PublishUtils
                             $info->release_title,
                             $info->changelog,
                             $info->pre_release,
+                            $info->release_asset_path,
+                            $info->release_asset_name,
                             $info->github_token
                         );
                     }

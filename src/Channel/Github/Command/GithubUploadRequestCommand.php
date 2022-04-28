@@ -4,13 +4,12 @@ namespace FluxPublishUtils\Channel\Github\Command;
 
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\HttpBasic\HttpBasic;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\Type\DefaultBodyType;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeader;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
 
-class GithubRequestCommand
+class GithubUploadRequestCommand
 {
 
     private function __construct(
@@ -29,26 +28,20 @@ class GithubRequestCommand
     }
 
 
-    public function githubRequest(string $repository, ?string $api_url, string $token, ?Method $method = null, ?array $data = null) : ?array
+    public function githubUploadRequest(string $repository, string $path, ?string $api_url, string $token, ?Method $method = null, ?array $query_params = null) : ?array
     {
-        $headers = [
-            DefaultHeader::ACCEPT->value        => "application/vnd.github.v3+json",
-            DefaultHeader::AUTHORIZATION->value => HttpBasic::BASIC_AUTHORIZATION . " " . base64_encode($token),
-            DefaultHeader::USER_AGENT->value    => "flux-publish-utils"
-        ];
-
-        if ($data !== null) {
-            $headers[DefaultHeader::CONTENT_TYPE->value] = DefaultBodyType::JSON->value;
-            $data = json_encode($data, JSON_UNESCAPED_SLASHES);
-        }
-
         $response = $this->rest_api->makeRequest(
             ClientRequestDto::new(
-                "https://api.github.com/repos/" . trim($repository, "/") . (!empty($api_url) ? "/" . trim($api_url, "/") : ""),
-                $method ?? DefaultMethod::GET,
-                null,
-                $data,
-                $headers,
+                "https://upload.github.com/repos/" . trim($repository, "/") . (!empty($api_url) ? "/" . trim($api_url, "/") : ""),
+                $method ?? DefaultMethod::POST,
+                $query_params,
+                file_get_contents($path),
+                [
+                    DefaultHeader::ACCEPT->value        => "application/vnd.github.v3+json",
+                    DefaultHeader::AUTHORIZATION->value => HttpBasic::BASIC_AUTHORIZATION . " " . base64_encode($token),
+                    DefaultHeader::CONTENT_TYPE->value  => mime_content_type($path),
+                    DefaultHeader::USER_AGENT->value    => "flux-publish-utils"
+                ],
                 true,
                 true,
                 true,
