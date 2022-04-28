@@ -31,9 +31,7 @@ class InfoDto implements JsonSerializable
         public readonly ?string $release_title,
         public readonly mixed $check_github_tag,
         public readonly bool $pre_release,
-        public readonly bool $single_branch_mode,
-        public readonly ?string $release_asset_path,
-        public readonly ?string $release_asset_name
+        public readonly bool $single_branch_mode
     ) {
 
     }
@@ -62,9 +60,7 @@ class InfoDto implements JsonSerializable
         ?string $release_title,
         ?callable $check_github_tag,
         bool $pre_release,
-        bool $single_branch_mode,
-        ?string $release_asset_path,
-        ?string $release_asset_name
+        bool $single_branch_mode
     ) : static {
         return new static(
             $gitlab_project_id,
@@ -86,9 +82,7 @@ class InfoDto implements JsonSerializable
             $release_title,
             $check_github_tag,
             $pre_release,
-            $single_branch_mode,
-            $release_asset_path,
-            $release_asset_name
+            $single_branch_mode
         );
     }
 

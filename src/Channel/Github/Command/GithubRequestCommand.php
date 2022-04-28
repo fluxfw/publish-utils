@@ -32,7 +32,7 @@ class GithubRequestCommand
     public function githubRequest(string $repository, ?string $api_url, string $token, ?Method $method = null, ?array $data = null) : ?array
     {
         $headers = [
-            DefaultHeader::ACCEPT->value        => "application/vnd.github.v3+json",
+            DefaultHeader::ACCEPT->value        => "application/vnd.github.mercy-preview+json",
             DefaultHeader::AUTHORIZATION->value => HttpBasic::BASIC_AUTHORIZATION . " " . base64_encode($token),
             DefaultHeader::USER_AGENT->value    => "flux-publish-utils"
         ];
@@ -42,21 +42,24 @@ class GithubRequestCommand
             $data = json_encode($data, JSON_UNESCAPED_SLASHES);
         }
 
+        $method ??= DefaultMethod::GET;
+        $return = $method === DefaultMethod::GET;
+
         $response = $this->rest_api->makeRequest(
             ClientRequestDto::new(
                 "https://api.github.com/repos/" . trim($repository, "/") . (!empty($api_url) ? "/" . trim($api_url, "/") : ""),
-                $method ?? DefaultMethod::GET,
+                $method,
                 null,
                 $data,
                 $headers,
-                true,
+                $return,
                 true,
                 true,
                 false
             )
         );
 
-        if (empty($data = $response?->getBody()) || empty($data = json_decode($data, true))) {
+        if (!$return || empty($data = $response?->getBody()) || empty($data = json_decode($data, true))) {
             $data = null;
         }
 

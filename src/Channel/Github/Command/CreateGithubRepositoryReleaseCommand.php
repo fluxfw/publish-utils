@@ -24,17 +24,9 @@ class CreateGithubRepositoryReleaseCommand
     }
 
 
-    public function createGithubRepositoryRelease(
-        string $repository,
-        string $tag_name,
-        string $title,
-        string $description,
-        bool $pre_release,
-        ?string $asset_path,
-        ?string $asset_name,
-        string $token
-    ) : void {
-        $id = $this->github_service->githubRequest(
+    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, bool $pre_release, string $token) : void
+    {
+        $this->github_service->githubRequest(
             $repository,
             "releases",
             $token,
@@ -45,19 +37,6 @@ class CreateGithubRepositoryReleaseCommand
                 "body"       => $description,
                 "prerelease" => $pre_release
             ]
-        )["id"];
-
-        if (!empty($asset_path)) {
-            $this->github_service->githubUploadRequest(
-                $repository,
-                $asset_path,
-                "releases/" . $id . "/assets",
-                $token,
-                DefaultMethod::POST,
-                [
-                    "name" => !empty($asset_name) ? $asset_name : basename($asset_path)
-                ]
-            );
-        }
+        );
     }
 }
