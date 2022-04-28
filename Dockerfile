@@ -27,9 +27,11 @@ FROM php:8.1-cli-alpine
 LABEL org.opencontainers.image.source="https://github.com/flux-caps/flux-publish-utils"
 LABEL maintainer="fluxlabs <support@fluxlabs.ch> (https://fluxlabs.ch)"
 
+RUN ln -s /flux-publish-utils/bin/publish-utils.php /usr/bin/publish-utils
+
 USER www-data:www-data
 
-ENTRYPOINT ["/flux-publish-utils/bin/publish-utils.php"]
+ENTRYPOINT []
 
 COPY --from=build /flux-publish-utils /flux-publish-utils
 
