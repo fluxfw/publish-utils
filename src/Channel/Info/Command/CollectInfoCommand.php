@@ -30,8 +30,6 @@ class CollectInfoCommand
 
     public function collectInfo() : InfoDto
     {
-        global $argv;
-
         $gitlab_project_id = $_ENV["CI_PROJECT_ID"] ?? null;
         $gitlab_url = $_ENV["CI_SERVER_URL"] ?? null;
         $gitlab_token = $_ENV["FLUX_PUBLISH_UTILS_TOKEN"] ?? null;
@@ -64,7 +62,6 @@ class CollectInfoCommand
         $homepage = null;
         $tag_name = null;
         $pre_release = false;
-        $release_asset_path = null;
         if (!empty($build_dir)) {
             if (file_exists($info_json_file = $build_dir . "/metadata.json")) {
                 $info_json = json_decode(file_get_contents($info_json_file));
@@ -95,10 +92,6 @@ class CollectInfoCommand
             if (!empty($version)) {
                 $tag_name = "v" . $version;
                 $pre_release = str_contains($version, "pre") || str_contains($version, "rc") || str_contains($version, "alpha") || str_contains($version, "beta");
-            }
-            $release_asset_path = $argv[1] ?? null;
-            if (!empty($release_asset_path)) {
-                $release_asset_path = $build_dir . "/" . $release_asset_path;
             }
         }
 
@@ -197,9 +190,7 @@ class CollectInfoCommand
                 return !empty(array_filter($tags, fn(array $tag) : bool => $tag["name"] === $tag_name));
             } : null,
             $pre_release,
-            empty($gitlab_develop_branch),
-            $release_asset_path,
-            $argv[2] ?? null
+            empty($gitlab_develop_branch)
         );
     }
 }

@@ -5,7 +5,6 @@ namespace FluxPublishUtils\Channel\Github\Port;
 use FluxPublishUtils\Channel\Github\Command\CreateGithubRepositoryReleaseCommand;
 use FluxPublishUtils\Channel\Github\Command\GetGithubRepositoryTagsCommand;
 use FluxPublishUtils\Channel\Github\Command\GithubRequestCommand;
-use FluxPublishUtils\Channel\Github\Command\GithubUploadRequestCommand;
 use FluxPublishUtils\Channel\Github\Command\UpdateGithubRepositorySettingsCommand;
 use FluxPublishUtils\Channel\Github\Command\UpdateGithubRepositoryTopicsCommand;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
@@ -30,16 +29,8 @@ class GithubService
     }
 
 
-    public function createGithubRepositoryRelease(
-        string $repository,
-        string $tag_name,
-        string $title,
-        string $description,
-        bool $pre_release,
-        ?string $asset_path,
-        ?string $asset_name,
-        string $token
-    ) : void {
+    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, bool $pre_release, string $token) : void
+    {
         CreateGithubRepositoryReleaseCommand::new(
             $this
         )
@@ -49,8 +40,6 @@ class GithubService
                 $title,
                 $description,
                 $pre_release,
-                $asset_path,
-                $asset_name,
                 $token
             );
     }
@@ -79,22 +68,6 @@ class GithubService
                 $token,
                 $method,
                 $data
-            );
-    }
-
-
-    public function githubUploadRequest(string $repository, string $path, ?string $api_url, string $token, ?Method $method = null, ?array $query_params = null) : ?array
-    {
-        return GithubUploadRequestCommand::new(
-            $this->rest_api
-        )
-            ->githubUploadRequest(
-                $repository,
-                $path,
-                $api_url,
-                $token,
-                $method,
-                $query_params
             );
     }
 
