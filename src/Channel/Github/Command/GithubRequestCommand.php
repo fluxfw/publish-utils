@@ -4,10 +4,10 @@ namespace FluxPublishUtils\Channel\Github\Command;
 
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\ParseHttp\ParseHttpAuthorization_;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\Schema\LegacyAuthorizationSchema;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\Schema\LegacyDefaultAuthorizationSchema;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\Type\DefaultBodyType;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeader;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeaderKey;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
 
@@ -33,13 +33,13 @@ class GithubRequestCommand
     public function githubRequest(string $repository, ?string $api_url, string $token, ?Method $method = null, ?array $data = null) : ?array
     {
         $headers = [
-            DefaultHeader::ACCEPT->value        => "application/vnd.github.mercy-preview+json",
-            DefaultHeader::AUTHORIZATION->value => LegacyAuthorizationSchema::BASIC()->value . ParseHttpAuthorization_::SPLIT_SCHEMA_PARAMETERS . base64_encode($token),
-            DefaultHeader::USER_AGENT->value    => "flux-publish-utils"
+            DefaultHeaderKey::ACCEPT->value        => "application/vnd.github.mercy-preview+json",
+            DefaultHeaderKey::AUTHORIZATION->value => LegacyDefaultAuthorizationSchema::BASIC()->value . ParseHttpAuthorization_::SPLIT_SCHEMA_PARAMETERS . base64_encode($token),
+            DefaultHeaderKey::USER_AGENT->value    => "flux-publish-utils"
         ];
 
         if ($data !== null) {
-            $headers[DefaultHeader::CONTENT_TYPE->value] = DefaultBodyType::JSON->value;
+            $headers[DefaultHeaderKey::CONTENT_TYPE->value] = DefaultBodyType::JSON->value;
             $data = json_encode($data, JSON_UNESCAPED_SLASHES);
         }
 

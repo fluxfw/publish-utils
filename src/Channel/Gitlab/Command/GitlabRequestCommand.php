@@ -5,7 +5,7 @@ namespace FluxPublishUtils\Channel\Gitlab\Command;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\Type\DefaultBodyType;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeader;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeaderKey;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
 
@@ -39,19 +39,19 @@ class GitlabRequestCommand
         ?bool $trust_self_signed_certificate = null
     ) : ?array {
         $headers = [
-            "PRIVATE-TOKEN"                  => $token,
-            DefaultHeader::USER_AGENT->value => "flux-publish-utils"
+            "PRIVATE-TOKEN"                     => $token,
+            DefaultHeaderKey::USER_AGENT->value => "flux-publish-utils"
         ];
 
         if ($data !== null) {
-            $headers[DefaultHeader::CONTENT_TYPE->value] = DefaultBodyType::JSON->value;
+            $headers[DefaultHeaderKey::CONTENT_TYPE->value] = DefaultBodyType::JSON->value;
             $data = json_encode($data, JSON_UNESCAPED_SLASHES);
         }
 
         $method ??= DefaultMethod::GET;
         $return = $method === DefaultMethod::GET;
         if ($return) {
-            $headers[DefaultHeader::ACCEPT->value] = DefaultBodyType::JSON->value;
+            $headers[DefaultHeaderKey::ACCEPT->value] = DefaultBodyType::JSON->value;
         }
 
         $response = $this->rest_api->makeRequest(
