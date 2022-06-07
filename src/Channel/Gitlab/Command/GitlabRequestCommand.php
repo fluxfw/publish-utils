@@ -68,7 +68,7 @@ class GitlabRequestCommand
             )
         );
 
-        if (!$return || empty($data = $response?->getBody()) || empty($data = json_decode($data, true))) {
+        if (!$return || empty($data = $response?->body) || empty($data = json_decode($data, true))) {
             $data = null;
         }
 
