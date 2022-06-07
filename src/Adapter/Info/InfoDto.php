@@ -87,7 +87,7 @@ class InfoDto implements JsonSerializable
     }
 
 
-    public function jsonSerialize() : array
+    public function jsonSerialize() : object
     {
         $data = get_object_vars($this);
 
@@ -100,6 +100,6 @@ class InfoDto implements JsonSerializable
 
         unset($data["check_github_tag"]);
 
-        return $data;
+        return (object) $data;
     }
 }
