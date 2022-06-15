@@ -1,11 +1,11 @@
 <?php
 
-namespace FluxPublishUtils\Channel\Gitlab\Command;
+namespace FluxPublishUtils\Service\Gitlab\Command;
 
-use FluxPublishUtils\Channel\Gitlab\Port\GitlabService;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
+use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
 
-class CreateGitlabRepositoryReleaseCommand
+class CreateGitlabRepositoryTagCommand
 {
 
     private function __construct(
@@ -24,18 +24,18 @@ class CreateGitlabRepositoryReleaseCommand
     }
 
 
-    public function createGitlabRepositoryRelease(int $project_id, string $tag_name, string $title, string $description, string $url, string $token, ?bool $trust_self_signed_certificate = null) : void
+    public function createGitlabRepositoryTag(int $project_id, string $name, string $ref, string $message, string $url, string $token, ?bool $trust_self_signed_certificate = null) : void
     {
         $this->gitlab_service->gitlabRequest(
             $project_id,
-            "releases",
+            "repository/tags",
             $url,
             $token,
             DefaultMethod::POST,
             [
-                "tag_name"    => $tag_name,
-                "name"        => $title,
-                "description" => $description
+                "tag_name" => $name,
+                "ref"      => $ref,
+                "message"  => $message
             ],
             null,
             $trust_self_signed_certificate

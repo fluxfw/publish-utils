@@ -1,6 +1,6 @@
 <?php
 
-namespace FluxPublishUtils\Channel\Gitlab\Command;
+namespace FluxPublishUtils\Service\Gitlab\Command;
 
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\Type\DefaultBodyType;

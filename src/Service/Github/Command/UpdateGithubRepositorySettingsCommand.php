@@ -1,11 +1,11 @@
 <?php
 
-namespace FluxPublishUtils\Channel\Github\Command;
+namespace FluxPublishUtils\Service\Github\Command;
 
-use FluxPublishUtils\Channel\Github\Port\GithubService;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
+use FluxPublishUtils\Service\Github\Port\GithubService;
 
-class UpdateGithubRepositoryTopicsCommand
+class UpdateGithubRepositorySettingsCommand
 {
 
     private function __construct(
@@ -24,16 +24,14 @@ class UpdateGithubRepositoryTopicsCommand
     }
 
 
-    public function updateGithubRepositoryTopics(string $repository, array $topics, string $token) : void
+    public function updateGithubRepositorySettings(string $repository, array $settings, string $token) : void
     {
         $this->github_service->githubRequest(
             $repository,
-            "topics",
+            null,
             $token,
-            DefaultMethod::PUT,
-            [
-                "names" => $topics
-            ]
+            DefaultMethod::PATCH,
+            $settings
         );
     }
 }

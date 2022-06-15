@@ -1,9 +1,9 @@
 <?php
 
-namespace FluxPublishUtils\Channel\Github\Command;
+namespace FluxPublishUtils\Service\Github\Command;
 
-use FluxPublishUtils\Channel\Github\Port\GithubService;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
+use FluxPublishUtils\Service\Github\Port\GithubService;
 
 class CreateGithubRepositoryReleaseCommand
 {

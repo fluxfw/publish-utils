@@ -1,8 +1,8 @@
 <?php
 
-namespace FluxPublishUtils\Channel\Gitlab\Command;
+namespace FluxPublishUtils\Service\Gitlab\Command;
 
-use FluxPublishUtils\Channel\Gitlab\Port\GitlabService;
+use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
 
 class GetGitlabRepositoryRemoteMirrorsCommand
 {
