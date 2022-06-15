@@ -1,10 +1,10 @@
 <?php
 
-namespace FluxPublishUtils\Channel\Info\Command;
+namespace FluxPublishUtils\Service\Info\Command;
 
 use FluxPublishUtils\Adapter\Info\InfoDto;
-use FluxPublishUtils\Channel\Github\Port\GithubService;
-use FluxPublishUtils\Channel\Gitlab\Port\GitlabService;
+use FluxPublishUtils\Service\Github\Port\GithubService;
+use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
 
 class CollectInfoCommand
 {

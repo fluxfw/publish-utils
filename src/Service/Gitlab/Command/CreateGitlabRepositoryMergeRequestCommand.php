@@ -1,9 +1,9 @@
 <?php
 
-namespace FluxPublishUtils\Channel\Gitlab\Command;
+namespace FluxPublishUtils\Service\Gitlab\Command;
 
-use FluxPublishUtils\Channel\Gitlab\Port\GitlabService;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
+use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
 
 class CreateGitlabRepositoryMergeRequestCommand
 {

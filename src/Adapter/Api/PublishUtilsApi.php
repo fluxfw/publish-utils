@@ -3,10 +3,10 @@
 namespace FluxPublishUtils\Adapter\Api;
 
 use FluxPublishUtils\Adapter\Info\InfoDto;
-use FluxPublishUtils\Channel\Github\Port\GithubService;
-use FluxPublishUtils\Channel\Gitlab\Port\GitlabService;
-use FluxPublishUtils\Channel\Info\Port\InfoService;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
+use FluxPublishUtils\Service\Github\Port\GithubService;
+use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
+use FluxPublishUtils\Service\Info\Port\InfoService;
 
 class PublishUtilsApi
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace FluxPublishUtils\Channel\Github\Command;
+namespace FluxPublishUtils\Service\Github\Command;
 
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\ParseHttp\ParseHttpAuthorization_;

@@ -1,17 +1,17 @@
 <?php
 
-namespace FluxPublishUtils\Channel\Gitlab\Port;
+namespace FluxPublishUtils\Service\Gitlab\Port;
 
-use FluxPublishUtils\Channel\Gitlab\Command\CreateGitlabRepositoryMergeRequestCommand;
-use FluxPublishUtils\Channel\Gitlab\Command\CreateGitlabRepositoryReleaseCommand;
-use FluxPublishUtils\Channel\Gitlab\Command\CreateGitlabRepositoryTagCommand;
-use FluxPublishUtils\Channel\Gitlab\Command\GetGitlabRepositoryBranchesCommand;
-use FluxPublishUtils\Channel\Gitlab\Command\GetGitlabRepositoryMembersCommand;
-use FluxPublishUtils\Channel\Gitlab\Command\GetGitlabRepositoryRemoteMirrorsCommand;
-use FluxPublishUtils\Channel\Gitlab\Command\GitlabRequestCommand;
-use FluxPublishUtils\Channel\Gitlab\Command\UpdateGitlabRepositorySettingsCommand;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
+use FluxPublishUtils\Service\Gitlab\Command\CreateGitlabRepositoryMergeRequestCommand;
+use FluxPublishUtils\Service\Gitlab\Command\CreateGitlabRepositoryReleaseCommand;
+use FluxPublishUtils\Service\Gitlab\Command\CreateGitlabRepositoryTagCommand;
+use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryBranchesCommand;
+use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryMembersCommand;
+use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryRemoteMirrorsCommand;
+use FluxPublishUtils\Service\Gitlab\Command\GitlabRequestCommand;
+use FluxPublishUtils\Service\Gitlab\Command\UpdateGitlabRepositorySettingsCommand;
 
 class GitlabService
 {

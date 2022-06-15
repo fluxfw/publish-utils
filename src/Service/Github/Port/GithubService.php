@@ -1,14 +1,14 @@
 <?php
 
-namespace FluxPublishUtils\Channel\Github\Port;
+namespace FluxPublishUtils\Service\Github\Port;
 
-use FluxPublishUtils\Channel\Github\Command\CreateGithubRepositoryReleaseCommand;
-use FluxPublishUtils\Channel\Github\Command\GetGithubRepositoryTagsCommand;
-use FluxPublishUtils\Channel\Github\Command\GithubRequestCommand;
-use FluxPublishUtils\Channel\Github\Command\UpdateGithubRepositorySettingsCommand;
-use FluxPublishUtils\Channel\Github\Command\UpdateGithubRepositoryTopicsCommand;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
+use FluxPublishUtils\Service\Github\Command\CreateGithubRepositoryReleaseCommand;
+use FluxPublishUtils\Service\Github\Command\GetGithubRepositoryTagsCommand;
+use FluxPublishUtils\Service\Github\Command\GithubRequestCommand;
+use FluxPublishUtils\Service\Github\Command\UpdateGithubRepositorySettingsCommand;
+use FluxPublishUtils\Service\Github\Command\UpdateGithubRepositoryTopicsCommand;
 
 class GithubService
 {
