@@ -90,7 +90,7 @@ class CollectInfoCommand
                 }
             }
             if (!empty($version)) {
-                $tag_name = "v" . $version;
+                $tag_name = $version;
                 $pre_release = str_contains($version, "pre") || str_contains($version, "rc") || str_contains($version, "alpha") || str_contains($version, "beta");
             }
         }
