@@ -90,7 +90,7 @@ class CollectInfoCommand
                 }
             }
             if (!empty($version)) {
-                $tag_name = $version;
+                $tag_name = "v" . $version;
                 $pre_release = str_contains($version, "pre") || str_contains($version, "rc") || str_contains($version, "alpha") || str_contains($version, "beta");
             }
         }
@@ -104,7 +104,7 @@ class CollectInfoCommand
                 preg_match("/(\n|^)##(.*" . preg_quote($version) . ".*)(\n)/", $changelog_md, $changelog_header, PREG_OFFSET_CAPTURE);
                 if (!empty($changelog_header)) {
                     $changelog = substr($changelog_md, $changelog_header[3][1] + strlen($changelog_header[3][0]));
-                    if (($changelog_end_pos = strpos($changelog, "\n\n")) !== false) {
+                    if (($changelog_end_pos = strpos($changelog, "\n#")) !== false) {
                         $changelog = substr($changelog, 0, $changelog_end_pos);
                     }
                     $changelog = trim($changelog);
