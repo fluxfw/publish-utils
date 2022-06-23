@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+Changes:
+
+- Locked flux-namespace-changer version
+
 ## v2022-06-23-1
 
 Changes:
