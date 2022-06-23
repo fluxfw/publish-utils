@@ -1,10 +1,15 @@
 # Changelog
 
-## Unreleased
+## latest
 
 Changes:
 
 - Locked flux-namespace-changer version
+
+Get build:
+
+- Docker image: `docker-registry.fluxpublisher.ch/flux-publish-utils:latest`
+- Archive: https://docker-registry.fluxpublisher.ch/api/get-build-archive/flux-publish-utils.tar.gz?tag=latest
 
 ## v2022-06-23-1
 
