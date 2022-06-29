@@ -5,7 +5,7 @@ namespace FluxPublishUtils\Service\Github\Command;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\ParseHttp\ParseHttpAuthorization_;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\Schema\DefaultAuthorizationSchema;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\Type\DefaultBodyType;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\JsonBodyDto;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeaderKey;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
@@ -39,8 +39,9 @@ class GithubRequestCommand
         ];
 
         if ($data !== null) {
-            $headers[DefaultHeaderKey::CONTENT_TYPE->value] = DefaultBodyType::JSON->value;
-            $data = json_encode($data, JSON_UNESCAPED_SLASHES);
+            $data = JsonBodyDto::new(
+                $data
+            );
         }
 
         $method ??= DefaultMethod::GET;
@@ -51,8 +52,10 @@ class GithubRequestCommand
                 "https://api.github.com/repos/" . trim($repository, "/") . (!empty($api_url) ? "/" . trim($api_url, "/") : ""),
                 $method,
                 null,
-                $data,
+                null,
                 $headers,
+                $data,
+                null,
                 $return,
                 true,
                 true,
@@ -60,7 +63,7 @@ class GithubRequestCommand
             )
         );
 
-        if (!$return || empty($data = $response?->body) || empty($data = json_decode($data, true))) {
+        if (!$return || empty($data = $response?->raw_body) || empty($data = json_decode($data, true))) {
             $data = null;
         }
 
