@@ -3,6 +3,7 @@
 namespace FluxPublishUtils\Service\Gitlab\Command;
 
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
+use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\JsonBodyDto;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\Type\DefaultBodyType;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeaderKey;
@@ -44,8 +45,9 @@ class GitlabRequestCommand
         ];
 
         if ($data !== null) {
-            $headers[DefaultHeaderKey::CONTENT_TYPE->value] = DefaultBodyType::JSON->value;
-            $data = json_encode($data, JSON_UNESCAPED_SLASHES);
+            $data = JsonBodyDto::new(
+                $data
+            );
         }
 
         $method ??= DefaultMethod::GET;
@@ -59,8 +61,10 @@ class GitlabRequestCommand
                 rtrim($url, "/") . "/api/v4/projects/" . trim($project_id, "/") . (!empty($api_url) ? "/" . trim($api_url, "/") : ""),
                 $method,
                 $query_params,
-                $data,
+                null,
                 $headers,
+                $data,
+                null,
                 $return,
                 true,
                 true,
@@ -68,7 +72,7 @@ class GitlabRequestCommand
             )
         );
 
-        if (!$return || empty($data = $response?->body) || empty($data = json_decode($data, true))) {
+        if (!$return || empty($data = $response?->raw_body) || empty($data = json_decode($data, true))) {
             $data = null;
         }
 
