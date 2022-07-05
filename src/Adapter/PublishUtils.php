@@ -61,6 +61,39 @@ class PublishUtils
                     );
                 }
 
+                if (!empty($info->description || !empty($info->topics) || !empty($info->homepage))) {
+                    echo "> Update project description and topics on gitlab\n";
+                    $this->publish_utils_api->updateGitlabRepositorySettings(
+                        $info->gitlab_project_id,
+                        [
+                            "description" => $info->description,
+                            "topics"      => $info->topics
+                        ],
+                        $info->gitlab_url,
+                        $info->gitlab_token,
+                        $info->gitlab_trust_self_signed_certificate
+                    );
+
+                    if (!empty($info->github_repository) && !empty($info->github_token)) {
+                        echo "> Update project description and homepage on github\n";
+                        $this->publish_utils_api->updateGithubRepositorySettings(
+                            $info->github_repository,
+                            [
+                                "description" => $info->description,
+                                "homepage"    => $info->homepage
+                            ],
+                            $info->github_token
+                        );
+
+                        echo "> Update project topics on github\n";
+                        $this->publish_utils_api->updateGithubRepositoryTopics(
+                            $info->github_repository,
+                            $info->topics,
+                            $info->github_token
+                        );
+                    }
+                }
+
                 if (!empty($info->tag_name) && !empty($info->release_title) && !empty($info->changelog) && !empty($info->commit_id)) {
                     echo "> Create gitlab tag `" . $info->tag_name . "`\n";
                     $this->publish_utils_api->createGitlabRepositoryTag(
@@ -98,39 +131,6 @@ class PublishUtils
                             $info->release_title,
                             $info->changelog,
                             $info->pre_release,
-                            $info->github_token
-                        );
-                    }
-                }
-
-                if (!empty($info->description || !empty($info->topics) || !empty($info->homepage))) {
-                    echo "> Update project description and topics on gitlab\n";
-                    $this->publish_utils_api->updateGitlabRepositorySettings(
-                        $info->gitlab_project_id,
-                        [
-                            "description" => $info->description,
-                            "topics"      => $info->topics
-                        ],
-                        $info->gitlab_url,
-                        $info->gitlab_token,
-                        $info->gitlab_trust_self_signed_certificate
-                    );
-
-                    if (!empty($info->github_repository) && !empty($info->github_token)) {
-                        echo "> Update project description and homepage on github\n";
-                        $this->publish_utils_api->updateGithubRepositorySettings(
-                            $info->github_repository,
-                            [
-                                "description" => $info->description,
-                                "homepage"    => $info->homepage
-                            ],
-                            $info->github_token
-                        );
-
-                        echo "> Update project topics on github\n";
-                        $this->publish_utils_api->updateGithubRepositoryTopics(
-                            $info->github_repository,
-                            $info->topics,
                             $info->github_token
                         );
                     }

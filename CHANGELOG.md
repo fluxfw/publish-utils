@@ -11,6 +11,17 @@ Get build:
 - Docker image: `docker-registry.fluxpublisher.ch/flux-publish-utils:latest`
 - Archive: https://docker-registry.fluxpublisher.ch/api/get-build-archive/flux-publish-utils.tar.gz?tag=latest
 
+## v2022-07-05-1
+
+Changes:
+
+- Update repository settings before create tag/release
+
+Get build:
+
+- Docker image: `docker-registry.fluxpublisher.ch/flux-publish-utils:v2022-07-05-1`
+- Archive: https://docker-registry.fluxpublisher.ch/api/get-build-archive/flux-publish-utils.tar.gz?tag=v2022-07-05-1
+
 ## v2022-06-29-1
 
 Changes:
