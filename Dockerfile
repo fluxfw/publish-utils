@@ -28,6 +28,7 @@ LABEL maintainer="fluxlabs <support@fluxlabs.ch> (https://fluxlabs.ch)"
 LABEL flux-docker-registry-rest-api-build-path="/flux-publish-utils.tar.gz"
 
 RUN ln -s /flux-publish-utils/bin/publish-utils.php /usr/bin/publish-utils
+RUN ln -s /flux-publish-utils/bin/upload-release-asset.php /usr/bin/upload-release-asset
 
 USER www-data:www-data
 

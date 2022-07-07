@@ -154,4 +154,50 @@ class PublishUtils
             die(1);
         }
     }
+
+
+    public function uploadReleaseAsset(string $asset_file) : void
+    {
+        if (empty($asset_file) || !file_exists($asset_file = $_ENV["CI_PROJECT_DIR"] . "/" . $asset_file)) {
+            echo "Please pass an exists asset file\n";
+            die(1);
+        }
+
+        $info = null;
+        try {
+            echo "> Collect infos\n";
+            $info = $this->publish_utils_api->collectInfo();
+            echo json_encode($info, JSON_UNESCAPED_SLASHES) . "\n";
+
+            if (!empty($info->github_repository) && !empty($info->github_token) && !empty($info->tag_name) && !empty($asset_file)) {
+                echo "> Upload asset file to github release `" . $info->tag_name . "`\n";
+                $this->publish_utils_api->uploadGithubRepositoryReleaseAsset(
+                    $info->github_repository,
+                    $this->publish_utils_api->getGithubRepositoryReleaseByTag(
+                        $info->github_repository,
+                        $info->tag_name,
+                        $info->github_token
+                    )["id"],
+                    $asset_file,
+                    $info->github_token
+                );
+            }
+        } catch (Throwable $ex) {
+            $message = $ex->__toString();
+            if ($info !== null) {
+                if (!empty($info->gitlab_token)) {
+                    for ($i = strlen($info->gitlab_token); $i >= 4; $i--) {
+                        $message = str_replace(substr($info->gitlab_token, 0, $i), "", $message);
+                    }
+                }
+                if (!empty($info->github_token)) {
+                    for ($i = strlen($info->github_token); $i >= 4; $i--) {
+                        $message = str_replace(substr($info->github_token, 0, $i), "", $message);
+                    }
+                }
+            }
+            echo $message;
+            die(1);
+        }
+    }
 }
