@@ -32,7 +32,7 @@ class UploadGithubRepositoryReleaseAssetCommand
     {
         $this->rest_api->makeRequest(
             ClientRequestDto::new(
-                "https://uploads.github.com/repos/{repository}/releases/{release_id}/assets",
+                "https://uploads.github.com/repos/" . trim($repository, "/") . "/releases/" . $release_id . "/assets",
                 DefaultMethod::POST,
                 null,
                 file_get_contents($file),
@@ -43,10 +43,7 @@ class UploadGithubRepositoryReleaseAssetCommand
                     DefaultHeaderKey::USER_AGENT->value    => "flux-publish-utils"
                 ],
                 null,
-                [
-                    "repository" => trim($repository, "/"),
-                    "release_id" => $release_id
-                ],
+                null,
                 false,
                 true,
                 true,

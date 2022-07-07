@@ -58,15 +58,13 @@ class GitlabRequestCommand
 
         $response = $this->rest_api->makeRequest(
             ClientRequestDto::new(
-                rtrim($url, "/") . "/api/v4/projects/{project_id}" . (!empty($api_url) ? "/" . trim($api_url, "/") : ""),
+                rtrim($url, "/") . "/api/v4/projects/" . $project_id . (!empty($api_url) ? "/" . trim($api_url, "/") : ""),
                 $method,
                 $query_params,
                 null,
                 $headers,
                 $data,
-                [
-                    "project_id" => $project_id
-                ],
+                null,
                 $return,
                 true,
                 true,
