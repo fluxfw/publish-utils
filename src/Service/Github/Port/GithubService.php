@@ -72,7 +72,7 @@ class GithubService
     }
 
 
-    public function githubRequest(string $repository, ?string $api_url, string $token, ?Method $method = null, ?array $data = null, ?array $params = null) : ?array
+    public function githubRequest(string $repository, ?string $api_url, string $token, ?Method $method = null, ?array $data = null) : ?array
     {
         return GithubRequestCommand::new(
             $this->rest_api
@@ -82,8 +82,7 @@ class GithubService
                 $api_url,
                 $token,
                 $method,
-                $data,
-                $params
+                $data
             );
     }
 
