@@ -27,6 +27,16 @@ flux-publish-utils:
         - main
 ```
 
+```yaml
+flux-publish-utils:
+    stage: build
+    image: docker-registry.fluxpublisher.ch/flux-publish-utils:latest
+    script:
+        - upload-release-asset xyz.tar.gz
+    only:
+        - tags
+```
+
 ## CI variables
 
 Set `FLUX_PUBLISH_UTILS_TOKEN` ci variable, protected and masked

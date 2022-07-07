@@ -98,6 +98,17 @@ class PublishUtilsApi
     }
 
 
+    public function getGithubRepositoryReleaseByTag(string $repository, string $tag_name, string $token) : array
+    {
+        return $this->getGithubService()
+            ->getGithubRepositoryReleaseByTag(
+                $repository,
+                $tag_name,
+                $token
+            );
+    }
+
+
     public function getGithubRepositoryTags(string $repository, string $token) : array
     {
         return $this->getGithubService()
@@ -175,6 +186,18 @@ class PublishUtilsApi
                 $url,
                 $token,
                 $trust_self_signed_certificate
+            );
+    }
+
+
+    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, string $token) : void
+    {
+        $this->getGithubService()
+            ->uploadGithubRepositoryReleaseAsset(
+                $repository,
+                $release_id,
+                $file,
+                $token
             );
     }
 

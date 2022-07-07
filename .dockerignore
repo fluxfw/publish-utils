@@ -1,5 +1,6 @@
 *
 !bin/publish-utils.php
+!bin/upload-release-asset.php
 !src
 !src/**
 !autoload.php

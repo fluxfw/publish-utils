@@ -30,7 +30,7 @@ class GithubRequestCommand
     }
 
 
-    public function githubRequest(string $repository, ?string $api_url, string $token, ?Method $method = null, ?array $data = null) : ?array
+    public function githubRequest(string $repository, ?string $api_url, string $token, ?Method $method = null, ?array $data = null, ?array $params = null) : ?array
     {
         $headers = [
             DefaultHeaderKey::ACCEPT->value        => "application/vnd.github.mercy-preview+json",
@@ -49,13 +49,15 @@ class GithubRequestCommand
 
         $response = $this->rest_api->makeRequest(
             ClientRequestDto::new(
-                "https://api.github.com/repos/" . trim($repository, "/") . (!empty($api_url) ? "/" . trim($api_url, "/") : ""),
+                "https://api.github.com/repos/{repository}" . (!empty($api_url) ? "/" . trim($api_url, "/") : ""),
                 $method,
                 null,
                 null,
                 $headers,
                 $data,
-                null,
+                ($params ?? []) + [
+                    "repository" => trim($repository, "/")
+                ],
                 $return,
                 true,
                 true,
