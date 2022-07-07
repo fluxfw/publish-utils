@@ -25,7 +25,6 @@ FROM php:8.1-cli-alpine
 
 LABEL org.opencontainers.image.source="https://github.com/flux-caps/flux-publish-utils"
 LABEL maintainer="fluxlabs <support@fluxlabs.ch> (https://fluxlabs.ch)"
-LABEL flux-docker-registry-rest-api-build-path="/flux-publish-utils.tar.gz"
 
 RUN ln -s /flux-publish-utils/bin/publish-utils.php /usr/bin/publish-utils
 RUN ln -s /flux-publish-utils/bin/upload-release-asset.php /usr/bin/upload-release-asset
