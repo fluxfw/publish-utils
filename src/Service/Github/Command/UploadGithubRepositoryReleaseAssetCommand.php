@@ -28,13 +28,15 @@ class UploadGithubRepositoryReleaseAssetCommand
     }
 
 
-    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, string $token) : void
+    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, ?string $name, string $token) : void
     {
         $this->rest_api->makeRequest(
             ClientRequestDto::new(
                 "https://uploads.github.com/repos/" . trim($repository, "/") . "/releases/" . $release_id . "/assets",
                 DefaultMethod::POST,
-                null,
+                [
+                    "name" => $name ?: basename($file)
+                ],
                 file_get_contents($file),
                 [
                     DefaultHeaderKey::ACCEPT->value        => "application/vnd.github+json",

@@ -7,5 +7,6 @@ use FluxPublishUtils\Adapter\PublishUtils;
 
 PublishUtils::new()
     ->uploadReleaseAsset(
-        $argv[1] ?? ""
+        $argv[1] ?? "",
+        $argv[2] ?? null
     );
