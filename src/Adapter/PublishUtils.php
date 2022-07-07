@@ -160,7 +160,7 @@ class PublishUtils
             echo json_encode($info, JSON_UNESCAPED_SLASHES) . "\n";
 
             if (!empty($info->github_repository) && !empty($info->github_token) && !empty($info->tag_name)) {
-                echo "> Upload asset file to github release `" . $info->tag_name . "`\n";
+                echo "> Upload asset file `" . $asset_file . "`" . (!empty($asset_name) ? " as `" . $asset_name . "`" : "") . " to github release `" . $info->tag_name . "`\n";
                 $this->publish_utils_api->uploadGithubRepositoryReleaseAsset(
                     $info->github_repository,
                     $this->publish_utils_api->getGithubRepositoryReleaseByTag(
