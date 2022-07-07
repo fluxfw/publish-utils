@@ -113,7 +113,7 @@ class GithubService
     }
 
 
-    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, string $token) : void
+    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, ?string $name, string $token) : void
     {
         UploadGithubRepositoryReleaseAssetCommand::new(
             $this->rest_api
@@ -122,6 +122,7 @@ class GithubService
                 $repository,
                 $release_id,
                 $file,
+                $name,
                 $token
             );
     }
