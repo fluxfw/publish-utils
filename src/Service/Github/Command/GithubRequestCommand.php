@@ -56,6 +56,7 @@ class GithubRequestCommand
                 $headers,
                 $data,
                 null,
+                null,
                 $return,
                 true,
                 true,
