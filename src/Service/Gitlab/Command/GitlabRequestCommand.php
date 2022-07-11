@@ -65,6 +65,7 @@ class GitlabRequestCommand
                 $headers,
                 $data,
                 null,
+                null,
                 $return,
                 true,
                 true,
