@@ -37,15 +37,15 @@ class UploadGithubRepositoryReleaseAssetCommand
                 [
                     "name" => $name ?: basename($file)
                 ],
-                file_get_contents($file),
+                null,
                 [
                     DefaultHeaderKey::ACCEPT->value        => "application/vnd.github+json",
                     DefaultHeaderKey::AUTHORIZATION->value => DefaultAuthorizationSchema::BASIC->value . ParseHttpAuthorization_::SPLIT_SCHEMA_PARAMETERS . base64_encode($token),
-                    DefaultHeaderKey::CONTENT_TYPE->value  => mime_content_type($file),
                     DefaultHeaderKey::USER_AGENT->value    => "flux-publish-utils"
                 ],
                 null,
                 null,
+                $file,
                 false,
                 true,
                 true,

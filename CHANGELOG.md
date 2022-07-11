@@ -4,6 +4,12 @@
 
 Changes:
 
+- Do not read whole release asset in memory
+
+## v2022-07-11-1
+
+Changes:
+
 \-
 
 ## v2022-07-07-1
