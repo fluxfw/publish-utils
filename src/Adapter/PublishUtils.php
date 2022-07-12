@@ -148,7 +148,7 @@ class PublishUtils
 
     public function uploadReleaseAsset(string $asset_file, ?string $asset_name = null) : void
     {
-        if (empty($asset_file) || !file_exists($asset_file = $_ENV["CI_PROJECT_DIR"] . "/" . $asset_file)) {
+        if (empty($asset_file) || !file_exists($asset_file_absolute = $_ENV["CI_PROJECT_DIR"] . "/" . $asset_file)) {
             echo "Please pass an exists asset file\n";
             die(1);
         }
@@ -168,7 +168,7 @@ class PublishUtils
                         $info->tag_name,
                         $info->github_token
                     )["id"],
-                    $asset_file,
+                    $asset_file_absolute,
                     $asset_name,
                     $info->github_token
                 );
