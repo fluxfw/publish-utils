@@ -8,19 +8,6 @@ RUN (mkdir -p /build/flux-publish-utils/libs/flux-rest-api && cd /build/flux-pub
 
 COPY . /build/flux-publish-utils
 
-FROM php:cli-alpine
-
-LABEL org.opencontainers.image.source="https://github.com/flux-caps/flux-publish-utils"
-LABEL maintainer="fluxlabs <support@fluxlabs.ch> (https://fluxlabs.ch)"
-
-RUN ln -s /flux-publish-utils/bin/publish-utils.php /usr/bin/publish-utils
-RUN ln -s /flux-publish-utils/bin/upload-release-asset.php /usr/bin/upload-release-asset
-
-USER www-data:www-data
-
-ENTRYPOINT []
+FROM scratch
 
 COPY --from=build /build /
-
-ARG COMMIT_SHA
-LABEL org.opencontainers.image.revision="$COMMIT_SHA"

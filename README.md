@@ -20,9 +20,14 @@ All are optional, only done if the needed infos are available
 ```yaml
 flux-publish-utils:
     stage: build
-    image: docker-registry.fluxpublisher.ch/flux-publish-utils:latest
+    image: php:cli-alpine
     script:
-        - publish-utils
+        - (if [ ! -d flux-publish-utils ]; then mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/flux-eco/flux-publish-utils/releases/download/v2022-07-12-1/flux-publish-utils-v2022-07-12-1-build.tar.gz | tar -xz --strip-components=1; fi)
+        - flux-publish-utils/bin/publish-utils
+    cache:
+        key: publish-utils
+        paths:
+            - publish-utils
     only:
         - main
 ```
@@ -30,9 +35,14 @@ flux-publish-utils:
 ```yaml
 flux-publish-utils:
     stage: build
-    image: docker-registry.fluxpublisher.ch/flux-publish-utils:latest
+    image: php:cli-alpine
     script:
-        - upload-release-asset xyz.tar.gz
+        - (if [ ! -d flux-publish-utils ]; then mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/flux-eco/flux-publish-utils/releases/download/v2022-07-12-1/flux-publish-utils-v2022-07-12-1-build.tar.gz | tar -xz --strip-components=1; fi)
+        - flux-publish-utils/bin/upload-release-asset xyz.tar.gz
+    cache:
+        key: publish-utils
+        paths:
+            - publish-utils
     only:
         - tags
 ```
