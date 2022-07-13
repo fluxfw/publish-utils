@@ -49,7 +49,7 @@ publish-utils:
     cache:
         key: publish-utils
         paths:
-            - publish-utils
+            - flux-publish-utils
     only:
         - main
         - /^v[0-9-]+$/
