@@ -27,7 +27,7 @@ flux-publish-utils:
     cache:
         key: publish-utils
         paths:
-            - publish-utils
+            - flux-publish-utils
     only:
         - main
 ```
@@ -42,7 +42,7 @@ flux-publish-utils:
     cache:
         key: publish-utils
         paths:
-            - publish-utils
+            - flux-publish-utils
     only:
         - tags
 ```
