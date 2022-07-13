@@ -22,7 +22,7 @@ flux-publish-utils:
     stage: build
     image: php:cli-alpine
     script:
-        - (if [ ! -d flux-publish-utils ]; then mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/flux-eco/flux-publish-utils/releases/download/v2022-07-12-1/flux-publish-utils-v2022-07-12-1-build.tar.gz | tar -xz --strip-components=1; fi)
+        - (if [ ! -d flux-publish-utils ]; then mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/flux-eco/flux-publish-utils/releases/download/%tag%/flux-publish-utils-%tag%-build.tar.gz | tar -xz --strip-components=1; fi)
         - flux-publish-utils/bin/publish-utils.php
     cache:
         key: publish-utils
@@ -37,7 +37,7 @@ flux-publish-utils:
     stage: build
     image: php:cli-alpine
     script:
-        - (if [ ! -d flux-publish-utils ]; then mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/flux-eco/flux-publish-utils/releases/download/v2022-07-12-1/flux-publish-utils-v2022-07-12-1-build.tar.gz | tar -xz --strip-components=1; fi)
+        - (if [ ! -d flux-publish-utils ]; then mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/flux-eco/flux-publish-utils/releases/download/%tag%/flux-publish-utils-%tag%-build.tar.gz | tar -xz --strip-components=1; fi)
         - flux-publish-utils/bin/upload-release-asset.php xyz.tar.gz
     cache:
         key: publish-utils
