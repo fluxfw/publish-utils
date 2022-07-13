@@ -18,7 +18,7 @@ All are optional, only done if the needed infos are available
 ## Example
 
 ```yaml
-flux-publish-utils:
+publish-utils:
     stage: build
     image: php:cli-alpine
     script:
@@ -33,7 +33,7 @@ flux-publish-utils:
 ```
 
 ```yaml
-flux-publish-utils:
+publish-utils:
     stage: build
     image: php:cli-alpine
     script:
