@@ -31,7 +31,7 @@ publish-utils:
     stage: build
     image: php:cli-alpine
     script:
-        - (mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/flux-eco/flux-publish-utils/releases/download/%tag%/flux-publish-utils-%tag%-build.tar.gz | tar -xz --strip-components=1)
+        - (mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/fluxfw/flux-publish-utils/releases/download/%tag%/flux-publish-utils-%tag%-build.tar.gz | tar -xz --strip-components=1)
         - flux-publish-utils/bin/publish-utils.php
     only:
         - main
@@ -43,7 +43,7 @@ publish-utils:
 publish-utils:
     ...
     script:
-        - (if [ ! -d flux-publish-utils ]; then mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/flux-eco/flux-publish-utils/releases/download/%tag%/flux-publish-utils-%tag%-build.tar.gz | tar -xz --strip-components=1; fi)
+        - (if [ ! -d flux-publish-utils ]; then mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/fluxfw/flux-publish-utils/releases/download/%tag%/flux-publish-utils-%tag%-build.tar.gz | tar -xz --strip-components=1; fi)
         - ...
     cache:
         key: publish-utils
