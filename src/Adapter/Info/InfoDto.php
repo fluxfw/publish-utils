@@ -9,6 +9,7 @@ class InfoDto implements JsonSerializable
 
     /**
      * @param string[]|null $topics
+     * @param callable|null $check_gitlab_tag
      * @param callable|null $check_github_tag
      */
     private function __construct(
@@ -29,6 +30,7 @@ class InfoDto implements JsonSerializable
         public readonly ?string $commit_id,
         public readonly ?string $tag_name,
         public readonly ?string $release_title,
+        public readonly mixed $check_gitlab_tag,
         public readonly mixed $check_github_tag,
         public readonly bool $pre_release,
         public readonly bool $single_branch_mode
@@ -58,6 +60,7 @@ class InfoDto implements JsonSerializable
         ?string $commit_id,
         ?string $tag_name,
         ?string $release_title,
+        ?callable $check_gitlab_tag,
         ?callable $check_github_tag,
         bool $pre_release,
         bool $single_branch_mode
@@ -80,6 +83,7 @@ class InfoDto implements JsonSerializable
             $commit_id,
             $tag_name,
             $release_title,
+            $check_gitlab_tag,
             $check_github_tag,
             $pre_release,
             $single_branch_mode
@@ -98,6 +102,7 @@ class InfoDto implements JsonSerializable
             $data["github_token"] = "***";
         }
 
+        unset($data["check_gitlab_tag"]);
         unset($data["check_github_tag"]);
 
         return (object) $data;

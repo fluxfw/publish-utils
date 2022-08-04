@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2022-08-04-1
+
+Changes:
+
+- Skip create gitlab tag if exists
+
 ## v2022-07-13-1
 
 Changes:

@@ -26,14 +26,14 @@ class GetGitlabRepositoryBranchesCommand
     public function getGitlabRepositoryBranches(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
     {
         return $this->gitlab_service->gitlabRequest(
-                $project_id,
-                "repository/branches",
-                $url,
-                $token,
-                null,
-                null,
-                null,
-                $trust_self_signed_certificate
-            ) ?? [];
+            $project_id,
+            "repository/branches",
+            $url,
+            $token,
+            null,
+            null,
+            null,
+            $trust_self_signed_certificate
+        ) ?? [];
     }
 }

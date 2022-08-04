@@ -26,9 +26,9 @@ class GetGithubRepositoryTagsCommand
     public function getGithubRepositoryTags(string $repository, string $token) : array
     {
         return $this->github_service->githubRequest(
-                $repository,
-                "tags",
-                $token
-            ) ?? [];
+            $repository,
+            "tags",
+            $token
+        ) ?? [];
     }
 }

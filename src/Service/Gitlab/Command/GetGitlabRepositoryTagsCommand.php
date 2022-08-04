@@ -4,7 +4,7 @@ namespace FluxPublishUtils\Service\Gitlab\Command;
 
 use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
 
-class GetGitlabRepositoryMembersCommand
+class GetGitlabRepositoryTagsCommand
 {
 
     private function __construct(
@@ -23,11 +23,11 @@ class GetGitlabRepositoryMembersCommand
     }
 
 
-    public function getGitlabRepositoryMembers(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
+    public function getGitlabRepositoryTags(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
     {
         return $this->gitlab_service->gitlabRequest(
             $project_id,
-            "members",
+            "repository/tags",
             $url,
             $token,
             null,
