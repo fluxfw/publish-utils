@@ -26,9 +26,9 @@ class GetGithubRepositoryReleaseByTagCommand
     public function getGithubRepositoryReleaseByTag(string $repository, string $tag_name, string $token) : array
     {
         return $this->github_service->githubRequest(
-                $repository,
-                "releases/tags/" . $tag_name,
-                $token
-            ) ?? [];
+            $repository,
+            "releases/tags/" . $tag_name,
+            $token
+        ) ?? [];
     }
 }

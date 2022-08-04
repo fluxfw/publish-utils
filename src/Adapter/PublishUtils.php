@@ -95,7 +95,14 @@ class PublishUtils
                     }
                 }
 
-                if (!empty($info->tag_name) && !empty($info->release_title) && !empty($info->changelog) && !empty($info->commit_id)) {
+                if (!empty($info->tag_name) && !empty($info->release_title) && !empty($info->changelog) && !empty($info->commit_id) && $info->check_gitlab_tag !== null) {
+                    echo "> Check gitlab tag `" . $info->tag_name . "` exists\n";
+                    if (($info->check_gitlab_tag)()) {
+                        echo "Gitlab tag " . $info->tag_name . " exists - Skip further steps\n";
+
+                        return;
+                    }
+
                     echo "> Create gitlab tag `" . $info->tag_name . "`\n";
                     $this->publish_utils_api->createGitlabRepositoryTag(
                         $info->gitlab_project_id,

@@ -10,6 +10,7 @@ use FluxPublishUtils\Service\Gitlab\Command\CreateGitlabRepositoryTagCommand;
 use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryBranchesCommand;
 use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryMembersCommand;
 use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryRemoteMirrorsCommand;
+use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryTagsCommand;
 use FluxPublishUtils\Service\Gitlab\Command\GitlabRequestCommand;
 use FluxPublishUtils\Service\Gitlab\Command\UpdateGitlabRepositorySettingsCommand;
 
@@ -126,6 +127,20 @@ class GitlabService
             $this
         )
             ->getGitlabRepositoryRemoteMirrors(
+                $project_id,
+                $url,
+                $token,
+                $trust_self_signed_certificate
+            );
+    }
+
+
+    public function getGitlabRepositoryTags(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
+    {
+        return GetGitlabRepositoryTagsCommand::new(
+            $this
+        )
+            ->getGitlabRepositoryTags(
                 $project_id,
                 $url,
                 $token,

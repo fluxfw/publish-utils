@@ -178,6 +178,25 @@ class CollectInfoCommand
             $commit_id,
             $tag_name,
             $release_title,
+            !empty($gitlab_project_id) && !empty($gitlab_url) && !empty($gitlab_token) && !empty($tag_name) ? function () use (
+                $gitlab_project_id,
+                $gitlab_url,
+                $gitlab_token,
+                $gitlab_trust_self_signed_certificate,
+                $tag_name
+            ) : bool {
+                $tags = $this->gitlab_service->getGitlabRepositoryTags(
+                    $gitlab_project_id,
+                    $gitlab_url,
+                    $gitlab_token,
+                    $gitlab_trust_self_signed_certificate
+                );
+                if (empty($tags)) {
+                    return false;
+                }
+
+                return !empty(array_filter($tags, fn(array $tag) : bool => $tag["name"] === $tag_name));
+            } : null,
             !empty($github_repository) && !empty($github_token) && !empty($tag_name) ? function () use ($github_repository, $github_token, $tag_name) : bool {
                 $tags = $this->github_service->getGithubRepositoryTags(
                     $github_repository,
