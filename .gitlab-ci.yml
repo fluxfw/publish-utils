@@ -1,6 +1,6 @@
 stages:
     - build
-    - build-artifact
+    - publish
     - publish-utils
 
 default:
@@ -9,10 +9,12 @@ default:
         DOCKER_IMAGE_TAG=${CI_COMMIT_REF_NAME/main/latest}
         if [ ! -z `command -v docker` ]; then
             echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+            if [ -n "$DOCKER_REGISTRY_USER" ]; then echo -n $DOCKER_REGISTRY_PASSWORD | docker login -u $DOCKER_REGISTRY_USER --password-stdin; fi
         fi
     after_script: |
         if [ ! -z `command -v docker` ]; then
             docker logout $CI_REGISTRY
+            if [ -n "$DOCKER_REGISTRY_USER" ]; then docker logout; fi
         fi
 
 build:
@@ -24,32 +26,20 @@ build:
         - branches
         - tags
 
-build-artifact:
-    stage: build-artifact
+publish:
+    stage: publish
     script:
-        - (if [ ! -d flux-docker-gitlab-build-artifact ]; then mkdir -p flux-docker-gitlab-build-artifact && cd flux-docker-gitlab-build-artifact && wget -O - https://github.com/fluxfw/flux-docker-gitlab-build-artifact/releases/download/v2022-07-12-1/flux-docker-gitlab-build-artifact-v2022-07-12-1-build.tar.gz | tar -xz --strip-components=1; fi)
-        - flux-docker-gitlab-build-artifact/bin/create-gitlab-artifact-from-docker-build.sh $CI_REGISTRY_IMAGE:$DOCKER_IMAGE_TAG /$CI_PROJECT_NAME build.tar.gz
-    cache:
-        key: build-artifact
-        paths:
-            - flux-docker-gitlab-build-artifact
-    artifacts:
-        paths:
-            - build.tar.gz
-        expire_in: 5 minutes
+        - docker pull $CI_REGISTRY_IMAGE:$DOCKER_IMAGE_TAG
+        - docker tag $CI_REGISTRY_IMAGE:$DOCKER_IMAGE_TAG $DOCKER_REGISTRY_USER/$CI_PROJECT_NAME:$DOCKER_IMAGE_TAG
+        - docker push $DOCKER_REGISTRY_USER/$CI_PROJECT_NAME:$DOCKER_IMAGE_TAG
     only:
-        - /^v[0-9-]+$/
+        - main
+        - tags
 
 publish-utils:
     stage: publish-utils
-    image: php:cli-alpine
+    image: $CI_REGISTRY_IMAGE:latest
     script:
-        - (if [ ! -d flux-publish-utils ]; then mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/fluxfw/flux-publish-utils/releases/download/v2022-08-04-1/flux-publish-utils-v2022-08-04-1-build.tar.gz | tar -xz --strip-components=1; fi)
-        - if [ -n "$CI_COMMIT_TAG" ]; then flux-publish-utils/bin/upload-release-asset.php build.tar.gz $CI_PROJECT_NAME-$DOCKER_IMAGE_TAG-build.tar.gz; else flux-publish-utils/bin/publish-utils.php; fi
-    cache:
-        key: publish-utils
-        paths:
-            - flux-publish-utils
+        - publish-utils
     only:
         - main
-        - /^v[0-9-]+$/

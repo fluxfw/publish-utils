@@ -29,27 +29,11 @@ Set `FLUX_PUBLISH_UTILS_TOKEN_GITHUB` ci variable, protected and masked
 ```yaml
 publish-utils:
     stage: build
-    image: php:cli-alpine
+    image: fluxfw/flux-publish-utils:latest
     script:
-        - (mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/fluxfw/flux-publish-utils/releases/download/%tag%/flux-publish-utils-%tag%-build.tar.gz | tar -xz --strip-components=1)
-        - flux-publish-utils/bin/publish-utils.php
+        - publish-utils
     only:
         - main
-```
-
-## Cache
-
-```yaml
-publish-utils:
-    ...
-    script:
-        - (if [ ! -d flux-publish-utils ]; then mkdir -p flux-publish-utils && cd flux-publish-utils && wget -O - https://github.com/fluxfw/flux-publish-utils/releases/download/%tag%/flux-publish-utils-%tag%-build.tar.gz | tar -xz --strip-components=1; fi)
-        - ...
-    cache:
-        key: publish-utils
-        paths:
-            - flux-publish-utils
-    ...
 ```
 
 ## Upload assets to release
@@ -59,6 +43,6 @@ publish-utils:
     ...
     script:
         - ...
-        - flux-publish-utils/bin/upload-release-asset.php xyz.tar.gz
+        - upload-release-asset.php xyz.tar.gz
     ...
 ```
