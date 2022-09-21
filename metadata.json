@@ -1,5 +1,5 @@
 {
-    "version": "2022-08-04-1",
+    "version": "2022-09-21-1",
     "description": "Run publish tasks (gitlab ci)",
     "topics": [
         "asset",
