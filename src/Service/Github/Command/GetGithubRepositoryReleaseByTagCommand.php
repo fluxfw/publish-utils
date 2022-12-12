@@ -3,6 +3,7 @@
 namespace FluxPublishUtils\Service\Github\Command;
 
 use FluxPublishUtils\Service\Github\Port\GithubService;
+use SensitiveParameter;
 
 class GetGithubRepositoryReleaseByTagCommand
 {
@@ -23,7 +24,7 @@ class GetGithubRepositoryReleaseByTagCommand
     }
 
 
-    public function getGithubRepositoryReleaseByTag(string $repository, string $tag_name, string $token) : array
+    public function getGithubRepositoryReleaseByTag(string $repository, string $tag_name, #[SensitiveParameter] string $token) : array
     {
         return $this->github_service->githubRequest(
             $repository,

@@ -4,6 +4,7 @@ namespace FluxPublishUtils\Service\Github\Command;
 
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Service\Github\Port\GithubService;
+use SensitiveParameter;
 
 class CreateGithubRepositoryReleaseCommand
 {
@@ -24,7 +25,7 @@ class CreateGithubRepositoryReleaseCommand
     }
 
 
-    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, bool $pre_release, string $token) : void
+    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, bool $pre_release, #[SensitiveParameter] string $token) : void
     {
         $this->github_service->githubRequest(
             $repository,

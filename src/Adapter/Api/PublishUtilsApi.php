@@ -7,6 +7,7 @@ use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
 use FluxPublishUtils\Service\Github\Port\GithubService;
 use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
 use FluxPublishUtils\Service\Info\Port\InfoService;
+use SensitiveParameter;
 
 class PublishUtilsApi
 {
@@ -30,7 +31,7 @@ class PublishUtilsApi
     }
 
 
-    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, bool $pre_release, string $token) : void
+    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, bool $pre_release, #[SensitiveParameter] string $token) : void
     {
         $this->getGithubService()
             ->createGithubRepositoryRelease(
@@ -51,7 +52,7 @@ class PublishUtilsApi
         string $title,
         int $assignee_user_id,
         string $url,
-        string $token,
+        #[SensitiveParameter] string $token,
         ?bool $trust_self_signed_certificate = null
     ) : void {
         $this->getGitlabService()
@@ -68,7 +69,7 @@ class PublishUtilsApi
     }
 
 
-    public function createGitlabRepositoryRelease(int $project_id, string $tag_name, string $title, string $description, string $url, string $token, ?bool $trust_self_signed_certificate = null) : void
+    public function createGitlabRepositoryRelease(int $project_id, string $tag_name, string $title, string $description, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : void
     {
         $this->getGitlabService()
             ->createGitlabRepositoryRelease(
@@ -83,7 +84,7 @@ class PublishUtilsApi
     }
 
 
-    public function createGitlabRepositoryTag(int $project_id, string $name, string $ref, string $message, string $url, string $token, ?bool $trust_self_signed_certificate = null) : void
+    public function createGitlabRepositoryTag(int $project_id, string $name, string $ref, string $message, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : void
     {
         $this->getGitlabService()
             ->createGitlabRepositoryTag(
@@ -98,7 +99,7 @@ class PublishUtilsApi
     }
 
 
-    public function getGithubRepositoryReleaseByTag(string $repository, string $tag_name, string $token) : array
+    public function getGithubRepositoryReleaseByTag(string $repository, string $tag_name, #[SensitiveParameter] string $token) : array
     {
         return $this->getGithubService()
             ->getGithubRepositoryReleaseByTag(
@@ -109,7 +110,7 @@ class PublishUtilsApi
     }
 
 
-    public function getGithubRepositoryTags(string $repository, string $token) : array
+    public function getGithubRepositoryTags(string $repository, #[SensitiveParameter] string $token) : array
     {
         return $this->getGithubService()
             ->getGithubRepositoryTags(
@@ -119,7 +120,7 @@ class PublishUtilsApi
     }
 
 
-    public function getGitlabRepositoryBranches(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
+    public function getGitlabRepositoryBranches(int $project_id, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : array
     {
         return $this->getGitlabService()
             ->getGitlabRepositoryBranches(
@@ -131,7 +132,7 @@ class PublishUtilsApi
     }
 
 
-    public function getGitlabRepositoryMembers(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
+    public function getGitlabRepositoryMembers(int $project_id, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : array
     {
         return $this->getGitlabService()
             ->getGitlabRepositoryMembers(
@@ -143,7 +144,7 @@ class PublishUtilsApi
     }
 
 
-    public function getGitlabRepositoryRemoteMirrors(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
+    public function getGitlabRepositoryRemoteMirrors(int $project_id, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : array
     {
         return $this->getGitlabService()
             ->getGitlabRepositoryRemoteMirrors(
@@ -155,7 +156,7 @@ class PublishUtilsApi
     }
 
 
-    public function updateGithubRepositorySettings(string $repository, array $settings, string $token) : void
+    public function updateGithubRepositorySettings(string $repository, array $settings, #[SensitiveParameter] string $token) : void
     {
         $this->getGithubService()
             ->updateGithubRepositorySettings(
@@ -166,7 +167,7 @@ class PublishUtilsApi
     }
 
 
-    public function updateGithubRepositoryTopics(string $repository, array $topics, string $token) : void
+    public function updateGithubRepositoryTopics(string $repository, array $topics, #[SensitiveParameter] string $token) : void
     {
         $this->getGithubService()
             ->updateGithubRepositoryTopics(
@@ -177,7 +178,7 @@ class PublishUtilsApi
     }
 
 
-    public function updateGitlabRepositorySettings(int $project_id, array $settings, string $url, string $token, ?bool $trust_self_signed_certificate = null) : void
+    public function updateGitlabRepositorySettings(int $project_id, array $settings, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : void
     {
         $this->getGitlabService()
             ->updateGitlabRepositorySettings(
@@ -190,7 +191,7 @@ class PublishUtilsApi
     }
 
 
-    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, ?string $name, string $token) : void
+    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, ?string $name, #[SensitiveParameter] string $token) : void
     {
         $this->getGithubService()
             ->uploadGithubRepositoryReleaseAsset(

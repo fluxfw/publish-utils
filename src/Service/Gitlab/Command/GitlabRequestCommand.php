@@ -9,6 +9,7 @@ use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeaderKey;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
+use SensitiveParameter;
 
 class GitlabRequestCommand
 {
@@ -33,7 +34,7 @@ class GitlabRequestCommand
         int $project_id,
         ?string $api_url,
         string $url,
-        string $token,
+        #[SensitiveParameter] string $token,
         ?Method $method = null,
         ?array $query_params = null,
         ?array $data = null,

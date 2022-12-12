@@ -3,6 +3,7 @@
 namespace FluxPublishUtils\Adapter\Info;
 
 use JsonSerializable;
+use SensitiveParameter;
 
 class InfoDto implements JsonSerializable
 {
@@ -45,10 +46,10 @@ class InfoDto implements JsonSerializable
     public static function new(
         ?int $gitlab_project_id,
         ?string $gitlab_url,
-        ?string $gitlab_token,
+        #[SensitiveParameter] ?string $gitlab_token,
         bool $gitlab_trust_self_signed_certificate,
         ?string $github_repository,
-        ?string $github_token,
+        #[SensitiveParameter] ?string $github_token,
         ?string $version,
         ?string $description,
         ?array $topics,

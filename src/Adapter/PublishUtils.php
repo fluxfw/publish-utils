@@ -193,6 +193,7 @@ class PublishUtils
     {
         $message = $ex->__toString();
 
+        // TODO: Remove/Redundant with SensitiveParameter?
         if ($info !== null) {
             if (!empty($info->gitlab_token)) {
                 for ($i = strlen($info->gitlab_token); $i >= 4; $i--) {

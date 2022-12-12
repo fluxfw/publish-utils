@@ -11,6 +11,7 @@ use FluxPublishUtils\Service\Github\Command\GithubRequestCommand;
 use FluxPublishUtils\Service\Github\Command\UpdateGithubRepositorySettingsCommand;
 use FluxPublishUtils\Service\Github\Command\UpdateGithubRepositoryTopicsCommand;
 use FluxPublishUtils\Service\Github\Command\UploadGithubRepositoryReleaseAssetCommand;
+use SensitiveParameter;
 
 class GithubService
 {
@@ -31,7 +32,7 @@ class GithubService
     }
 
 
-    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, bool $pre_release, string $token) : void
+    public function createGithubRepositoryRelease(string $repository, string $tag_name, string $title, string $description, bool $pre_release, #[SensitiveParameter] string $token) : void
     {
         CreateGithubRepositoryReleaseCommand::new(
             $this
@@ -47,7 +48,7 @@ class GithubService
     }
 
 
-    public function getGithubRepositoryReleaseByTag(string $repository, string $tag_name, string $token) : array
+    public function getGithubRepositoryReleaseByTag(string $repository, string $tag_name, #[SensitiveParameter] string $token) : array
     {
         return GetGithubRepositoryReleaseByTagCommand::new(
             $this
@@ -60,7 +61,7 @@ class GithubService
     }
 
 
-    public function getGithubRepositoryTags(string $repository, string $token) : array
+    public function getGithubRepositoryTags(string $repository, #[SensitiveParameter] string $token) : array
     {
         return GetGithubRepositoryTagsCommand::new(
             $this
@@ -72,7 +73,7 @@ class GithubService
     }
 
 
-    public function githubRequest(string $repository, ?string $api_url, string $token, ?Method $method = null, ?array $data = null) : ?array
+    public function githubRequest(string $repository, ?string $api_url, #[SensitiveParameter] string $token, ?Method $method = null, ?array $data = null) : ?array
     {
         return GithubRequestCommand::new(
             $this->rest_api
@@ -87,7 +88,7 @@ class GithubService
     }
 
 
-    public function updateGithubRepositorySettings(string $repository, array $settings, string $token) : void
+    public function updateGithubRepositorySettings(string $repository, array $settings, #[SensitiveParameter] string $token) : void
     {
         UpdateGithubRepositorySettingsCommand::new(
             $this
@@ -100,7 +101,7 @@ class GithubService
     }
 
 
-    public function updateGithubRepositoryTopics(string $repository, array $topics, string $token) : void
+    public function updateGithubRepositoryTopics(string $repository, array $topics, #[SensitiveParameter] string $token) : void
     {
         UpdateGithubRepositoryTopicsCommand::new(
             $this
@@ -113,7 +114,7 @@ class GithubService
     }
 
 
-    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, ?string $name, string $token) : void
+    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, ?string $name, #[SensitiveParameter] string $token) : void
     {
         UploadGithubRepositoryReleaseAssetCommand::new(
             $this->rest_api
