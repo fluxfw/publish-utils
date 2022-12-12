@@ -3,6 +3,7 @@
 namespace FluxPublishUtils\Service\Gitlab\Command;
 
 use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
+use SensitiveParameter;
 
 class GetGitlabRepositoryRemoteMirrorsCommand
 {
@@ -23,7 +24,7 @@ class GetGitlabRepositoryRemoteMirrorsCommand
     }
 
 
-    public function getGitlabRepositoryRemoteMirrors(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
+    public function getGitlabRepositoryRemoteMirrors(int $project_id, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : array
     {
         return $this->gitlab_service->gitlabRequest(
             $project_id,

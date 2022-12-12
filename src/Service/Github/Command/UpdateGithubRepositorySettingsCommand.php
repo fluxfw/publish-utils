@@ -4,6 +4,7 @@ namespace FluxPublishUtils\Service\Github\Command;
 
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Service\Github\Port\GithubService;
+use SensitiveParameter;
 
 class UpdateGithubRepositorySettingsCommand
 {
@@ -24,7 +25,7 @@ class UpdateGithubRepositorySettingsCommand
     }
 
 
-    public function updateGithubRepositorySettings(string $repository, array $settings, string $token) : void
+    public function updateGithubRepositorySettings(string $repository, array $settings, #[SensitiveParameter] string $token) : void
     {
         $this->github_service->githubRequest(
             $repository,

@@ -13,6 +13,7 @@ use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryRemoteMirrorsComm
 use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryTagsCommand;
 use FluxPublishUtils\Service\Gitlab\Command\GitlabRequestCommand;
 use FluxPublishUtils\Service\Gitlab\Command\UpdateGitlabRepositorySettingsCommand;
+use SensitiveParameter;
 
 class GitlabService
 {
@@ -40,7 +41,7 @@ class GitlabService
         string $title,
         int $assignee_user_id,
         string $url,
-        string $token,
+        #[SensitiveParameter] string $token,
         ?bool $trust_self_signed_certificate = null
     ) : void {
         CreateGitlabRepositoryMergeRequestCommand::new(
@@ -59,7 +60,7 @@ class GitlabService
     }
 
 
-    public function createGitlabRepositoryRelease(int $project_id, string $tag_name, string $title, string $description, string $url, string $token, ?bool $trust_self_signed_certificate = null) : void
+    public function createGitlabRepositoryRelease(int $project_id, string $tag_name, string $title, string $description, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : void
     {
         CreateGitlabRepositoryReleaseCommand::new(
             $this
@@ -76,7 +77,7 @@ class GitlabService
     }
 
 
-    public function createGitlabRepositoryTag(int $project_id, string $name, string $ref, string $message, string $url, string $token, ?bool $trust_self_signed_certificate = null) : void
+    public function createGitlabRepositoryTag(int $project_id, string $name, string $ref, string $message, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : void
     {
         CreateGitlabRepositoryTagCommand::new(
             $this
@@ -93,7 +94,7 @@ class GitlabService
     }
 
 
-    public function getGitlabRepositoryBranches(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
+    public function getGitlabRepositoryBranches(int $project_id, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : array
     {
         return GetGitlabRepositoryBranchesCommand::new(
             $this
@@ -107,7 +108,7 @@ class GitlabService
     }
 
 
-    public function getGitlabRepositoryMembers(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
+    public function getGitlabRepositoryMembers(int $project_id, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : array
     {
         return GetGitlabRepositoryMembersCommand::new(
             $this
@@ -121,7 +122,7 @@ class GitlabService
     }
 
 
-    public function getGitlabRepositoryRemoteMirrors(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
+    public function getGitlabRepositoryRemoteMirrors(int $project_id, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : array
     {
         return GetGitlabRepositoryRemoteMirrorsCommand::new(
             $this
@@ -135,7 +136,7 @@ class GitlabService
     }
 
 
-    public function getGitlabRepositoryTags(int $project_id, string $url, string $token, ?bool $trust_self_signed_certificate = null) : array
+    public function getGitlabRepositoryTags(int $project_id, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : array
     {
         return GetGitlabRepositoryTagsCommand::new(
             $this
@@ -153,7 +154,7 @@ class GitlabService
         int $project_id,
         ?string $api_url,
         string $url,
-        string $token,
+        #[SensitiveParameter] string $token,
         ?Method $method = null,
         ?array $query_params = null,
         ?array $data = null,
@@ -175,7 +176,7 @@ class GitlabService
     }
 
 
-    public function updateGitlabRepositorySettings(int $project_id, array $settings, string $url, string $token, ?bool $trust_self_signed_certificate = null) : void
+    public function updateGitlabRepositorySettings(int $project_id, array $settings, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : void
     {
         UpdateGitlabRepositorySettingsCommand::new(
             $this

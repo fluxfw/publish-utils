@@ -10,6 +10,7 @@ use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeaderKey;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
+use SensitiveParameter;
 
 class GithubRequestCommand
 {
@@ -30,7 +31,7 @@ class GithubRequestCommand
     }
 
 
-    public function githubRequest(string $repository, ?string $api_url, string $token, ?Method $method = null, ?array $data = null) : ?array
+    public function githubRequest(string $repository, ?string $api_url, #[SensitiveParameter] string $token, ?Method $method = null, ?array $data = null) : ?array
     {
         $headers = [
             DefaultHeaderKey::ACCEPT->value        => "application/vnd.github.mercy-preview+json",

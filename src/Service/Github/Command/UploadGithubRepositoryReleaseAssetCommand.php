@@ -8,6 +8,7 @@ use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\Schema\DefaultAuthor
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeaderKey;
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
+use SensitiveParameter;
 
 class UploadGithubRepositoryReleaseAssetCommand
 {
@@ -28,7 +29,7 @@ class UploadGithubRepositoryReleaseAssetCommand
     }
 
 
-    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, ?string $name, string $token) : void
+    public function uploadGithubRepositoryReleaseAsset(string $repository, int $release_id, string $file, ?string $name, #[SensitiveParameter] string $token) : void
     {
         $this->rest_api->makeRequest(
             ClientRequestDto::new(

@@ -4,6 +4,7 @@ namespace FluxPublishUtils\Service\Gitlab\Command;
 
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
+use SensitiveParameter;
 
 class CreateGitlabRepositoryTagCommand
 {
@@ -24,7 +25,7 @@ class CreateGitlabRepositoryTagCommand
     }
 
 
-    public function createGitlabRepositoryTag(int $project_id, string $name, string $ref, string $message, string $url, string $token, ?bool $trust_self_signed_certificate = null) : void
+    public function createGitlabRepositoryTag(int $project_id, string $name, string $ref, string $message, string $url, #[SensitiveParameter] string $token, ?bool $trust_self_signed_certificate = null) : void
     {
         $this->gitlab_service->gitlabRequest(
             $project_id,

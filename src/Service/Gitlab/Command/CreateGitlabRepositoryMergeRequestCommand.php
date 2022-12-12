@@ -4,6 +4,7 @@ namespace FluxPublishUtils\Service\Gitlab\Command;
 
 use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
+use SensitiveParameter;
 
 class CreateGitlabRepositoryMergeRequestCommand
 {
@@ -31,7 +32,7 @@ class CreateGitlabRepositoryMergeRequestCommand
         string $title,
         int $assignee_user_id,
         string $url,
-        string $token,
+        #[SensitiveParameter] string $token,
         ?bool $trust_self_signed_certificate = null
     ) : void {
         $this->gitlab_service->gitlabRequest(
