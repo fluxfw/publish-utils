@@ -2,8 +2,6 @@
 
 namespace FluxPublishUtils\Service\Gitlab\Port;
 
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
 use FluxPublishUtils\Service\Gitlab\Command\CreateGitlabRepositoryMergeRequestCommand;
 use FluxPublishUtils\Service\Gitlab\Command\CreateGitlabRepositoryReleaseCommand;
 use FluxPublishUtils\Service\Gitlab\Command\CreateGitlabRepositoryTagCommand;
@@ -13,6 +11,8 @@ use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryRemoteMirrorsComm
 use FluxPublishUtils\Service\Gitlab\Command\GetGitlabRepositoryTagsCommand;
 use FluxPublishUtils\Service\Gitlab\Command\GitlabRequestCommand;
 use FluxPublishUtils\Service\Gitlab\Command\UpdateGitlabRepositorySettingsCommand;
+use FluxRestApi\Adapter\Api\RestApi;
+use FluxRestApi\Adapter\Method\Method;
 use SensitiveParameter;
 
 class GitlabService
