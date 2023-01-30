@@ -35,7 +35,8 @@ class GithubRequestCommand
     {
         $headers = [
             DefaultHeaderKey::ACCEPT->value        => "application/vnd.github.mercy-preview+json",
-            DefaultHeaderKey::AUTHORIZATION->value => DefaultAuthorizationSchema::BASIC->value . ParseHttpAuthorization_::SPLIT_SCHEMA_PARAMETERS . base64_encode($token)
+            DefaultHeaderKey::AUTHORIZATION->value => DefaultAuthorizationSchema::BASIC->value . ParseHttpAuthorization_::SPLIT_SCHEMA_PARAMETERS . base64_encode($token),
+            DefaultHeaderKey::USER_AGENT->value    => "flux-publish-utils"
         ];
 
         if ($data !== null) {
