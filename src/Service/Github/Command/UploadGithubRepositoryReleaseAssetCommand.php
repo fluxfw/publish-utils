@@ -2,12 +2,12 @@
 
 namespace FluxPublishUtils\Service\Github\Command;
 
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\ParseHttp\ParseHttpAuthorization_;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\Schema\DefaultAuthorizationSchema;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeaderKey;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
+use FluxRestApi\Adapter\Api\RestApi;
+use FluxRestApi\Adapter\Authorization\ParseHttp\ParseHttpAuthorization_;
+use FluxRestApi\Adapter\Authorization\Schema\DefaultAuthorizationSchema;
+use FluxRestApi\Adapter\Client\ClientRequestDto;
+use FluxRestApi\Adapter\Header\DefaultHeaderKey;
+use FluxRestApi\Adapter\Method\DefaultMethod;
 use SensitiveParameter;
 
 class UploadGithubRepositoryReleaseAssetCommand
@@ -41,8 +41,7 @@ class UploadGithubRepositoryReleaseAssetCommand
                 null,
                 [
                     DefaultHeaderKey::ACCEPT->value        => "application/vnd.github+json",
-                    DefaultHeaderKey::AUTHORIZATION->value => DefaultAuthorizationSchema::BASIC->value . ParseHttpAuthorization_::SPLIT_SCHEMA_PARAMETERS . base64_encode($token),
-                    DefaultHeaderKey::USER_AGENT->value    => "flux-publish-utils"
+                    DefaultHeaderKey::AUTHORIZATION->value => DefaultAuthorizationSchema::BASIC->value . ParseHttpAuthorization_::SPLIT_SCHEMA_PARAMETERS . base64_encode($token)
                 ],
                 null,
                 null,

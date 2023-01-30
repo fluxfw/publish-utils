@@ -2,8 +2,8 @@
 
 namespace FluxPublishUtils\Service\Gitlab\Command;
 
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Service\Gitlab\Port\GitlabService;
+use FluxRestApi\Adapter\Method\DefaultMethod;
 use SensitiveParameter;
 
 class CreateGitlabRepositoryMergeRequestCommand

@@ -2,14 +2,14 @@
 
 namespace FluxPublishUtils\Service\Github\Command;
 
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\ParseHttp\ParseHttpAuthorization_;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Authorization\Schema\DefaultAuthorizationSchema;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\JsonBodyDto;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeaderKey;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
+use FluxRestApi\Adapter\Api\RestApi;
+use FluxRestApi\Adapter\Authorization\ParseHttp\ParseHttpAuthorization_;
+use FluxRestApi\Adapter\Authorization\Schema\DefaultAuthorizationSchema;
+use FluxRestApi\Adapter\Body\JsonBodyDto;
+use FluxRestApi\Adapter\Client\ClientRequestDto;
+use FluxRestApi\Adapter\Header\DefaultHeaderKey;
+use FluxRestApi\Adapter\Method\DefaultMethod;
+use FluxRestApi\Adapter\Method\Method;
 use SensitiveParameter;
 
 class GithubRequestCommand
@@ -35,8 +35,7 @@ class GithubRequestCommand
     {
         $headers = [
             DefaultHeaderKey::ACCEPT->value        => "application/vnd.github.mercy-preview+json",
-            DefaultHeaderKey::AUTHORIZATION->value => DefaultAuthorizationSchema::BASIC->value . ParseHttpAuthorization_::SPLIT_SCHEMA_PARAMETERS . base64_encode($token),
-            DefaultHeaderKey::USER_AGENT->value    => "flux-publish-utils"
+            DefaultHeaderKey::AUTHORIZATION->value => DefaultAuthorizationSchema::BASIC->value . ParseHttpAuthorization_::SPLIT_SCHEMA_PARAMETERS . base64_encode($token)
         ];
 
         if ($data !== null) {

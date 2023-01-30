@@ -2,8 +2,6 @@
 
 namespace FluxPublishUtils\Service\Github\Port;
 
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
 use FluxPublishUtils\Service\Github\Command\CreateGithubRepositoryReleaseCommand;
 use FluxPublishUtils\Service\Github\Command\GetGithubRepositoryReleaseByTagCommand;
 use FluxPublishUtils\Service\Github\Command\GetGithubRepositoryTagsCommand;
@@ -11,6 +9,8 @@ use FluxPublishUtils\Service\Github\Command\GithubRequestCommand;
 use FluxPublishUtils\Service\Github\Command\UpdateGithubRepositorySettingsCommand;
 use FluxPublishUtils\Service\Github\Command\UpdateGithubRepositoryTopicsCommand;
 use FluxPublishUtils\Service\Github\Command\UploadGithubRepositoryReleaseAssetCommand;
+use FluxRestApi\Adapter\Api\RestApi;
+use FluxRestApi\Adapter\Method\Method;
 use SensitiveParameter;
 
 class GithubService

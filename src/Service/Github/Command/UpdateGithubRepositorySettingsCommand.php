@@ -2,8 +2,8 @@
 
 namespace FluxPublishUtils\Service\Github\Command;
 
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
 use FluxPublishUtils\Service\Github\Port\GithubService;
+use FluxRestApi\Adapter\Method\DefaultMethod;
 use SensitiveParameter;
 
 class UpdateGithubRepositorySettingsCommand

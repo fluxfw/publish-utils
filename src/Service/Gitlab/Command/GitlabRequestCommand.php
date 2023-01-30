@@ -2,13 +2,13 @@
 
 namespace FluxPublishUtils\Service\Gitlab\Command;
 
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Api\RestApi;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\JsonBodyDto;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Body\Type\DefaultBodyType;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Client\ClientRequestDto;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Header\DefaultHeaderKey;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\DefaultMethod;
-use FluxPublishUtils\Libs\FluxRestApi\Adapter\Method\Method;
+use FluxRestApi\Adapter\Api\RestApi;
+use FluxRestApi\Adapter\Body\JsonBodyDto;
+use FluxRestApi\Adapter\Body\Type\DefaultBodyType;
+use FluxRestApi\Adapter\Client\ClientRequestDto;
+use FluxRestApi\Adapter\Header\DefaultHeaderKey;
+use FluxRestApi\Adapter\Method\DefaultMethod;
+use FluxRestApi\Adapter\Method\Method;
 use SensitiveParameter;
 
 class GitlabRequestCommand
