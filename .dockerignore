@@ -1,7 +1,11 @@
 *
+!bin/create-github-release.mjs
+!bin/get-release-changelog.mjs
+!bin/get-release-description.mjs
+!bin/get-release-tag.mjs
+!bin/get-release-title.mjs
+!bin/get-release-version.mjs
 !bin/install-libraries.sh
-!bin/publish-utils.php
-!bin/upload-release-asset.php
-!src
-!src/**
-!autoload.php
+!bin/update-github-metadata.mjs
+!bin/update-release.mjs
+!bin/upload-asset-to-github-release.mjs

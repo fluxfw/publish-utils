@@ -1,13 +1,11 @@
 *
+!.local
+!.local/**
 !bin
 !bin/**
-!src
-!src/**
 !.dockerignore
 !.gitignore
-!.gitlab-ci.yml
-!autoload.php
-!CHANGELOG.md
+!CHANEGLOG.md
 !Dockerfile
 !metadata.json
 !README.md
