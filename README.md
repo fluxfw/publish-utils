@@ -12,6 +12,8 @@ Some util scripts for publish
 
 For the github commands you need to set the environment variable `FLUX_PUBLISH_UTILS_GITHUB_TOKEN_FILE` with the path to the file contains your github token (`public_repo` scope)
 
+The github repository name is taken from `.git/config`
+
 ## Commands
 
 ### create-github-release
