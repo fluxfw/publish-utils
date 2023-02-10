@@ -3,6 +3,8 @@
 !.local/**
 !bin
 !bin/**
+!src
+!src/**
 !.dockerignore
 !.gitignore
 !CHANEGLOG.md

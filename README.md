@@ -88,10 +88,10 @@ update-github-metadata /path/to/project
   - Website is `homepage` from `metadata.json`
   - Topics are `topics` from `metadata.json`
 
-### update-release
+### update-release-version
 
 ```shell
-update-release /path/to/project
+update-release-version /path/to/project
 ```
 
 - Updates `version` in `metadata.json` to current date in format `YYYY-MM-DD-I`

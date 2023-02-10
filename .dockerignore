@@ -7,5 +7,7 @@
 !bin/get-release-version.mjs
 !bin/install-libraries.sh
 !bin/update-github-metadata.mjs
-!bin/update-release.mjs
+!bin/update-release-version.mjs
 !bin/upload-asset-to-github-release.mjs
+!src
+!src/**

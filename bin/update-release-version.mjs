@@ -10,7 +10,7 @@ try {
     }
 
     await (await import("../src/Adapter/Api/PublishUtilsApi.mjs")).PublishUtilsApi.new()
-        .createGithubRelease(
+        .updateReleaseVersion(
             path
         );
 } catch (error) {

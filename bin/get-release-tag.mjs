@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-import { execFileSync } from "node:child_process";
-
 let shutdown_handler = null;
 try {
     shutdown_handler = await (await import("../../flux-shutdown-handler-api/src/Adapter/Api/ShutdownHandlerApi.mjs")).ShutdownHandlerApi.new()
@@ -11,15 +9,10 @@ try {
         throw new Error("Please pass a path");
     }
 
-    const version = execFileSync("get-release-version", [
-        path
-    ], {
-        encoding: "utf8"
-    });
-
-    const tag = `v${version}`;
-
-    process.stdout.write(tag);
+    process.stdout.write(await (await import("../src/Adapter/Api/PublishUtilsApi.mjs")).PublishUtilsApi.new()
+        .getReleaseTag(
+            path
+        ));
 } catch (error) {
     console.error(error);
 
