@@ -1,29 +1,39 @@
-import { execFileSync } from "node:child_process";
+import { HttpClientRequest } from "../../../../../flux-http-api/src/Adapter/Client/HttpClientRequest.mjs";
+import { HEADER_ACCEPT, HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../../../flux-http-api/src/Adapter/Header/HEADER.mjs";
 import { METHOD_PATCH, METHOD_PUT } from "../../../../../flux-http-api/src/Adapter/Method/METHOD.mjs";
 
+/** @typedef {import("../../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs").HttpApi} HttpApi */
 /** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
 
 export class UpdateGithubMetadataCommand {
+    /**
+     * @type {HttpApi}
+     */
+    #http_api;
     /**
      * @type {PublishService}
      */
     #publish_service;
 
     /**
+     * @param {HttpApi} http_api
      * @param {PublishService} publish_service
      * @returns {UpdateGithubMetadataCommand}
      */
-    static new(publish_service) {
+    static new(http_api, publish_service) {
         return new this(
+            http_api,
             publish_service
         );
     }
 
     /**
+     * @param {HttpApi} http_api
      * @param {PublishService} publish_service
      * @private
      */
-    constructor(publish_service) {
+    constructor(http_api, publish_service) {
+        this.#http_api = http_api;
         this.#publish_service = publish_service;
     }
 
@@ -38,33 +48,41 @@ export class UpdateGithubMetadataCommand {
 
         console.log("Update github metadata");
 
-        execFileSync("gh", [
-            "api",
-            "--method",
-            METHOD_PATCH,
-            "/repos/{owner}/{repo}",
-            "--input",
-            "-"
-        ], {
-            cwd: path,
-            input: JSON.stringify({
-                description: metadata.description ?? "",
-                homepage: metadata.homepage ?? ""
-            })
-        });
+        const repository = await this.#publish_service.getGithubRepository(
+            path
+        );
 
-        execFileSync("gh", [
-            "api",
-            "--method",
-            METHOD_PUT,
-            "/repos/{owner}/{repo}/topics",
-            "--input",
-            "-"
-        ], {
-            cwd: path,
-            input: JSON.stringify({
-                names: metadata.topics ?? []
-            })
-        });
+        const authorization = await this.#publish_service.getGithubAuthorization();
+
+        await (await this.#http_api.request(
+            HttpClientRequest.json(
+                new URL(`https://api.github.com/repos/${repository}`),
+                {
+                    description: metadata.description ?? "",
+                    homepage: metadata.homepage ?? ""
+                },
+                METHOD_PATCH,
+                {
+                    [HEADER_ACCEPT]: "application/vnd.github+json",
+                    [HEADER_AUTHORIZATION]: authorization,
+                    [HEADER_USER_AGENT]: "flux-publish-utils"
+                }
+            )
+        )).body.json();
+
+        await (await this.#http_api.request(
+            HttpClientRequest.json(
+                new URL(`https://api.github.com/repos/${repository}/topics`),
+                {
+                    names: metadata.topics ?? []
+                },
+                METHOD_PUT,
+                {
+                    [HEADER_ACCEPT]: "application/vnd.github+json",
+                    [HEADER_AUTHORIZATION]: authorization,
+                    [HEADER_USER_AGENT]: "flux-publish-utils"
+                }
+            )
+        )).body.json();
     }
 }

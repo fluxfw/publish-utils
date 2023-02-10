@@ -1,6 +1,11 @@
+/** @typedef {import("../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs").HttpApi} HttpApi */
 /** @typedef {import("../../Service/Publish/Port/PublishService.mjs").PublishService} PublishService */
 
 export class PublishUtilsApi {
+    /**
+     * @type {HttpApi | null}
+     */
+    #http_api = null;
     /**
      * @type {PublishService | null}
      */
@@ -115,10 +120,21 @@ export class PublishUtilsApi {
     }
 
     /**
+     * @returns {Promise<HttpApi>}
+     */
+    async #getHttpApi() {
+        this.#http_api ??= (await import("../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs")).HttpApi.new();
+
+        return this.#http_api;
+    }
+
+    /**
      * @returns {Promise<PublishService>}
      */
     async #getPublishService() {
-        this.#publish_service ??= (await import("../../Service/Publish/Port/PublishService.mjs")).PublishService.new();
+        this.#publish_service ??= (await import("../../Service/Publish/Port/PublishService.mjs")).PublishService.new(
+            await this.#getHttpApi()
+        );
 
         return this.#publish_service;
     }

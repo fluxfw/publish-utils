@@ -10,7 +10,7 @@ Some util scripts for publish
 
 ### Github
 
-For the github commands you need to set the environment variable `FLUX_PUBLISH_GH_TOKEN_FILE` with the path to the file contains your github token (`public_repo` scope)
+For the github commands you need to set the environment variable `FLUX_PUBLISH_UTILS_GITHUB_TOKEN_FILE` with the path to the file contains your github token (`public_repo` scope)
 
 ## Commands
 

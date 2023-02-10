@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-02-10-2
+
+Changes:
+
+- Use `flux-http-api` for github requests
+
 ## v2023-02-10-1
 
 Changes:

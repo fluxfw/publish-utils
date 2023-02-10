@@ -11,8 +11,6 @@ RUN mkdir -p /build/flux-publish-utils/.local/bin && for bin in /build/flux-publ
 
 FROM node:19-alpine
 
-RUN apk add --no-cache github-cli
-
 ENV PATH "/flux-publish-utils/.local/bin:$PATH"
 
 USER node:node

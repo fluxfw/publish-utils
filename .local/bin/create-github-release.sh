@@ -20,4 +20,4 @@ tag="`get-release-tag "$root"`"
 path_host="`realpath "$path"`"
 path_volume="/code/`basename "$path_host"`"
 
-docker run --rm -u "`id -u`":"`id -g`" -v "$path_host":"$path_volume":ro -e "GH_TOKEN=`cat $FLUX_PUBLISH_GH_TOKEN_FILE`" "$image:$tag" create-github-release "$path_volume" "$@"
+docker run --rm -u "`id -u`":"`id -g`" -v "$path_host":"$path_volume":ro -v "$FLUX_PUBLISH_UTILS_GITHUB_TOKEN_FILE":/run/secrets/flux_publish_utils_github_token:ro -e FLUX_PUBLISH_UTILS_GITHUB_TOKEN_FILE=/run/secrets/flux_publish_utils_github_token "$image:$tag" create-github-release "$path_volume" "$@"

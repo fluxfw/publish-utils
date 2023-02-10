@@ -16,7 +16,7 @@ name="`basename "$(realpath "$root")"`"
 user="${FLUX_PUBLISH_DOCKER_USER:=fluxfw}"
 image="$user/$name"
 #tag="`get-release-tag "$root"`"
-tag="v2023-02-10-1"
+tag="v2023-02-10-2"
 
 path_host="`realpath "$path"`"
 path_volume="/code/`basename "$path_host"`"

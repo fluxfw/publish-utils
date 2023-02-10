@@ -1,18 +1,28 @@
+/** @typedef {import("../../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs").HttpApi} HttpApi */
 /** @typedef {import("../../../Adapter/Metadata/Metadata.mjs").Metadata} Metadata */
 
 export class PublishService {
     /**
+     * @type {HttpApi}
+     */
+    #http_api;
+
+    /**
+     * @param {HttpApi} http_api
      * @returns {PublishService}
      */
-    static new() {
-        return new this();
+    static new(http_api) {
+        return new this(
+            http_api
+        );
     }
 
     /**
+     * @param {HttpApi} http_api
      * @private
      */
-    constructor() {
-
+    constructor(http_api) {
+        this.#http_api = http_api;
     }
 
     /**
@@ -21,6 +31,7 @@ export class PublishService {
      */
     async createGithubRelease(path) {
         await (await import("../Command/CreateGithubReleaseCommand.mjs")).CreateGithubReleaseCommand.new(
+            this.#http_api,
             this
         )
             .createGithubRelease(
@@ -37,6 +48,35 @@ export class PublishService {
             .getChangelog(
                 path
             );
+    }
+
+    /**
+     * @returns {Promise<string>}
+     */
+    async getGithubAuthorization() {
+        return (await import("../Command/GetGithubAuthorizationCommand.mjs")).GetGithubAuthorizationCommand.new(
+            this
+        )
+            .getGithubAuthorization();
+    }
+
+    /**
+     * @param {string} path
+     * @returns {Promise<string>}
+     */
+    async getGithubRepository(path) {
+        return (await import("../Command/GetGithubRepositoryCommand.mjs")).GetGithubRepositoryCommand.new()
+            .getGithubRepository(
+                path
+            );
+    }
+
+    /**
+     * @returns {Promise<string>}
+     */
+    async getGithubToken() {
+        return (await import("../Command/GetGithubTokenCommand.mjs")).GetGithubTokenCommand.new()
+            .getGithubToken();
     }
 
     /**
@@ -121,6 +161,7 @@ export class PublishService {
      */
     async updateGithubMetadata(path) {
         await (await import("../Command/UpdateGithubMetadataCommand.mjs")).UpdateGithubMetadataCommand.new(
+            this.#http_api,
             this
         )
             .updateGithubMetadata(
@@ -149,6 +190,7 @@ export class PublishService {
      */
     async uploadAssetToGithubRelease(path, asset_path, asset_name = null) {
         await (await import("../Command/UploadAssetToGithubReleaseCommand.mjs")).UploadAssetToGithubReleaseCommand.new(
+            this.#http_api,
             this
         )
             .uploadAssetToGithubRelease(
