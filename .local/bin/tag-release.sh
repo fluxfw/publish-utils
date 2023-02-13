@@ -11,7 +11,7 @@ fi
 local_bin="`dirname "$(realpath "$0")"`"
 root="$local_bin/../.."
 
-tag="`$local_bin/get-release-tag.sh "$root"`"
+tag="`$local_bin/get-release-tag.sh "$path"`"
 
 description="`$local_bin/get-release-description.sh "$path"`"
 
