@@ -76,21 +76,22 @@ export class UploadAssetToGithubReleaseCommand {
             )
         )).body.json()).id}/assets`);
         url.searchParams.set("name", _asset_name);
-        await (await this.#http_api.request(
+        await this.#http_api.request(
             await HttpClientRequest.nodeStream(
                 url,
                 createReadStream(_asset_path),
                 METHOD_POST,
                 {
-                    [HEADER_ACCEPT]: "application/vnd.github+json",
                     [HEADER_AUTHORIZATION]: authorization,
                     [HEADER_CONTENT_LENGTH]: (await stat(_asset_path)).size,
                     [HEADER_CONTENT_TYPE]: await this.#http_api.getMimeTypeByPath(
                         _asset_path
                     ),
                     [HEADER_USER_AGENT]: "flux-publish-utils"
-                }
+                },
+                null,
+                false
             )
-        )).body.json();
+        );
     }
 }

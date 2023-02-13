@@ -1,6 +1,6 @@
 import { HttpClientRequest } from "../../../../../flux-http-api/src/Adapter/Client/HttpClientRequest.mjs";
 import { METHOD_POST } from "../../../../../flux-http-api/src/Adapter/Method/METHOD.mjs";
-import { HEADER_ACCEPT, HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../../../flux-http-api/src/Adapter/Header/HEADER.mjs";
+import { HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../../../flux-http-api/src/Adapter/Header/HEADER.mjs";
 
 /** @typedef {import("../../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs").HttpApi} HttpApi */
 /** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
@@ -52,7 +52,7 @@ export class CreateGithubReleaseCommand {
 
         console.log(`Create github release ${title} from ${tag}`);
 
-        await (await this.#http_api.request(
+        await this.#http_api.request(
             HttpClientRequest.json(
                 new URL(`https://api.github.com/repos/${await this.#publish_service.getGithubRepository(
                     path
@@ -67,11 +67,12 @@ export class CreateGithubReleaseCommand {
                 },
                 METHOD_POST,
                 {
-                    [HEADER_ACCEPT]: "application/vnd.github+json",
                     [HEADER_AUTHORIZATION]: await this.#publish_service.getGithubAuthorization(),
                     [HEADER_USER_AGENT]: "flux-publish-utils"
-                }
+                },
+                null,
+                false
             )
-        )).body.json();
+        );
     }
 }

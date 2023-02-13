@@ -19,7 +19,7 @@ installLibrary() {
 
 checkAlreadyInstalled
 
-installLibrary flux-http-api https://github.com/fluxfw/flux-http-api/archive/refs/tags/v2023-02-10-2.tar.gz
+installLibrary flux-http-api https://github.com/fluxfw/flux-http-api/archive/refs/tags/v2023-02-13-1.tar.gz
 
 installLibrary flux-shutdown-handler-api https://github.com/fluxfw/flux-shutdown-handler-api/archive/refs/tags/v2023-02-09-1.tar.gz
 

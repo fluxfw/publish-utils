@@ -1,5 +1,5 @@
 import { HttpClientRequest } from "../../../../../flux-http-api/src/Adapter/Client/HttpClientRequest.mjs";
-import { HEADER_ACCEPT, HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../../../flux-http-api/src/Adapter/Header/HEADER.mjs";
+import { HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../../../flux-http-api/src/Adapter/Header/HEADER.mjs";
 import { METHOD_PATCH, METHOD_PUT } from "../../../../../flux-http-api/src/Adapter/Method/METHOD.mjs";
 
 /** @typedef {import("../../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs").HttpApi} HttpApi */
@@ -54,7 +54,7 @@ export class UpdateGithubMetadataCommand {
 
         const authorization = await this.#publish_service.getGithubAuthorization();
 
-        await (await this.#http_api.request(
+        await this.#http_api.request(
             HttpClientRequest.json(
                 new URL(`https://api.github.com/repos/${repository}`),
                 {
@@ -63,14 +63,15 @@ export class UpdateGithubMetadataCommand {
                 },
                 METHOD_PATCH,
                 {
-                    [HEADER_ACCEPT]: "application/vnd.github+json",
                     [HEADER_AUTHORIZATION]: authorization,
                     [HEADER_USER_AGENT]: "flux-publish-utils"
-                }
+                },
+                null,
+                false
             )
-        )).body.json();
+        );
 
-        await (await this.#http_api.request(
+        await this.#http_api.request(
             HttpClientRequest.json(
                 new URL(`https://api.github.com/repos/${repository}/topics`),
                 {
@@ -78,11 +79,12 @@ export class UpdateGithubMetadataCommand {
                 },
                 METHOD_PUT,
                 {
-                    [HEADER_ACCEPT]: "application/vnd.github+json",
                     [HEADER_AUTHORIZATION]: authorization,
                     [HEADER_USER_AGENT]: "flux-publish-utils"
-                }
+                },
+                null,
+                false
             )
-        )).body.json();
+        );
     }
 }
