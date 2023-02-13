@@ -4,21 +4,22 @@ set -e
 
 bin="`dirname "$0"`"
 root="$bin/.."
+local_bin="$root/.local/bin"
 
 name="`basename "$(realpath "$root")"`"
 image="$FLUX_PUBLISH_DOCKER_USER/$name"
-tag="`get-release-tag "$root"`"
+tag="`$local_bin/get-release-tag.sh "$root"`"
 
 "$bin/build.sh"
 
 #flux-js-lint "$root"
 
-tag-release "$root"
-create-github-release "$root"
+"$local_bin/tag-release.sh" "$root"
+"$local_bin/create-github-release.sh" "$root"
 
 export DOCKER_CONFIG="$FLUX_PUBLISH_DOCKER_CONFIG_FOLDER"
 docker push "$image:$tag"
 docker push "$image:latest"
 unset DOCKER_CONFIG
 
-update-github-metadata "$root"
+"$local_bin/update-github-metadata.sh" "$root"
