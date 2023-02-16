@@ -1,3 +1,5 @@
+import { AUTHORIZATION_SCHEMA_BASIC } from "../../../../../flux-http-api/src/Adapter/Authorization/AUTHORIZATION_SCHEMA.mjs";
+
 /** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
 
 export class GetGithubAuthorizationCommand {
@@ -28,6 +30,6 @@ export class GetGithubAuthorizationCommand {
      * @returns {Promise<string>}
      */
     async getGithubAuthorization() {
-        return `Basic ${btoa(await this.#publish_service.getGithubToken())}`;
+        return `${AUTHORIZATION_SCHEMA_BASIC} ${btoa(await this.#publish_service.getGithubToken())}`;
     }
 }
