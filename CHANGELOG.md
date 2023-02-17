@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-02-17-1
+
+Changes:
+
+- Stop on missing latest changelog entry
+
 ## v2023-02-16-1
 
 Changes:

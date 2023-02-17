@@ -81,9 +81,9 @@ export class UpdateReleaseVersionCommand {
     `;
         }
 
-        let latest_start_position = changelog.indexOf("## latest");
+        const latest_start_position = changelog.indexOf("## latest");
         if (latest_start_position === -1) {
-            latest_start_position = 0;
+            throw new Error("Missing latest changelog entry");
         }
         let old_latest_changelog = changelog.substring(latest_start_position);
 
