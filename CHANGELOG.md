@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-02-20-1
+
+Changes:
+
+- Ensure latest changelog entry has line break before
+
 ## v2023-02-17-1
 
 Changes:

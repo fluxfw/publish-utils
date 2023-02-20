@@ -33,7 +33,7 @@ export class GetReleaseChangelogCommand {
             path
         );
 
-        const changelog_start_position = changelog.indexOf(`## ${await this.#publish_service.getReleaseTag(
+        const changelog_start_position = changelog.indexOf(`\n## ${await this.#publish_service.getReleaseTag(
             path
         )}`);
 
@@ -41,7 +41,7 @@ export class GetReleaseChangelogCommand {
             return "";
         }
 
-        changelog = changelog.substring(changelog_start_position);
+        changelog = changelog.substring(changelog_start_position + 1);
 
         const changelog_end_position = changelog.indexOf("\n## ");
 

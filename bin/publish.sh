@@ -12,7 +12,7 @@ tag="`$local_bin/get-release-tag.sh "$root"`"
 
 "$bin/build.sh"
 
-#flux-js-lint "$root"
+#"$bin/lint.sh"
 
 "$local_bin/tag-release.sh" "$root"
 "$local_bin/create-github-release.sh" "$root"

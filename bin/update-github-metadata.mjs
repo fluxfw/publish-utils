@@ -9,7 +9,9 @@ try {
         throw new Error("Please pass a path");
     }
 
-    await (await import("../src/Adapter/Api/PublishUtilsApi.mjs")).PublishUtilsApi.new()
+    await (await import("../src/Adapter/Api/PublishUtilsApi.mjs")).PublishUtilsApi.new(
+        shutdown_handler
+    )
         .updateGithubMetadata(
             path
         );

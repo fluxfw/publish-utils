@@ -9,7 +9,9 @@ try {
         throw new Error("Please pass a path");
     }
 
-    process.stdout.write(await (await import("../src/Adapter/Api/PublishUtilsApi.mjs")).PublishUtilsApi.new()
+    process.stdout.write(await (await import("../src/Adapter/Api/PublishUtilsApi.mjs")).PublishUtilsApi.new(
+        shutdown_handler
+    )
         .getReleaseVersion(
             path
         ));

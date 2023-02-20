@@ -59,7 +59,8 @@ export class UpdateReleaseVersionCommand {
 
         metadata.version = new_version;
 
-        await writeFile(metadata_json_file, `${JSON.stringify(metadata, null, 4)}\n`);
+        await writeFile(metadata_json_file, `${JSON.stringify(metadata, null, 4)}
+`);
 
         console.log("Update CHANGELOG.md");
         const changelog_md_file = join(path, "CHANGELOG.md");
@@ -81,11 +82,11 @@ export class UpdateReleaseVersionCommand {
     `;
         }
 
-        const latest_start_position = changelog.indexOf("## latest");
+        const latest_start_position = changelog.indexOf("\n## latest");
         if (latest_start_position === -1) {
             throw new Error("Missing latest changelog entry");
         }
-        let old_latest_changelog = changelog.substring(latest_start_position);
+        let old_latest_changelog = changelog.substring(latest_start_position + 1);
 
         const latest_end_position = old_latest_changelog.indexOf("\n## ");
         if (latest_end_position !== -1) {

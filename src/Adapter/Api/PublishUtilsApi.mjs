@@ -1,5 +1,6 @@
 /** @typedef {import("../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs").HttpApi} HttpApi */
 /** @typedef {import("../../Service/Publish/Port/PublishService.mjs").PublishService} PublishService */
+/** @typedef {import("../../../../flux-shutdown-handler-api/src/Adapter/ShutdownHandler/ShutdownHandler.mjs").ShutdownHandler} ShutdownHandler */
 
 export class PublishUtilsApi {
     /**
@@ -10,19 +11,27 @@ export class PublishUtilsApi {
      * @type {PublishService | null}
      */
     #publish_service = null;
+    /**
+     * @type {ShutdownHandler}
+     */
+    #shutdown_handler;
 
     /**
+     * @param {ShutdownHandler} shutdown_handler
      * @returns {PublishUtilsApi}
      */
-    static new() {
-        return new this();
+    static new(shutdown_handler) {
+        return new this(
+            shutdown_handler
+        );
     }
 
     /**
+     * @param {ShutdownHandler} shutdown_handler
      * @private
      */
-    constructor() {
-
+    constructor(shutdown_handler) {
+        this.#shutdown_handler = shutdown_handler;
     }
 
     /**
@@ -123,7 +132,9 @@ export class PublishUtilsApi {
      * @returns {Promise<HttpApi>}
      */
     async #getHttpApi() {
-        this.#http_api ??= (await import("../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs")).HttpApi.new();
+        this.#http_api ??= (await import("../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs")).HttpApi.new(
+            this.#shutdown_handler
+        );
 
         return this.#http_api;
     }
