@@ -1,8 +1,16 @@
+import { CONFIG_ENV_PREFIX } from "../Config/CONFIG.mjs";
+import { GITHUB_CONFIG_TOKEN_KEY } from "../Github/GITHUB_CONFIG.mjs";
+
+/** @typedef {import("../../../../flux-config-api/src/Adapter/Api/ConfigApi.mjs").ConfigApi} ConfigApi */
 /** @typedef {import("../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs").HttpApi} HttpApi */
 /** @typedef {import("../../Service/Publish/Port/PublishService.mjs").PublishService} PublishService */
 /** @typedef {import("../../../../flux-shutdown-handler-api/src/Adapter/ShutdownHandler/ShutdownHandler.mjs").ShutdownHandler} ShutdownHandler */
 
 export class PublishUtilsApi {
+    /**
+     * @type {ConfigApi | null}
+     */
+    #config_api = null;
     /**
      * @type {HttpApi | null}
      */
@@ -129,6 +137,23 @@ export class PublishUtilsApi {
     }
 
     /**
+     * @returns {Promise<ConfigApi>}
+     */
+    async #getConfigApi() {
+        if (this.#config_api === null) {
+            const { CliParamValueProviderImplementation } = await import("../../../../flux-config-api/src/Adapter/ValueProviderImplementation/CliParamValueProviderImplementation.mjs");
+
+            this.#config_api ??= (await import("../../../../flux-config-api/src/Adapter/Api/ConfigApi.mjs")).ConfigApi.new(
+                (await (await import("../../../../flux-config-api/src/Adapter/ValueProviderImplementation/getValueProviderImplementations.mjs")).getValueProviderImplementations(
+                    CONFIG_ENV_PREFIX
+                )).filter(value_provider_implementation => !(value_provider_implementation instanceof CliParamValueProviderImplementation))
+            );
+        }
+
+        return this.#config_api;
+    }
+
+    /**
      * @returns {Promise<HttpApi>}
      */
     async #getHttpApi() {
@@ -144,7 +169,10 @@ export class PublishUtilsApi {
      */
     async #getPublishService() {
         this.#publish_service ??= (await import("../../Service/Publish/Port/PublishService.mjs")).PublishService.new(
-            await this.#getHttpApi()
+            await this.#getHttpApi(),
+            await (await this.#getConfigApi()).getConfig(
+                GITHUB_CONFIG_TOKEN_KEY
+            )
         );
 
         return this.#publish_service;

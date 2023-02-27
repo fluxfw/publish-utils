@@ -3,26 +3,34 @@
 
 export class PublishService {
     /**
+     * @type {string | null}
+     */
+    #github_token;
+    /**
      * @type {HttpApi}
      */
     #http_api;
 
     /**
      * @param {HttpApi} http_api
+     * @param {string | null} github_token
      * @returns {PublishService}
      */
-    static new(http_api) {
+    static new(http_api, github_token = null) {
         return new this(
-            http_api
+            http_api,
+            github_token
         );
     }
 
     /**
      * @param {HttpApi} http_api
+     * @param {string | null} github_token
      * @private
      */
-    constructor(http_api) {
+    constructor(http_api, github_token) {
         this.#http_api = http_api;
+        this.#github_token = github_token;
     }
 
     /**
@@ -54,8 +62,12 @@ export class PublishService {
      * @returns {Promise<string>}
      */
     async getGithubAuthorization() {
+        if (this.#github_token === null) {
+            throw new Error("Missing github token");
+        }
+
         return (await import("../Command/GetGithubAuthorizationCommand.mjs")).GetGithubAuthorizationCommand.new(
-            this
+            this.#github_token
         )
             .getGithubAuthorization();
     }
@@ -69,14 +81,6 @@ export class PublishService {
             .getGithubRepository(
                 path
             );
-    }
-
-    /**
-     * @returns {Promise<string>}
-     */
-    async getGithubToken() {
-        return (await import("../Command/GetGithubTokenCommand.mjs")).GetGithubTokenCommand.new()
-            .getGithubToken();
     }
 
     /**
