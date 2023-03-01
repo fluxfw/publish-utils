@@ -72,7 +72,8 @@ export class UploadAssetToGithubReleaseCommand {
                     [HEADER_ACCEPT]: "application/vnd.github+json",
                     [HEADER_AUTHORIZATION]: authorization,
                     [HEADER_USER_AGENT]: "flux-publish-utils"
-                }
+                },
+                true
             )
         )).body.json()).id}/assets`);
         url.searchParams.set("name", _asset_name);
@@ -89,7 +90,7 @@ export class UploadAssetToGithubReleaseCommand {
                     ),
                     [HEADER_USER_AGENT]: "flux-publish-utils"
                 },
-                null,
+                true,
                 false
             )
         );

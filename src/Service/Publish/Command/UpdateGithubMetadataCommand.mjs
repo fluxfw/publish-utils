@@ -66,7 +66,7 @@ export class UpdateGithubMetadataCommand {
                     [HEADER_AUTHORIZATION]: authorization,
                     [HEADER_USER_AGENT]: "flux-publish-utils"
                 },
-                null,
+                true,
                 false
             )
         );
@@ -82,7 +82,7 @@ export class UpdateGithubMetadataCommand {
                     [HEADER_AUTHORIZATION]: authorization,
                     [HEADER_USER_AGENT]: "flux-publish-utils"
                 },
-                null,
+                true,
                 false
             )
         );

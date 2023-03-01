@@ -70,7 +70,7 @@ export class CreateGithubReleaseCommand {
                     [HEADER_AUTHORIZATION]: await this.#publish_service.getGithubAuthorization(),
                     [HEADER_USER_AGENT]: "flux-publish-utils"
                 },
-                null,
+                true,
                 false
             )
         );

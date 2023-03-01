@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-03-01-1
+
+Changes:
+
+- `flux-http-api`
+
 ## v2023-02-27-1
 
 Changes:
