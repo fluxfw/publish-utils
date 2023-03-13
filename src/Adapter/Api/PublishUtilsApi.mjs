@@ -104,6 +104,16 @@ export class PublishUtilsApi {
 
     /**
      * @param {string} path
+     * @returns {Promise<string>}
+     */
+    async updateGetReleaseTag(path) {
+        return (await this.#getPublishService()).updateGetReleaseTag(
+            path
+        );
+    }
+
+    /**
+     * @param {string} path
      * @returns {Promise<void>}
      */
     async updateGithubMetadata(path) {

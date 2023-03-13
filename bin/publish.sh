@@ -12,8 +12,6 @@ tag="`$local_bin/get-release-tag.sh "$root"`"
 
 "$bin/build.sh"
 
-#"$bin/lint.sh"
-
 "$local_bin/tag-release.sh" "$root"
 "$local_bin/create-github-release.sh" "$root"
 

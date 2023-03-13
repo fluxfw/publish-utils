@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-03-13-1
+
+Changes:
+
+- Update `get-release-tag.sh` on `pre-publish.sh` and build with new tag
+
 ## v2023-03-10-1
 
 Changes:

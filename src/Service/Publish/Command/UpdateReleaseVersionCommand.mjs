@@ -1,11 +1,8 @@
 import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { basename, dirname, join } from "node:path/posix";
+import { join } from "node:path/posix";
 import { readFile, writeFile } from "node:fs/promises";
 
 /** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export class UpdateReleaseVersionCommand {
     /**
@@ -122,13 +119,6 @@ ${new_version_changelog}`);
             plugin = plugin.replace(/\$version\s*=\s*["'][0-9.]+["']/, `$version = "${plugin_new_version}"`);
 
             await writeFile(plugin_php_file, plugin);
-        }
-
-        const get_release_tag_sh_file = join(path, ".local", "bin", "get-release-tag.sh");
-        if (basename(path) === basename(join(__dirname, "..", "..", "..", "..")) && existsSync(get_release_tag_sh_file)) {
-            console.log("Update get-release-tag.sh");
-
-            await writeFile(get_release_tag_sh_file, (await readFile(get_release_tag_sh_file, "utf8")).replace(/tag="v[0-9-]+"/, `tag="${tag}"`));
         }
     }
 }

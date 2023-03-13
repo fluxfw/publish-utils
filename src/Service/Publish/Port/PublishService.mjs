@@ -161,6 +161,19 @@ export class PublishService {
 
     /**
      * @param {string} path
+     * @returns {Promise<string>}
+     */
+    async updateGetReleaseTag(path) {
+        return (await import("../Command/UpdateGetReleaseTagCommand.mjs")).UpdateGetReleaseTagCommand.new(
+            this
+        )
+            .updateGetReleaseTag(
+                path
+            );
+    }
+
+    /**
+     * @param {string} path
      * @returns {Promise<void>}
      */
     async updateGithubMetadata(path) {
