@@ -1,35 +1,35 @@
-/** @typedef {import("../../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs").HttpApi} HttpApi */
+/** @typedef {import("../../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
 /** @typedef {import("../../../Adapter/Metadata/Metadata.mjs").Metadata} Metadata */
 
 export class PublishService {
     /**
+     * @type {FluxHttpApi}
+     */
+    #flux_http_api;
+    /**
      * @type {string | null}
      */
     #github_token;
-    /**
-     * @type {HttpApi}
-     */
-    #http_api;
 
     /**
-     * @param {HttpApi} http_api
+     * @param {FluxHttpApi} flux_http_api
      * @param {string | null} github_token
      * @returns {PublishService}
      */
-    static new(http_api, github_token = null) {
+    static new(flux_http_api, github_token = null) {
         return new this(
-            http_api,
+            flux_http_api,
             github_token
         );
     }
 
     /**
-     * @param {HttpApi} http_api
+     * @param {FluxHttpApi} flux_http_api
      * @param {string | null} github_token
      * @private
      */
-    constructor(http_api, github_token) {
-        this.#http_api = http_api;
+    constructor(flux_http_api, github_token) {
+        this.#flux_http_api = flux_http_api;
         this.#github_token = github_token;
     }
 
@@ -39,7 +39,7 @@ export class PublishService {
      */
     async createGithubRelease(path) {
         await (await import("../Command/CreateGithubReleaseCommand.mjs")).CreateGithubReleaseCommand.new(
-            this.#http_api,
+            this.#flux_http_api,
             this
         )
             .createGithubRelease(
@@ -178,7 +178,7 @@ export class PublishService {
      */
     async updateGithubMetadata(path) {
         await (await import("../Command/UpdateGithubMetadataCommand.mjs")).UpdateGithubMetadataCommand.new(
-            this.#http_api,
+            this.#flux_http_api,
             this
         )
             .updateGithubMetadata(
@@ -207,7 +207,7 @@ export class PublishService {
      */
     async uploadAssetToGithubRelease(path, asset_path, asset_name = null) {
         await (await import("../Command/UploadAssetToGithubReleaseCommand.mjs")).UploadAssetToGithubReleaseCommand.new(
-            this.#http_api,
+            this.#flux_http_api,
             this
         )
             .uploadAssetToGithubRelease(

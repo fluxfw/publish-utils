@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-let shutdown_handler = null;
+let flux_shutdown_handler = null;
 try {
-    shutdown_handler = await (await import("../../flux-shutdown-handler-api/src/Adapter/Api/ShutdownHandlerApi.mjs")).ShutdownHandlerApi.new()
-        .getShutdownHandler();
+    flux_shutdown_handler = (await import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
 
     const path = process.argv[2] ?? null;
     if (path === null) {
@@ -10,7 +9,7 @@ try {
     }
 
     await (await import("../src/Adapter/Api/PublishUtilsApi.mjs")).PublishUtilsApi.new(
-        shutdown_handler
+        flux_shutdown_handler
     )
         .createGithubRelease(
             path
@@ -18,8 +17,8 @@ try {
 } catch (error) {
     console.error(error);
 
-    if (shutdown_handler !== null) {
-        await shutdown_handler.shutdown(
+    if (flux_shutdown_handler !== null) {
+        await flux_shutdown_handler.shutdown(
             1
         );
     } else {

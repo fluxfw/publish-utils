@@ -1,42 +1,42 @@
 import { createReadStream } from "node:fs";
-import { HttpClientRequest } from "../../../../../flux-http-api/src/Adapter/Client/HttpClientRequest.mjs";
-import { METHOD_POST } from "../../../../../flux-http-api/src/Adapter/Method/METHOD.mjs";
+import { HttpClientRequest } from "../../../../../flux-http-api/src/Client/HttpClientRequest.mjs";
+import { METHOD_POST } from "../../../../../flux-http-api/src/Method/METHOD.mjs";
 import { stat } from "node:fs/promises";
 import { basename, join } from "node:path/posix";
-import { HEADER_ACCEPT, HEADER_AUTHORIZATION, HEADER_CONTENT_LENGTH, HEADER_CONTENT_TYPE, HEADER_USER_AGENT } from "../../../../../flux-http-api/src/Adapter/Header/HEADER.mjs";
+import { HEADER_ACCEPT, HEADER_AUTHORIZATION, HEADER_CONTENT_LENGTH, HEADER_CONTENT_TYPE, HEADER_USER_AGENT } from "../../../../../flux-http-api/src/Header/HEADER.mjs";
 
-/** @typedef {import("../../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs").HttpApi} HttpApi */
+/** @typedef {import("../../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
 /** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
 
 export class UploadAssetToGithubReleaseCommand {
     /**
-     * @type {HttpApi}
+     * @type {FluxHttpApi}
      */
-    #http_api;
+    #flux_http_api;
     /**
      * @type {PublishService}
      */
     #publish_service;
 
     /**
-     * @param {HttpApi} http_api
+     * @param {FluxHttpApi} flux_http_api
      * @param {PublishService} publish_service
      * @returns {UploadAssetToGithubReleaseCommand}
      */
-    static new(http_api, publish_service) {
+    static new(flux_http_api, publish_service) {
         return new this(
-            http_api,
+            flux_http_api,
             publish_service
         );
     }
 
     /**
-     * @param {HttpApi} http_api
+     * @param {FluxHttpApi} flux_http_api
      * @param {PublishService} publish_service
      * @private
      */
-    constructor(http_api, publish_service) {
-        this.#http_api = http_api;
+    constructor(flux_http_api, publish_service) {
+        this.#flux_http_api = flux_http_api;
         this.#publish_service = publish_service;
     }
 
@@ -63,7 +63,7 @@ export class UploadAssetToGithubReleaseCommand {
 
         const authorization = await this.#publish_service.getGithubAuthorization();
 
-        const url = new URL(`https://uploads.github.com/repos/${repository}/releases/${(await (await this.#http_api.request(
+        const url = new URL(`https://uploads.github.com/repos/${repository}/releases/${(await (await this.#flux_http_api.request(
             HttpClientRequest.new(
                 new URL(`https://api.github.com/repos/${repository}/releases/tags/${tag}`),
                 null,
@@ -77,7 +77,7 @@ export class UploadAssetToGithubReleaseCommand {
             )
         )).body.json()).id}/assets`);
         url.searchParams.set("name", _asset_name);
-        await this.#http_api.request(
+        await this.#flux_http_api.request(
             await HttpClientRequest.nodeStream(
                 url,
                 createReadStream(_asset_path),
@@ -85,7 +85,7 @@ export class UploadAssetToGithubReleaseCommand {
                 {
                     [HEADER_AUTHORIZATION]: authorization,
                     [HEADER_CONTENT_LENGTH]: (await stat(_asset_path)).size,
-                    [HEADER_CONTENT_TYPE]: await this.#http_api.getMimeTypeByPath(
+                    [HEADER_CONTENT_TYPE]: await this.#flux_http_api.getMimeTypeByPath(
                         _asset_path
                     ),
                     [HEADER_USER_AGENT]: "flux-publish-utils"

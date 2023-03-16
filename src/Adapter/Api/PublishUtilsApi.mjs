@@ -1,45 +1,45 @@
 import { CONFIG_ENV_PREFIX } from "../Config/CONFIG.mjs";
 import { GITHUB_CONFIG_TOKEN_KEY } from "../Github/GITHUB_CONFIG.mjs";
 
-/** @typedef {import("../../../../flux-config-api/src/Adapter/Api/ConfigApi.mjs").ConfigApi} ConfigApi */
-/** @typedef {import("../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs").HttpApi} HttpApi */
+/** @typedef {import("../../../../flux-config-api/src/FluxConfigApi.mjs").FluxConfigApi} FluxConfigApi */
+/** @typedef {import("../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
+/** @typedef {import("../../../../flux-shutdown-handler/src/FluxShutdownHandler.mjs").FluxShutdownHandler} FluxShutdownHandler */
 /** @typedef {import("../../Service/Publish/Port/PublishService.mjs").PublishService} PublishService */
-/** @typedef {import("../../../../flux-shutdown-handler-api/src/Adapter/ShutdownHandler/ShutdownHandler.mjs").ShutdownHandler} ShutdownHandler */
 
 export class PublishUtilsApi {
     /**
-     * @type {ConfigApi | null}
+     * @type {FluxConfigApi | null}
      */
-    #config_api = null;
+    #flux_config_api = null;
     /**
-     * @type {HttpApi | null}
+     * @type {FluxHttpApi | null}
      */
-    #http_api = null;
+    #flux_http_api = null;
+    /**
+     * @type {FluxShutdownHandler}
+     */
+    #flux_shutdown_handler;
     /**
      * @type {PublishService | null}
      */
     #publish_service = null;
-    /**
-     * @type {ShutdownHandler}
-     */
-    #shutdown_handler;
 
     /**
-     * @param {ShutdownHandler} shutdown_handler
+     * @param {FluxShutdownHandler} flux_shutdown_handler
      * @returns {PublishUtilsApi}
      */
-    static new(shutdown_handler) {
+    static new(flux_shutdown_handler) {
         return new this(
-            shutdown_handler
+            flux_shutdown_handler
         );
     }
 
     /**
-     * @param {ShutdownHandler} shutdown_handler
+     * @param {FluxShutdownHandler} flux_shutdown_handler
      * @private
      */
-    constructor(shutdown_handler) {
-        this.#shutdown_handler = shutdown_handler;
+    constructor(flux_shutdown_handler) {
+        this.#flux_shutdown_handler = flux_shutdown_handler;
     }
 
     /**
@@ -147,31 +147,31 @@ export class PublishUtilsApi {
     }
 
     /**
-     * @returns {Promise<ConfigApi>}
+     * @returns {Promise<FluxConfigApi>}
      */
-    async #getConfigApi() {
-        if (this.#config_api === null) {
-            const { CliParamValueProviderImplementation } = await import("../../../../flux-config-api/src/Adapter/ValueProviderImplementation/CliParamValueProviderImplementation.mjs");
+    async #getFluxConfigApi() {
+        if (this.#flux_config_api === null) {
+            const { CliParamValueProviderImplementation } = await import("../../../../flux-config-api/src/ValueProviderImplementation/CliParamValueProviderImplementation.mjs");
 
-            this.#config_api ??= (await import("../../../../flux-config-api/src/Adapter/Api/ConfigApi.mjs")).ConfigApi.new(
-                (await (await import("../../../../flux-config-api/src/Adapter/ValueProviderImplementation/getValueProviderImplementations.mjs")).getValueProviderImplementations(
+            this.#flux_config_api ??= (await import("../../../../flux-config-api/src/FluxConfigApi.mjs")).FluxConfigApi.new(
+                (await (await import("../../../../flux-config-api/src/getValueProviderImplementations.mjs")).getValueProviderImplementations(
                     CONFIG_ENV_PREFIX
                 )).filter(value_provider_implementation => !(value_provider_implementation instanceof CliParamValueProviderImplementation))
             );
         }
 
-        return this.#config_api;
+        return this.#flux_config_api;
     }
 
     /**
-     * @returns {Promise<HttpApi>}
+     * @returns {Promise<FluxHttpApi>}
      */
-    async #getHttpApi() {
-        this.#http_api ??= (await import("../../../../flux-http-api/src/Adapter/Api/HttpApi.mjs")).HttpApi.new(
-            this.#shutdown_handler
+    async #getFluxHttpApi() {
+        this.#flux_http_api ??= (await import("../../../../flux-http-api/src/FluxHttpApi.mjs")).FluxHttpApi.new(
+            this.#flux_shutdown_handler
         );
 
-        return this.#http_api;
+        return this.#flux_http_api;
     }
 
     /**
@@ -179,8 +179,8 @@ export class PublishUtilsApi {
      */
     async #getPublishService() {
         this.#publish_service ??= (await import("../../Service/Publish/Port/PublishService.mjs")).PublishService.new(
-            await this.#getHttpApi(),
-            await (await this.#getConfigApi()).getConfig(
+            await this.#getFluxHttpApi(),
+            await (await this.#getFluxConfigApi()).getConfig(
                 GITHUB_CONFIG_TOKEN_KEY
             )
         );
