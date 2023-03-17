@@ -1,7 +1,7 @@
 import { join } from "node:path/posix";
 import { readFile } from "node:fs/promises";
 
-/** @typedef {import("../../../Adapter/Metadata/Metadata.mjs").Metadata} Metadata */
+/** @typedef {import("../../Metadata/Metadata.mjs").Metadata} Metadata */
 
 export class GetMetadataCommand {
     /**

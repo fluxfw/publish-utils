@@ -1,12 +1,12 @@
-import { CONFIG_ENV_PREFIX } from "../Config/CONFIG.mjs";
-import { GITHUB_CONFIG_TOKEN_KEY } from "../Github/GITHUB_CONFIG.mjs";
+import { CONFIG_ENV_PREFIX } from "./Config/CONFIG.mjs";
+import { GITHUB_CONFIG_TOKEN_KEY } from "./Github/GITHUB_CONFIG.mjs";
 
-/** @typedef {import("../../../../flux-config-api/src/FluxConfigApi.mjs").FluxConfigApi} FluxConfigApi */
-/** @typedef {import("../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
-/** @typedef {import("../../../../flux-shutdown-handler/src/FluxShutdownHandler.mjs").FluxShutdownHandler} FluxShutdownHandler */
-/** @typedef {import("../../Service/Publish/Port/PublishService.mjs").PublishService} PublishService */
+/** @typedef {import("../../flux-config-api/src/FluxConfigApi.mjs").FluxConfigApi} FluxConfigApi */
+/** @typedef {import("../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
+/** @typedef {import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs").FluxShutdownHandler} FluxShutdownHandler */
+/** @typedef {import("./Publish/Port/PublishService.mjs").PublishService} PublishService */
 
-export class PublishUtilsApi {
+export class FluxPublishUtils {
     /**
      * @type {FluxConfigApi | null}
      */
@@ -26,7 +26,7 @@ export class PublishUtilsApi {
 
     /**
      * @param {FluxShutdownHandler} flux_shutdown_handler
-     * @returns {PublishUtilsApi}
+     * @returns {FluxPublishUtils}
      */
     static new(flux_shutdown_handler) {
         return new this(
@@ -151,10 +151,10 @@ export class PublishUtilsApi {
      */
     async #getFluxConfigApi() {
         if (this.#flux_config_api === null) {
-            const { CliParamValueProviderImplementation } = await import("../../../../flux-config-api/src/ValueProviderImplementation/CliParamValueProviderImplementation.mjs");
+            const { CliParamValueProviderImplementation } = await import("../../flux-config-api/src/ValueProviderImplementation/CliParamValueProviderImplementation.mjs");
 
-            this.#flux_config_api ??= (await import("../../../../flux-config-api/src/FluxConfigApi.mjs")).FluxConfigApi.new(
-                (await (await import("../../../../flux-config-api/src/getValueProviderImplementations.mjs")).getValueProviderImplementations(
+            this.#flux_config_api ??= (await import("../../flux-config-api/src/FluxConfigApi.mjs")).FluxConfigApi.new(
+                (await (await import("../../flux-config-api/src/getValueProviderImplementations.mjs")).getValueProviderImplementations(
                     CONFIG_ENV_PREFIX
                 )).filter(value_provider_implementation => !(value_provider_implementation instanceof CliParamValueProviderImplementation))
             );
@@ -167,7 +167,7 @@ export class PublishUtilsApi {
      * @returns {Promise<FluxHttpApi>}
      */
     async #getFluxHttpApi() {
-        this.#flux_http_api ??= (await import("../../../../flux-http-api/src/FluxHttpApi.mjs")).FluxHttpApi.new(
+        this.#flux_http_api ??= (await import("../../flux-http-api/src/FluxHttpApi.mjs")).FluxHttpApi.new(
             this.#flux_shutdown_handler
         );
 
@@ -178,7 +178,7 @@ export class PublishUtilsApi {
      * @returns {Promise<PublishService>}
      */
     async #getPublishService() {
-        this.#publish_service ??= (await import("../../Service/Publish/Port/PublishService.mjs")).PublishService.new(
+        this.#publish_service ??= (await import("./Publish/Port/PublishService.mjs")).PublishService.new(
             await this.#getFluxHttpApi(),
             await (await this.#getFluxConfigApi()).getConfig(
                 GITHUB_CONFIG_TOKEN_KEY

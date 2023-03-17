@@ -1,8 +1,8 @@
-import { HttpClientRequest } from "../../../../../flux-http-api/src/Client/HttpClientRequest.mjs";
-import { METHOD_POST } from "../../../../../flux-http-api/src/Method/METHOD.mjs";
-import { HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../../../flux-http-api/src/Header/HEADER.mjs";
+import { HttpClientRequest } from "../../../../flux-http-api/src/Client/HttpClientRequest.mjs";
+import { METHOD_POST } from "../../../../flux-http-api/src/Method/METHOD.mjs";
+import { HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../../flux-http-api/src/Header/HEADER.mjs";
 
-/** @typedef {import("../../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
+/** @typedef {import("../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
 /** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
 
 export class CreateGithubReleaseCommand {

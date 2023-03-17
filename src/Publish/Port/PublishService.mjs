@@ -1,5 +1,5 @@
-/** @typedef {import("../../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
-/** @typedef {import("../../../Adapter/Metadata/Metadata.mjs").Metadata} Metadata */
+/** @typedef {import("../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
+/** @typedef {import("../../Metadata/Metadata.mjs").Metadata} Metadata */
 
 export class PublishService {
     /**

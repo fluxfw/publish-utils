@@ -1,11 +1,11 @@
 import { createReadStream } from "node:fs";
-import { HttpClientRequest } from "../../../../../flux-http-api/src/Client/HttpClientRequest.mjs";
-import { METHOD_POST } from "../../../../../flux-http-api/src/Method/METHOD.mjs";
+import { HttpClientRequest } from "../../../../flux-http-api/src/Client/HttpClientRequest.mjs";
+import { METHOD_POST } from "../../../../flux-http-api/src/Method/METHOD.mjs";
 import { stat } from "node:fs/promises";
 import { basename, join } from "node:path/posix";
-import { HEADER_ACCEPT, HEADER_AUTHORIZATION, HEADER_CONTENT_LENGTH, HEADER_CONTENT_TYPE, HEADER_USER_AGENT } from "../../../../../flux-http-api/src/Header/HEADER.mjs";
+import { HEADER_ACCEPT, HEADER_AUTHORIZATION, HEADER_CONTENT_LENGTH, HEADER_CONTENT_TYPE, HEADER_USER_AGENT } from "../../../../flux-http-api/src/Header/HEADER.mjs";
 
-/** @typedef {import("../../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
+/** @typedef {import("../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
 /** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
 
 export class UploadAssetToGithubReleaseCommand {
