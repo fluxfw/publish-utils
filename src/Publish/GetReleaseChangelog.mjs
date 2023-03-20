@@ -1,27 +1,27 @@
-/** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
+/** @typedef {import("../FluxPublishUtils.mjs").FluxPublishUtils} FluxPublishUtils */
 
-export class GetReleaseChangelogCommand {
+export class GetReleaseChangelog {
     /**
-     * @type {PublishService}
+     * @type {FluxPublishUtils}
      */
-    #publish_service;
+    #flux_publish_utils;
 
     /**
-     * @param {PublishService} publish_service
-     * @returns {GetReleaseChangelogCommand}
+     * @param {FluxPublishUtils} flux_publish_utils
+     * @returns {GetReleaseChangelog}
      */
-    static new(publish_service) {
+    static new(flux_publish_utils) {
         return new this(
-            publish_service
+            flux_publish_utils
         );
     }
 
     /**
-     * @param {PublishService} publish_service
+     * @param {FluxPublishUtils} flux_publish_utils
      * @private
      */
-    constructor(publish_service) {
-        this.#publish_service = publish_service;
+    constructor(flux_publish_utils) {
+        this.#flux_publish_utils = flux_publish_utils;
     }
 
     /**
@@ -29,11 +29,11 @@ export class GetReleaseChangelogCommand {
      * @returns {Promise<string>}
      */
     async getReleaseChangelog(path) {
-        let changelog = await this.#publish_service.getChangelog(
+        let changelog = await this.#flux_publish_utils.getChangelog(
             path
         );
 
-        const changelog_start_position = changelog.indexOf(`\n## ${await this.#publish_service.getReleaseTag(
+        const changelog_start_position = changelog.indexOf(`\n## ${await this.#flux_publish_utils.getReleaseTag(
             path
         )}`);
 

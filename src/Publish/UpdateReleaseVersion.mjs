@@ -2,30 +2,30 @@ import { existsSync } from "node:fs";
 import { join } from "node:path/posix";
 import { readFile, writeFile } from "node:fs/promises";
 
-/** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
+/** @typedef {import("../FluxPublishUtils.mjs").FluxPublishUtils} FluxPublishUtils */
 
-export class UpdateReleaseVersionCommand {
+export class UpdateReleaseVersion {
     /**
-     * @type {PublishService}
+     * @type {FluxPublishUtils}
      */
-    #publish_service;
+    #flux_publish_utils;
 
     /**
-     * @param {PublishService} publish_service
-     * @returns {UpdateReleaseVersionCommand}
+     * @param {FluxPublishUtils} flux_publish_utils
+     * @returns {UpdateReleaseVersion}
      */
-    static new(publish_service) {
+    static new(flux_publish_utils) {
         return new this(
-            publish_service
+            flux_publish_utils
         );
     }
 
     /**
-     * @param {PublishService} publish_service
+     * @param {FluxPublishUtils} flux_publish_utils
      * @private
      */
-    constructor(publish_service) {
-        this.#publish_service = publish_service;
+    constructor(flux_publish_utils) {
+        this.#flux_publish_utils = flux_publish_utils;
     }
 
     /**
@@ -37,7 +37,7 @@ export class UpdateReleaseVersionCommand {
         const metadata_json_file = join(path, "metadata.json");
         let metadata = {};
         if (existsSync(metadata_json_file)) {
-            metadata = await this.#publish_service.getMetadata(
+            metadata = await this.#flux_publish_utils.getMetadata(
                 path
             );
         }
@@ -68,7 +68,7 @@ export class UpdateReleaseVersionCommand {
         const changelog_md_file = join(path, "CHANGELOG.md");
         let changelog;
         if (existsSync(changelog_md_file)) {
-            changelog = await this.#publish_service.getChangelog(
+            changelog = await this.#flux_publish_utils.getChangelog(
                 path
             );
         }

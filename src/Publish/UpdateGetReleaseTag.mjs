@@ -1,30 +1,30 @@
 import { join } from "node:path/posix";
 import { readFile, writeFile } from "node:fs/promises";
 
-/** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
+/** @typedef {import("../FluxPublishUtils.mjs").FluxPublishUtils} FluxPublishUtils */
 
-export class UpdateGetReleaseTagCommand {
+export class UpdateGetReleaseTag {
     /**
-     * @type {PublishService}
+     * @type {FluxPublishUtils}
      */
-    #publish_service;
+    #flux_publish_utils;
 
     /**
-     * @param {PublishService} publish_service
-     * @returns {UpdateGetReleaseTagCommand}
+     * @param {FluxPublishUtils} flux_publish_utils
+     * @returns {UpdateGetReleaseTag}
      */
-    static new(publish_service) {
+    static new(flux_publish_utils) {
         return new this(
-            publish_service
+            flux_publish_utils
         );
     }
 
     /**
-     * @param {PublishService} publish_service
+     * @param {FluxPublishUtils} flux_publish_utils
      * @private
      */
-    constructor(publish_service) {
-        this.#publish_service = publish_service;
+    constructor(flux_publish_utils) {
+        this.#flux_publish_utils = flux_publish_utils;
     }
 
     /**
@@ -32,7 +32,7 @@ export class UpdateGetReleaseTagCommand {
      * @returns {Promise<string>}
      */
     async updateGetReleaseTag(path) {
-        const tag = await this.#publish_service.getReleaseTag(
+        const tag = await this.#flux_publish_utils.getReleaseTag(
             path
         );
 

@@ -4,7 +4,7 @@ import { GITHUB_CONFIG_TOKEN_KEY } from "./Github/GITHUB_CONFIG.mjs";
 /** @typedef {import("../../flux-config-api/src/FluxConfigApi.mjs").FluxConfigApi} FluxConfigApi */
 /** @typedef {import("../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
 /** @typedef {import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs").FluxShutdownHandler} FluxShutdownHandler */
-/** @typedef {import("./Publish/Port/PublishService.mjs").PublishService} PublishService */
+/** @typedef {import("./Metadata/Metadata.mjs").Metadata} Metadata */
 
 export class FluxPublishUtils {
     /**
@@ -19,10 +19,6 @@ export class FluxPublishUtils {
      * @type {FluxShutdownHandler}
      */
     #flux_shutdown_handler;
-    /**
-     * @type {PublishService | null}
-     */
-    #publish_service = null;
 
     /**
      * @param {FluxShutdownHandler} flux_shutdown_handler
@@ -47,9 +43,64 @@ export class FluxPublishUtils {
      * @returns {Promise<void>}
      */
     async createGithubRelease(path) {
-        await (await this.#getPublishService()).createGithubRelease(
-            path
+        await (await import("./Publish/CreateGithubRelease.mjs")).CreateGithubRelease.new(
+            await this.#getFluxHttpApi(),
+            this
+        )
+            .createGithubRelease(
+                path
+            );
+    }
+
+    /**
+     * @param {string} path
+     * @returns {Promise<string>}
+     */
+    async getChangelog(path) {
+        return (await import("./Publish/GetChangelog.mjs")).GetChangelog.new()
+            .getChangelog(
+                path
+            );
+    }
+
+    /**
+     * @returns {Promise<string>}
+     */
+    async getGithubAuthorization() {
+        const github_token = await (await this.#getFluxConfigApi()).getConfig(
+            GITHUB_CONFIG_TOKEN_KEY
         );
+
+        if (github_token === null) {
+            throw new Error("Missing github token");
+        }
+
+        return (await import("./Publish/GetGithubAuthorization.mjs")).GetGithubAuthorization.new(
+            github_token
+        )
+            .getGithubAuthorization();
+    }
+
+    /**
+     * @param {string} path
+     * @returns {Promise<string>}
+     */
+    async getGithubRepository(path) {
+        return (await import("./Publish/GetGithubRepository.mjs")).GetGithubRepository.new()
+            .getGithubRepository(
+                path
+            );
+    }
+
+    /**
+     * @param {string} path
+     * @returns {Promise<Metadata>}
+     */
+    async getMetadata(path) {
+        return (await import("./Publish/GetMetadata.mjs")).GetMetadata.new()
+            .getMetadata(
+                path
+            );
     }
 
     /**
@@ -57,9 +108,12 @@ export class FluxPublishUtils {
      * @returns {Promise<string>}
      */
     async getReleaseChangelog(path) {
-        return (await this.#getPublishService()).getReleaseChangelog(
-            path
-        );
+        return (await import("./Publish/GetReleaseChangelog.mjs")).GetReleaseChangelog.new(
+            this
+        )
+            .getReleaseChangelog(
+                path
+            );
     }
 
     /**
@@ -67,9 +121,12 @@ export class FluxPublishUtils {
      * @returns {Promise<string>}
      */
     async getReleaseDescription(path) {
-        return (await this.#getPublishService()).getReleaseDescription(
-            path
-        );
+        return (await import("./Publish/GetReleaseDescription.mjs")).GetReleaseDescription.new(
+            this
+        )
+            .getReleaseDescription(
+                path
+            );
     }
 
     /**
@@ -77,9 +134,12 @@ export class FluxPublishUtils {
      * @returns {Promise<string>}
      */
     async getReleaseTag(path) {
-        return (await this.#getPublishService()).getReleaseTag(
-            path
-        );
+        return (await import("./Publish/GetReleaseTag.mjs")).GetReleaseTag.new(
+            this
+        )
+            .getReleaseTag(
+                path
+            );
     }
 
     /**
@@ -87,9 +147,12 @@ export class FluxPublishUtils {
      * @returns {Promise<string>}
      */
     async getReleaseTitle(path) {
-        return (await this.#getPublishService()).getReleaseTitle(
-            path
-        );
+        return (await import("./Publish/GetReleaseTitle.mjs")).GetReleaseTitle.new(
+            this
+        )
+            .getReleaseTitle(
+                path
+            );
     }
 
     /**
@@ -97,9 +160,12 @@ export class FluxPublishUtils {
      * @returns {Promise<string>}
      */
     async getReleaseVersion(path) {
-        return (await this.#getPublishService()).getReleaseVersion(
-            path
-        );
+        return (await import("./Publish/GetReleaseVersion.mjs")).GetReleaseVersion.new(
+            this
+        )
+            .getReleaseVersion(
+                path
+            );
     }
 
     /**
@@ -107,9 +173,12 @@ export class FluxPublishUtils {
      * @returns {Promise<string>}
      */
     async updateGetReleaseTag(path) {
-        return (await this.#getPublishService()).updateGetReleaseTag(
-            path
-        );
+        return (await import("./Publish/UpdateGetReleaseTag.mjs")).UpdateGetReleaseTag.new(
+            this
+        )
+            .updateGetReleaseTag(
+                path
+            );
     }
 
     /**
@@ -117,9 +186,13 @@ export class FluxPublishUtils {
      * @returns {Promise<void>}
      */
     async updateGithubMetadata(path) {
-        await (await this.#getPublishService()).updateGithubMetadata(
-            path
-        );
+        await (await import("./Publish/UpdateGithubMetadata.mjs")).UpdateGithubMetadata.new(
+            await this.#getFluxHttpApi(),
+            this
+        )
+            .updateGithubMetadata(
+                path
+            );
     }
 
     /**
@@ -127,9 +200,12 @@ export class FluxPublishUtils {
      * @returns {Promise<void>}
      */
     async updateReleaseVersion(path) {
-        await (await this.#getPublishService()).updateReleaseVersion(
-            path
-        );
+        await (await import("./Publish/UpdateReleaseVersion.mjs")).UpdateReleaseVersion.new(
+            this
+        )
+            .updateReleaseVersion(
+                path
+            );
     }
 
     /**
@@ -139,26 +215,27 @@ export class FluxPublishUtils {
      * @returns {Promise<void>}
      */
     async uploadAssetToGithubRelease(path, asset_path, asset_name = null) {
-        await (await this.#getPublishService()).uploadAssetToGithubRelease(
-            path,
-            asset_path,
-            asset_name
-        );
+        await (await import("./Publish/UploadAssetToGithubRelease.mjs")).UploadAssetToGithubRelease.new(
+            await this.#getFluxHttpApi(),
+            this
+        )
+            .uploadAssetToGithubRelease(
+                path,
+                asset_path,
+                asset_name
+            );
     }
 
     /**
      * @returns {Promise<FluxConfigApi>}
      */
     async #getFluxConfigApi() {
-        if (this.#flux_config_api === null) {
-            const { CliParamValueProviderImplementation } = await import("../../flux-config-api/src/ValueProviderImplementation/CliParamValueProviderImplementation.mjs");
-
-            this.#flux_config_api ??= (await import("../../flux-config-api/src/FluxConfigApi.mjs")).FluxConfigApi.new(
-                (await (await import("../../flux-config-api/src/getValueProviderImplementations.mjs")).getValueProviderImplementations(
-                    CONFIG_ENV_PREFIX
-                )).filter(value_provider_implementation => !(value_provider_implementation instanceof CliParamValueProviderImplementation))
-            );
-        }
+        this.#flux_config_api ??= (await import("../../flux-config-api/src/FluxConfigApi.mjs")).FluxConfigApi.new(
+            await (await import("../../flux-config-api/src/getValueProviderImplementations.mjs")).getValueProviderImplementations(
+                CONFIG_ENV_PREFIX,
+                false
+            )
+        );
 
         return this.#flux_config_api;
     }
@@ -172,19 +249,5 @@ export class FluxPublishUtils {
         );
 
         return this.#flux_http_api;
-    }
-
-    /**
-     * @returns {Promise<PublishService>}
-     */
-    async #getPublishService() {
-        this.#publish_service ??= (await import("./Publish/Port/PublishService.mjs")).PublishService.new(
-            await this.#getFluxHttpApi(),
-            await (await this.#getFluxConfigApi()).getConfig(
-                GITHUB_CONFIG_TOKEN_KEY
-            )
-        );
-
-        return this.#publish_service;
     }
 }

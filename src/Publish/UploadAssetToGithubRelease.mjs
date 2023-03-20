@@ -1,43 +1,43 @@
 import { createReadStream } from "node:fs";
-import { HttpClientRequest } from "../../../../flux-http-api/src/Client/HttpClientRequest.mjs";
-import { METHOD_POST } from "../../../../flux-http-api/src/Method/METHOD.mjs";
+import { HttpClientRequest } from "../../../flux-http-api/src/Client/HttpClientRequest.mjs";
+import { METHOD_POST } from "../../../flux-http-api/src/Method/METHOD.mjs";
 import { stat } from "node:fs/promises";
 import { basename, join } from "node:path/posix";
-import { HEADER_ACCEPT, HEADER_AUTHORIZATION, HEADER_CONTENT_LENGTH, HEADER_CONTENT_TYPE, HEADER_USER_AGENT } from "../../../../flux-http-api/src/Header/HEADER.mjs";
+import { HEADER_ACCEPT, HEADER_AUTHORIZATION, HEADER_CONTENT_LENGTH, HEADER_CONTENT_TYPE, HEADER_USER_AGENT } from "../../../flux-http-api/src/Header/HEADER.mjs";
 
-/** @typedef {import("../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
-/** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
+/** @typedef {import("../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
+/** @typedef {import("../FluxPublishUtils.mjs").FluxPublishUtils} FluxPublishUtils */
 
-export class UploadAssetToGithubReleaseCommand {
+export class UploadAssetToGithubRelease {
     /**
      * @type {FluxHttpApi}
      */
     #flux_http_api;
     /**
-     * @type {PublishService}
+     * @type {FluxPublishUtils}
      */
-    #publish_service;
+    #flux_publish_utils;
 
     /**
      * @param {FluxHttpApi} flux_http_api
-     * @param {PublishService} publish_service
-     * @returns {UploadAssetToGithubReleaseCommand}
+     * @param {FluxPublishUtils} flux_publish_utils
+     * @returns {UploadAssetToGithubRelease}
      */
-    static new(flux_http_api, publish_service) {
+    static new(flux_http_api, flux_publish_utils) {
         return new this(
             flux_http_api,
-            publish_service
+            flux_publish_utils
         );
     }
 
     /**
      * @param {FluxHttpApi} flux_http_api
-     * @param {PublishService} publish_service
+     * @param {FluxPublishUtils} flux_publish_utils
      * @private
      */
-    constructor(flux_http_api, publish_service) {
+    constructor(flux_http_api, flux_publish_utils) {
         this.#flux_http_api = flux_http_api;
-        this.#publish_service = publish_service;
+        this.#flux_publish_utils = flux_publish_utils;
     }
 
     /**
@@ -51,17 +51,17 @@ export class UploadAssetToGithubReleaseCommand {
 
         const _asset_path = join(path, asset_path);
 
-        const tag = await this.#publish_service.getReleaseTag(
+        const tag = await this.#flux_publish_utils.getReleaseTag(
             path
         );
 
         console.log(`Upload asset ${asset_path} as ${_asset_name} to github release ${tag}`);
 
-        const repository = await this.#publish_service.getGithubRepository(
+        const repository = await this.#flux_publish_utils.getGithubRepository(
             path
         );
 
-        const authorization = await this.#publish_service.getGithubAuthorization();
+        const authorization = await this.#flux_publish_utils.getGithubAuthorization();
 
         const url = new URL(`https://uploads.github.com/repos/${repository}/releases/${(await (await this.#flux_http_api.request(
             HttpClientRequest.new(

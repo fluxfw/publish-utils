@@ -1,11 +1,11 @@
 import { join } from "node:path/posix";
 import { readFile } from "node:fs/promises";
 
-/** @typedef {import("../../Metadata/Metadata.mjs").Metadata} Metadata */
+/** @typedef {import("../Metadata/Metadata.mjs").Metadata} Metadata */
 
-export class GetMetadataCommand {
+export class GetMetadata {
     /**
-     * @returns {GetMetadataCommand}
+     * @returns {GetMetadata}
      */
     static new() {
         return new this();

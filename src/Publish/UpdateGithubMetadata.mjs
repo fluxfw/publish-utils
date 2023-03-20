@@ -1,40 +1,40 @@
-import { HttpClientRequest } from "../../../../flux-http-api/src/Client/HttpClientRequest.mjs";
-import { HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../../flux-http-api/src/Header/HEADER.mjs";
-import { METHOD_PATCH, METHOD_PUT } from "../../../../flux-http-api/src/Method/METHOD.mjs";
+import { HttpClientRequest } from "../../../flux-http-api/src/Client/HttpClientRequest.mjs";
+import { HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../flux-http-api/src/Header/HEADER.mjs";
+import { METHOD_PATCH, METHOD_PUT } from "../../../flux-http-api/src/Method/METHOD.mjs";
 
-/** @typedef {import("../../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
-/** @typedef {import("../Port/PublishService.mjs").PublishService} PublishService */
+/** @typedef {import("../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
+/** @typedef {import("../FluxPublishUtils.mjs").FluxPublishUtils} FluxPublishUtils */
 
-export class UpdateGithubMetadataCommand {
+export class UpdateGithubMetadata {
     /**
      * @type {FluxHttpApi}
      */
     #flux_http_api;
     /**
-     * @type {PublishService}
+     * @type {FluxPublishUtils}
      */
-    #publish_service;
+    #flux_publish_utils;
 
     /**
      * @param {FluxHttpApi} flux_http_api
-     * @param {PublishService} publish_service
-     * @returns {UpdateGithubMetadataCommand}
+     * @param {FluxPublishUtils} flux_publish_utils
+     * @returns {UpdateGithubMetadata}
      */
-    static new(flux_http_api, publish_service) {
+    static new(flux_http_api, flux_publish_utils) {
         return new this(
             flux_http_api,
-            publish_service
+            flux_publish_utils
         );
     }
 
     /**
      * @param {FluxHttpApi} flux_http_api
-     * @param {PublishService} publish_service
+     * @param {FluxPublishUtils} flux_publish_utils
      * @private
      */
-    constructor(flux_http_api, publish_service) {
+    constructor(flux_http_api, flux_publish_utils) {
         this.#flux_http_api = flux_http_api;
-        this.#publish_service = publish_service;
+        this.#flux_publish_utils = flux_publish_utils;
     }
 
     /**
@@ -42,17 +42,17 @@ export class UpdateGithubMetadataCommand {
      * @returns {Promise<void>}
      */
     async updateGithubMetadata(path) {
-        const metadata = await this.#publish_service.getMetadata(
+        const metadata = await this.#flux_publish_utils.getMetadata(
             path
         );
 
         console.log("Update github metadata");
 
-        const repository = await this.#publish_service.getGithubRepository(
+        const repository = await this.#flux_publish_utils.getGithubRepository(
             path
         );
 
-        const authorization = await this.#publish_service.getGithubAuthorization();
+        const authorization = await this.#flux_publish_utils.getGithubAuthorization();
 
         await this.#flux_http_api.request(
             HttpClientRequest.json(

@@ -1,6 +1,6 @@
-import { AUTHORIZATION_SCHEMA_BASIC } from "../../../../flux-http-api/src/Authorization/AUTHORIZATION_SCHEMA.mjs";
+import { AUTHORIZATION_SCHEMA_BASIC } from "../../../flux-http-api/src/Authorization/AUTHORIZATION_SCHEMA.mjs";
 
-export class GetGithubAuthorizationCommand {
+export class GetGithubAuthorization {
     /**
      * @type {string}
      */
@@ -8,7 +8,7 @@ export class GetGithubAuthorizationCommand {
 
     /**
      * @param {string} github_token
-     * @returns {GetGithubAuthorizationCommand}
+     * @returns {GetGithubAuthorization}
      */
     static new(github_token) {
         return new this(

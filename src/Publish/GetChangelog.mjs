@@ -1,9 +1,9 @@
 import { join } from "node:path/posix";
 import { readFile } from "node:fs/promises";
 
-export class GetChangelogCommand {
+export class GetChangelog {
     /**
-     * @returns {GetChangelogCommand}
+     * @returns {GetChangelog}
      */
     static new() {
         return new this();
