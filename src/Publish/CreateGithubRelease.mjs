@@ -50,7 +50,7 @@ export class CreateGithubRelease {
             path
         );
 
-        console.log(`Create github release ${title} from ${tag}`);
+        console.log(`Create github release ${title} from tag ${tag}`);
 
         await this.#flux_http_api.request(
             HttpClientRequest.json(
