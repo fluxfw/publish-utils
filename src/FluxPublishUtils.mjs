@@ -67,16 +67,10 @@ export class FluxPublishUtils {
      * @returns {Promise<string>}
      */
     async getGithubAuthorization() {
-        const github_token = await (await this.#getFluxConfigApi()).getConfig(
-            GITHUB_CONFIG_TOKEN_KEY
-        );
-
-        if (github_token === null) {
-            throw new Error("Missing github token");
-        }
-
         return (await import("./Publish/GetGithubAuthorization.mjs")).GetGithubAuthorization.new(
-            github_token
+            await (await this.#getFluxConfigApi()).getConfig(
+                GITHUB_CONFIG_TOKEN_KEY
+            )
         )
             .getGithubAuthorization();
     }
