@@ -1,4 +1,4 @@
-FROM node:19-alpine AS build
+FROM node:20-alpine AS build
 
 COPY bin/install-libraries.sh /build/flux-publish-utils/libs/flux-publish-utils/bin/install-libraries.sh
 RUN /build/flux-publish-utils/libs/flux-publish-utils/bin/install-libraries.sh
@@ -9,7 +9,7 @@ COPY . /build/flux-publish-utils/libs/flux-publish-utils
 
 RUN mkdir -p /build/flux-publish-utils/.local/bin && for bin in /build/flux-publish-utils/bin/*.mjs; do ln -s "../../bin/`basename "$bin"`" "/build/flux-publish-utils/.local/bin/`basename "${bin%.*}"`"; done
 
-FROM node:19-alpine
+FROM node:20-alpine
 
 ENV PATH "/flux-publish-utils/.local/bin:$PATH"
 
