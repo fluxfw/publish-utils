@@ -116,7 +116,7 @@ ${new_version_changelog}`);
             const plugin_new_version = new_version_date.replaceAll("-", ".");
             console.log(`- New version: ${plugin_new_version}`);
 
-            plugin = plugin.replace(/\$version\s*=\s*["'][0-9.]+["']/, `$version = "${plugin_new_version}"`);
+            plugin = plugin.replace(/\$version\s*=\s*["'][\d.]+["']/, `$version = "${plugin_new_version}"`);
 
             await writeFile(plugin_php_file, plugin);
         }

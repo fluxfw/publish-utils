@@ -38,7 +38,7 @@ export class UpdateGetReleaseTag {
 
         const get_release_tag_sh_file = join(path, ".local", "bin", "get-release-tag.sh");
 
-        await writeFile(get_release_tag_sh_file, (await readFile(get_release_tag_sh_file, "utf8")).replace(/tag="v[0-9-]+"/, `tag="${tag}"`));
+        await writeFile(get_release_tag_sh_file, (await readFile(get_release_tag_sh_file, "utf8")).replace(/tag="v[\d-]+"/, `tag="${tag}"`));
 
         return tag;
     }
