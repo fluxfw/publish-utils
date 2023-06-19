@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-06-19-1
+
+Changes:
+
+- `HttpClientResponse` error log
+
 ## v2023-03-22-1
 
 Changes:
