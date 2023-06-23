@@ -1,4 +1,5 @@
 *
+!bin/build.mjs
 !bin/create-github-release.mjs
 !bin/get-release-changelog.mjs
 !bin/get-release-description.mjs

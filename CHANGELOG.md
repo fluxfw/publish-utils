@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-06-23-1
+
+Changes:
+
+- `flux-pwa-generator`
+
 ## v2023-06-19-1
 
 Changes:
