@@ -16,13 +16,10 @@ try {
     const bin_folder = dirname(fileURLToPath(import.meta.url));
     const root_folder = join(bin_folder, "..");
     const libs_folder = join(root_folder, "..");
-    const base_filter = file => (file.includes("/bin/") || file.includes("/src/")) && ![
+    const libs_file_filter = file => file.startsWith("flux-") ? (file.includes("/bin/") || file.includes("/src/")) && !file.startsWith("flux-pwa-generator/") && !file.endsWith("/bin/build.mjs") && ![
         ".md",
         ".sh"
-    ].includes(extname(file)) && !basename(file).includes("-template");
-    const libs_file_filter = file => file.startsWith("flux-") ? !file.startsWith("flux-pwa-generator/") && !file.endsWith("/bin/build.mjs") && base_filter(
-        file
-    ) : true;
+    ].includes(extname(file)) && !basename(file).includes("-template") : true;
 
     if (prod === "prod") {
         await flux_pwa_generator.deleteExcludedFiles(
