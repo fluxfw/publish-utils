@@ -6,8 +6,11 @@ let flux_shutdown_handler = null;
 try {
     flux_shutdown_handler = (await import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
 
-    const prod = process.argv[2] ?? null;
-    if (prod === null) {
+    const mode = process.argv[2] ?? null;
+    if (![
+        "prod",
+        "dev"
+    ].includes(mode)) {
         throw new Error("Please pass prod or dev");
     }
 
@@ -16,12 +19,12 @@ try {
     const bin_folder = dirname(fileURLToPath(import.meta.url));
     const root_folder = join(bin_folder, "..");
     const libs_folder = join(root_folder, "..");
-    const libs_file_filter = file => file.startsWith("flux-") ? (file.includes("/bin/") || file.includes("/src/")) && !file.startsWith("flux-pwa-generator/") && !file.endsWith("/bin/build.mjs") && ![
+    const libs_file_filter = root_file => root_file.startsWith("flux-") ? (root_file.includes("/bin/") || root_file.includes("/src/")) && !root_file.startsWith("flux-pwa-generator/") && !root_file.endsWith("/bin/build.mjs") && ![
         ".md",
         ".sh"
-    ].includes(extname(file)) && !basename(file).includes("-template") : true;
+    ].includes(extname(root_file)) && !basename(root_file).includes("-template") : true;
 
-    if (prod === "prod") {
+    if (mode === "prod") {
         await flux_pwa_generator.deleteExcludedFiles(
             libs_folder,
             libs_file_filter
