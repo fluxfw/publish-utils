@@ -14,7 +14,25 @@ checkAlreadyInstalled() {
 }
 
 installLibrary() {
-    (mkdir -p "$libs/$1" && cd "$libs/$1" && wget -O - "$2" | tar -xz --strip-components=1)
+    dest="$libs/$1"
+
+    while true; do 
+        rm -rf "$dest" && mkdir -p "$dest"
+
+        wget -T 5 -O "$dest.tar.gz" "$2" && true
+
+        if [ "$?" = "0" ] && [ -f "$dest.tar.gz" ]; then
+            (cd "$dest" && tar -xzf "$dest.tar.gz" --strip-components=1)
+            unlink "$dest.tar.gz"
+
+            if [ `ls "$dest" | wc -l` != "0" ]; then
+                sleep 2
+                break
+            fi
+        fi
+
+        sleep 10
+    done
 }
 
 checkAlreadyInstalled
