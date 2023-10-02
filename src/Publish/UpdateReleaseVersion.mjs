@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path/posix";
-import { readFile, writeFile } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 
 /** @typedef {import("../FluxPublishUtils.mjs").FluxPublishUtils} FluxPublishUtils */
 
@@ -33,11 +33,11 @@ export class UpdateReleaseVersion {
      * @returns {Promise<void>}
      */
     async updateReleaseVersion(path) {
-        console.log("Update metadata.json");
-        const metadata_json_file = join(path, "metadata.json");
-        let metadata = {};
-        if (existsSync(metadata_json_file)) {
-            metadata = await this.#flux_publish_utils.getMetadata(
+        console.log("Update version file");
+        const version_file = join(path, "version");
+        let old_version = null;
+        if (existsSync(version_file)) {
+            old_version = await this.#flux_publish_utils.getReleaseVersion(
                 path
             );
         }
@@ -45,7 +45,6 @@ export class UpdateReleaseVersion {
         const date = new Date();
         const new_version_date = `${`${date.getFullYear()}`.padStart(2, "0")}-${`${date.getMonth() + 1}`.padStart(2, "0")}-${`${date.getDate()}`.padStart(2, "0")}`;
 
-        const old_version = metadata.version ?? null;
         console.log(`- Old version: ${old_version}`);
 
         let new_version_increment = 0;
@@ -57,10 +56,7 @@ export class UpdateReleaseVersion {
         const new_version = `${new_version_date}-${new_version_increment}`;
         console.log(`- New version: ${new_version}`);
 
-        metadata.version = new_version;
-
-        await writeFile(metadata_json_file, `${JSON.stringify(metadata, null, 4)}
-`);
+        await writeFile(version_file, `${new_version}\n`);
 
         const tag = `v${new_version}`;
 
@@ -74,14 +70,7 @@ export class UpdateReleaseVersion {
         }
         changelog ??= null;
         if ((changelog?.trim() ?? "") === "") {
-            changelog = `# Changelog
-
-    ## latest
-    
-    Changes:
-    
-    \\-
-    `;
+            changelog = "# Changelog\n\n    ## latest\n    \n    Changes:\n    \n    \\-\n    ";
         }
 
         const latest_start_position = changelog.indexOf("\n## latest");
@@ -97,28 +86,10 @@ export class UpdateReleaseVersion {
 
         const new_version_changelog = old_latest_changelog.replace("latest", tag);
 
-        const new_latest_changelog = old_latest_changelog.replace(/Changes\s*:\s*(.+\n)+\n*/, `Changes:
+        const new_latest_changelog = old_latest_changelog.replace(/Changes\s*:\s*(.+\n)+\n*/, "Changes:\n\n\\-\n");
 
-\\-
-`);
-
-        changelog = changelog.replace(old_latest_changelog, `${new_latest_changelog}
-${new_version_changelog}`);
+        changelog = changelog.replace(old_latest_changelog, `${new_latest_changelog}\n${new_version_changelog}`);
 
         await writeFile(changelog_md_file, changelog);
-
-        const plugin_php_file = join(path, "plugin.php");
-        if (existsSync(plugin_php_file)) {
-            console.log("Update plugin.php");
-
-            let plugin = await readFile(plugin_php_file, "utf8");
-
-            const plugin_new_version = new_version_date.replaceAll("-", ".");
-            console.log(`- New version: ${plugin_new_version}`);
-
-            plugin = plugin.replace(/\$version\s*=\s*["'][\d.]+["']/, `$version = "${plugin_new_version}"`);
-
-            await writeFile(plugin_php_file, plugin);
-        }
     }
 }

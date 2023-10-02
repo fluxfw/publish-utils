@@ -1,27 +1,19 @@
-/** @typedef {import("../FluxPublishUtils.mjs").FluxPublishUtils} FluxPublishUtils */
+import { join } from "node:path/posix";
+import { readFile } from "node:fs/promises";
 
 export class GetReleaseVersion {
     /**
-     * @type {FluxPublishUtils}
-     */
-    #flux_publish_utils;
-
-    /**
-     * @param {FluxPublishUtils} flux_publish_utils
      * @returns {GetReleaseVersion}
      */
-    static new(flux_publish_utils) {
-        return new this(
-            flux_publish_utils
-        );
+    static new() {
+        return new this();
     }
 
     /**
-     * @param {FluxPublishUtils} flux_publish_utils
      * @private
      */
-    constructor(flux_publish_utils) {
-        this.#flux_publish_utils = flux_publish_utils;
+    constructor() {
+
     }
 
     /**
@@ -29,8 +21,6 @@ export class GetReleaseVersion {
      * @returns {Promise<string>}
      */
     async getReleaseVersion(path) {
-        return (await this.#flux_publish_utils.getMetadata(
-            path
-        )).version ?? "";
+        return (await readFile(join(path, "version"), "utf8")).trimEnd();
     }
 }

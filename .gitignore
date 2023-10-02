@@ -9,5 +9,5 @@
 !.gitignore
 !CHANEGLOG.md
 !Dockerfile
-!metadata.json
 !README.md
+!version

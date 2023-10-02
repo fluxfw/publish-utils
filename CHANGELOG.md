@@ -6,6 +6,13 @@ Changes:
 
 \-
 
+## v2023-10-02-1
+
+Changes:
+
+- Remove metadata and simplify to `version` file
+- Remove `plugin.php` support
+
 ## v2023-07-27-1
 
 Changes:

@@ -67,7 +67,7 @@ get-release-title /path/to/project
 get-release-version /path/to/project
 ```
 
-Gets the current `version` from `metadata.json`
+Gets the current `version` file
 
 ### tag-release
 
@@ -79,29 +79,17 @@ tag-release /path/to/project
   - The tag is [get-release-tag](#get-release-tag)
   - The message is [get-release-description](#get-release-description)
 
-### update-github-metadata
-
-```shell
-update-github-metadata /path/to/project
-```
-
-- Updates github metadata
-  - Description is `description` from `metadata.json`
-  - Website is `homepage` from `metadata.json`
-  - Topics are `topics` from `metadata.json`
-
 ### update-release-version
 
 ```shell
 update-release-version /path/to/project
 ```
 
-- Updates `version` in `metadata.json` to current date in format `YYYY-MM-DD-I`
+- Updates the `version` file to current date in format `YYYY-MM-DD-I`
   - If the version is already the current date, it will increase `I`, else `I` is `1`
 - Adds a new entry in `CHANGELOG.md` for the new version
   - If exists an entry for `latest`, it will take this as base for the version entry
   - Adds a new entry for `latest` (Replaces if `latest` exists)
-- Updates `$version` in `plugin.php` (ILIAS plugin) in format `YYYY.MM.DD` (If exists)
 
 ### upload-asset-to-github-release
 

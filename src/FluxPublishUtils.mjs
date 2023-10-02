@@ -4,7 +4,6 @@ import { GITHUB_CONFIG_TOKEN_KEY } from "./Github/GITHUB_CONFIG.mjs";
 /** @typedef {import("../../flux-config-api/src/FluxConfigApi.mjs").FluxConfigApi} FluxConfigApi */
 /** @typedef {import("../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
 /** @typedef {import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs").FluxShutdownHandler} FluxShutdownHandler */
-/** @typedef {import("./Metadata/Metadata.mjs").Metadata} Metadata */
 
 export class FluxPublishUtils {
     /**
@@ -88,17 +87,6 @@ export class FluxPublishUtils {
 
     /**
      * @param {string} path
-     * @returns {Promise<Metadata>}
-     */
-    async getMetadata(path) {
-        return (await import("./Publish/GetMetadata.mjs")).GetMetadata.new()
-            .getMetadata(
-                path
-            );
-    }
-
-    /**
-     * @param {string} path
      * @returns {Promise<string>}
      */
     async getReleaseChangelog(path) {
@@ -154,37 +142,8 @@ export class FluxPublishUtils {
      * @returns {Promise<string>}
      */
     async getReleaseVersion(path) {
-        return (await import("./Publish/GetReleaseVersion.mjs")).GetReleaseVersion.new(
-            this
-        )
+        return (await import("./Publish/GetReleaseVersion.mjs")).GetReleaseVersion.new()
             .getReleaseVersion(
-                path
-            );
-    }
-
-    /**
-     * @param {string} path
-     * @returns {Promise<string>}
-     */
-    async updateGetReleaseTag(path) {
-        return (await import("./Publish/UpdateGetReleaseTag.mjs")).UpdateGetReleaseTag.new(
-            this
-        )
-            .updateGetReleaseTag(
-                path
-            );
-    }
-
-    /**
-     * @param {string} path
-     * @returns {Promise<void>}
-     */
-    async updateGithubMetadata(path) {
-        await (await import("./Publish/UpdateGithubMetadata.mjs")).UpdateGithubMetadata.new(
-            await this.#getFluxHttpApi(),
-            this
-        )
-            .updateGithubMetadata(
                 path
             );
     }

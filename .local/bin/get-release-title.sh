@@ -13,9 +13,11 @@ local_bin="`dirname "$(realpath "$0")"`"
 root="$local_bin/../.."
 
 name="`basename "$(realpath "$root")"`"
+host="${FLUX_PUBLISH_DOCKER_HOST:=}"
+host_with_slash="${host}${host:+/}"
 user="${FLUX_PUBLISH_DOCKER_USER:=fluxfw}"
-image="$user/$name"
-tag="`$local_bin/get-release-tag.sh "$root"`"
+image="$host_with_slash$user/$name"
+tag="v`echo -n "$(cat "$root/version")"`"
 
 path_host="`realpath "$path"`"
 path_volume="/code/`basename "$path_host"`"
