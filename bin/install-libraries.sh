@@ -39,7 +39,7 @@ checkAlreadyInstalled
 
 installLibrary flux-config-api https://github.com/fluxfw/flux-config-api/archive/refs/tags/v2023-06-08-1.tar.gz
 
-installLibrary flux-http-api https://github.com/fluxfw/flux-http-api/archive/refs/tags/v2023-06-19-1.tar.gz
+installLibrary flux-http-api https://github.com/fluxfw/flux-http-api/archive/refs/tags/v2023-10-30-2.tar.gz
 
 installLibrary flux-pwa-generator https://github.com/fluxfw/flux-pwa-generator/archive/refs/tags/v2023-09-25-1.tar.gz
 
