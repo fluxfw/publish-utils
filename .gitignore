@@ -1,6 +1,4 @@
 *
-!.local
-!.local/**
 !bin
 !bin/**
 !src

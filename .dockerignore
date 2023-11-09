@@ -1,4 +1,10 @@
 *
+!bin/PATH/create-github-release
+!bin/PATH/get-release-changelog
+!bin/PATH/get-release-description
+!bin/PATH/get-release-title
+!bin/PATH/update-release-version
+!bin/PATH/upload-asset-to-github-release
 !bin/build.mjs
 !bin/create-github-release.mjs
 !bin/get-release-changelog.mjs

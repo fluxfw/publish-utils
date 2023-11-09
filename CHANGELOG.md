@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-11-09-1
+
+Changes:
+
+- New PATH
+
 ## v2023-10-02-1
 
 Changes:

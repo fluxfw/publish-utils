@@ -184,7 +184,7 @@ export class FluxPublishUtils {
      */
     async #getFluxConfigApi() {
         this.#flux_config_api ??= (await import("../../flux-config-api/src/FluxConfigApi.mjs")).FluxConfigApi.new(
-            await (await import("../../flux-config-api/src/getValueProviderImplementations.mjs")).getValueProviderImplementations(
+            await (await import("../../flux-config-api/src/getValueProviders.mjs")).getValueProviders(
                 CONFIG_ENV_PREFIX,
                 false
             )

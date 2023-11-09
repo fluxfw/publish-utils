@@ -4,10 +4,9 @@ set -e
 
 bin="`dirname "$0"`"
 root="$bin/.."
-local_bin="$root/.local/bin"
 
 #"$bin/lint.sh"
 
-"$local_bin/update-release-version.sh" "$root"
+"$bin/PATH/host/update-release-version" "$root"
 
 "$bin/build.sh"

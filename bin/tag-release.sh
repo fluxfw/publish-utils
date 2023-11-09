@@ -8,12 +8,11 @@ if [ -z "$path" ]; then
     exit 1
 fi
 
-local_bin="`dirname "$(realpath "$0")"`"
-root="$local_bin/../.."
+bin="`dirname "$(realpath "$0")"`"
 
-tag="v`echo -n "$(cat "$path/version")"`"
+tag="`$bin/PATH/host/get-release-tag "$path"`"
 
-description="`$local_bin/get-release-description.sh "$path"`"
+description="`$bin/PATH/host/get-release-description "$path"`"
 
 echo "Create git tag $tag"
 
