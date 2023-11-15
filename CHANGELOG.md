@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-11-15-1
+
+Changes:
+
+- Use nodejs version from alpine (Smaller without npm/yarn)
+
 ## v2023-11-09-1
 
 Changes:
