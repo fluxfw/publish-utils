@@ -37,7 +37,7 @@ installLibrary() {
 
 checkAlreadyInstalled
 
-installLibrary flux-config-api https://github.com/fluxfw/flux-config-api/archive/refs/tags/v2023-11-09-2.tar.gz
+installLibrary flux-config https://github.com/fluxfw/flux-config/archive/refs/tags/v2023-11-16-1.tar.gz
 
 installLibrary flux-http-api https://github.com/fluxfw/flux-http-api/archive/refs/tags/v2023-10-30-2.tar.gz
 

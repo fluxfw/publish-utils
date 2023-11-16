@@ -1,15 +1,15 @@
 import { CONFIG_ENV_PREFIX } from "./Config/CONFIG.mjs";
 import { GITHUB_CONFIG_TOKEN_KEY } from "./Github/GITHUB_CONFIG.mjs";
 
-/** @typedef {import("../../flux-config-api/src/FluxConfigApi.mjs").FluxConfigApi} FluxConfigApi */
+/** @typedef {import("../../flux-config/src/FluxConfig.mjs").FluxConfig} FluxConfig */
 /** @typedef {import("../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
 /** @typedef {import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs").FluxShutdownHandler} FluxShutdownHandler */
 
 export class FluxPublishUtils {
     /**
-     * @type {FluxConfigApi | null}
+     * @type {FluxConfig | null}
      */
-    #flux_config_api = null;
+    #flux_config = null;
     /**
      * @type {FluxHttpApi | null}
      */
@@ -67,7 +67,7 @@ export class FluxPublishUtils {
      */
     async getGithubAuthorization() {
         return (await import("./Publish/GetGithubAuthorization.mjs")).GetGithubAuthorization.new(
-            await (await this.#getFluxConfigApi()).getConfig(
+            await (await this.#getFluxConfig()).getConfig(
                 GITHUB_CONFIG_TOKEN_KEY
             )
         )
@@ -180,17 +180,17 @@ export class FluxPublishUtils {
     }
 
     /**
-     * @returns {Promise<FluxConfigApi>}
+     * @returns {Promise<FluxConfig>}
      */
-    async #getFluxConfigApi() {
-        this.#flux_config_api ??= (await import("../../flux-config-api/src/FluxConfigApi.mjs")).FluxConfigApi.new(
-            await (await import("../../flux-config-api/src/getValueProviders.mjs")).getValueProviders(
+    async #getFluxConfig() {
+        this.#flux_config ??= (await import("../../flux-config/src/FluxConfig.mjs")).FluxConfig.new(
+            await (await import("../../flux-config/src/getValueProviders.mjs")).getValueProviders(
                 CONFIG_ENV_PREFIX,
                 false
             )
         );
 
-        return this.#flux_config_api;
+        return this.#flux_config;
     }
 
     /**
