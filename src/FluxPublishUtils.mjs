@@ -2,7 +2,7 @@ import { CONFIG_ENV_PREFIX } from "./Config/CONFIG.mjs";
 import { GITHUB_CONFIG_TOKEN_KEY } from "./Github/GITHUB_CONFIG.mjs";
 
 /** @typedef {import("../../flux-config/src/FluxConfig.mjs").FluxConfig} FluxConfig */
-/** @typedef {import("../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
+/** @typedef {import("../../flux-http/src/FluxHttp.mjs").FluxHttp} FluxHttp */
 /** @typedef {import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs").FluxShutdownHandler} FluxShutdownHandler */
 
 export class FluxPublishUtils {
@@ -11,9 +11,9 @@ export class FluxPublishUtils {
      */
     #flux_config = null;
     /**
-     * @type {FluxHttpApi | null}
+     * @type {FluxHttp | null}
      */
-    #flux_http_api = null;
+    #flux_http = null;
     /**
      * @type {FluxShutdownHandler}
      */
@@ -43,7 +43,7 @@ export class FluxPublishUtils {
      */
     async createGithubRelease(path) {
         await (await import("./Publish/CreateGithubRelease.mjs")).CreateGithubRelease.new(
-            await this.#getFluxHttpApi(),
+            await this.#getFluxHttp(),
             this
         )
             .createGithubRelease(
@@ -169,7 +169,7 @@ export class FluxPublishUtils {
      */
     async uploadAssetToGithubRelease(path, asset_path, asset_name = null) {
         await (await import("./Publish/UploadAssetToGithubRelease.mjs")).UploadAssetToGithubRelease.new(
-            await this.#getFluxHttpApi(),
+            await this.#getFluxHttp(),
             this
         )
             .uploadAssetToGithubRelease(
@@ -194,13 +194,13 @@ export class FluxPublishUtils {
     }
 
     /**
-     * @returns {Promise<FluxHttpApi>}
+     * @returns {Promise<FluxHttp>}
      */
-    async #getFluxHttpApi() {
-        this.#flux_http_api ??= (await import("../../flux-http-api/src/FluxHttpApi.mjs")).FluxHttpApi.new(
+    async #getFluxHttp() {
+        this.#flux_http ??= (await import("../../flux-http/src/FluxHttp.mjs")).FluxHttp.new(
             this.#flux_shutdown_handler
         );
 
-        return this.#flux_http_api;
+        return this.#flux_http;
     }
 }

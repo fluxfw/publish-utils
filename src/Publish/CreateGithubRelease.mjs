@@ -1,39 +1,39 @@
-import { HttpClientRequest } from "../../../flux-http-api/src/Client/HttpClientRequest.mjs";
-import { METHOD_POST } from "../../../flux-http-api/src/Method/METHOD.mjs";
-import { HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../flux-http-api/src/Header/HEADER.mjs";
+import { HttpClientRequest } from "../../../flux-http/src/Client/HttpClientRequest.mjs";
+import { METHOD_POST } from "../../../flux-http/src/Method/METHOD.mjs";
+import { HEADER_AUTHORIZATION, HEADER_USER_AGENT } from "../../../flux-http/src/Header/HEADER.mjs";
 
-/** @typedef {import("../../../flux-http-api/src/FluxHttpApi.mjs").FluxHttpApi} FluxHttpApi */
+/** @typedef {import("../../../flux-http/src/FluxHttp.mjs").FluxHttp} FluxHttp */
 /** @typedef {import("../FluxPublishUtils.mjs").FluxPublishUtils} FluxPublishUtils */
 
 export class CreateGithubRelease {
     /**
-     * @type {FluxHttpApi}
+     * @type {FluxHttp}
      */
-    #flux_http_api;
+    #flux_http;
     /**
      * @type {FluxPublishUtils}
      */
     #flux_publish_utils;
 
     /**
-     * @param {FluxHttpApi} flux_http_api
+     * @param {FluxHttp} flux_http
      * @param {FluxPublishUtils} flux_publish_utils
      * @returns {CreateGithubRelease}
      */
-    static new(flux_http_api, flux_publish_utils) {
+    static new(flux_http, flux_publish_utils) {
         return new this(
-            flux_http_api,
+            flux_http,
             flux_publish_utils
         );
     }
 
     /**
-     * @param {FluxHttpApi} flux_http_api
+     * @param {FluxHttp} flux_http
      * @param {FluxPublishUtils} flux_publish_utils
      * @private
      */
-    constructor(flux_http_api, flux_publish_utils) {
-        this.#flux_http_api = flux_http_api;
+    constructor(flux_http, flux_publish_utils) {
+        this.#flux_http = flux_http;
         this.#flux_publish_utils = flux_publish_utils;
     }
 
@@ -52,7 +52,7 @@ export class CreateGithubRelease {
 
         console.log(`Create github release ${title} from tag ${tag}`);
 
-        await this.#flux_http_api.request(
+        await this.#flux_http.request(
             HttpClientRequest.json(
                 new URL(`https://api.github.com/repos/${await this.#flux_publish_utils.getGithubRepository(
                     path
