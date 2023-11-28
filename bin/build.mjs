@@ -13,24 +13,29 @@ try {
     ].includes(mode)) {
         throw new Error("Please pass prod or dev");
     }
-
-    const flux_pwa_generator = (await import("../../flux-pwa-generator/src/FluxPwaGenerator.mjs")).FluxPwaGenerator.new();
+    const dev_mode = mode === "dev";
 
     const bin_folder = dirname(fileURLToPath(import.meta.url));
     const root_folder = join(bin_folder, "..");
     const libs_folder = join(root_folder, "..");
-    const libs_file_filter = root_file => root_file.startsWith("flux-") ? (root_file.includes("/bin/") || root_file.includes("/src/")) && !root_file.startsWith("flux-pwa-generator/") && !root_file.endsWith("/bin/build.mjs") && ![
-        ".md",
-        ".sh"
-    ].includes(extname(root_file)) && !basename(root_file).includes("-template") : true;
 
-    if (mode === "prod") {
+    const general_file_filter = root_file => ![
+        "md",
+        "sh"
+    ].includes(extname(root_file).substring(1).toLowerCase()) && !basename(root_file).toLowerCase().includes("template");
+    const delete_exclude_file_filter = root_file => root_file.startsWith("flux-") ? (root_file.includes("/bin/") || root_file.includes("/src/")) && !root_file.startsWith("flux-pwa-generator/") && !root_file.endsWith("/bin/build.mjs") && general_file_filter(
+        root_file
+    ) : true;
+
+    if (!dev_mode) {
+        const flux_pwa_generator = (await import("../../flux-pwa-generator/src/FluxPwaGenerator.mjs")).FluxPwaGenerator.new();
+
         await flux_pwa_generator.deleteExcludedFiles(
             libs_folder,
-            libs_file_filter
+            delete_exclude_file_filter
         );
 
-        await flux_pwa_generator.deleteEmptyFolders(
+        await flux_pwa_generator.deleteEmptyFoldersOrInvalidSymlinks(
             libs_folder
         );
     }
