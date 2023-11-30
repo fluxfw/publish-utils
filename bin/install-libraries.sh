@@ -13,8 +13,10 @@ checkAlreadyInstalled() {
     fi
 }
 
-installLibrary() {
+installArchiveLibrary() {
     dest="$libs/$1"
+
+    echo "Install archive library $2 to $dest"
 
     while true; do 
         rm -rf "$dest" && mkdir -p "$dest"
@@ -37,12 +39,12 @@ installLibrary() {
 
 checkAlreadyInstalled
 
-installLibrary flux-config https://github.com/fluxfw/flux-config/archive/refs/tags/v2023-11-16-1.tar.gz
+installArchiveLibrary flux-config https://github.com/fluxfw/flux-config/archive/refs/tags/v2023-11-16-1.tar.gz
 
-installLibrary flux-http https://github.com/fluxfw/flux-http/archive/refs/tags/v2023-11-28-1.tar.gz
+installArchiveLibrary flux-http https://github.com/fluxfw/flux-http/archive/refs/tags/v2023-11-28-1.tar.gz
 
-installLibrary flux-pwa-generator https://github.com/fluxfw/flux-pwa-generator/archive/refs/tags/v2023-11-28-6.tar.gz
+installArchiveLibrary flux-pwa-generator https://github.com/fluxfw/flux-pwa-generator/archive/refs/tags/v2023-11-28-6.tar.gz
 
-installLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2023-03-16-1.tar.gz
+installArchiveLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2023-03-16-1.tar.gz
 
-installLibrary mime-db https://registry.npmjs.org/mime-db/-/mime-db-1.52.0.tgz
+installArchiveLibrary mime-db https://registry.npmjs.org/mime-db/-/mime-db-1.52.0.tgz
