@@ -8,17 +8,14 @@ RUN addgroup -S -g 1000 node && adduser -S -u 1000 -D -G node node
 
 FROM base AS build
 
-COPY bin/install-libraries.sh /build/opt/flux-publish-utils/libs/flux-publish-utils/bin/install-libraries.sh
-RUN /build/opt/flux-publish-utils/libs/flux-publish-utils/bin/install-libraries.sh
+COPY bin/install-libraries.sh /build/opt/_/flux-publish-utils/bin/install-libraries.sh
+RUN /build/opt/_/flux-publish-utils/bin/install-libraries.sh
 
-RUN ln -s libs/flux-publish-utils/bin /build/opt/flux-publish-utils/bin
-RUN ln -s libs/flux-publish-utils/src /build/opt/flux-publish-utils/src
+COPY . /build/opt/_/flux-publish-utils
 
-COPY . /build/opt/flux-publish-utils/libs/flux-publish-utils
+RUN mkdir -p /build/usr/local/bin && (cd /build/opt/_/flux-publish-utils/bin/PATH && for bin in *; do ln -s "../../../opt/flux-publish-utils/bin/$(basename "`readlink "$bin"`")" "/build/usr/local/bin/$bin"; done)
 
-RUN /build/opt/flux-publish-utils/bin/build.mjs prod
-
-RUN mkdir -p /build/usr/local/bin && (cd /build/opt/flux-publish-utils/bin/PATH && for bin in *; do ln -s "../../../opt/flux-publish-utils/bin/PATH/$bin" "/build/usr/local/bin/$bin"; done)
+RUN /build/opt/_/flux-publish-utils/bin/build.mjs prod && mv /build/opt/_/flux-publish-utils /build/opt/flux-publish-utils && rmdir /build/opt/_
 
 FROM base
 

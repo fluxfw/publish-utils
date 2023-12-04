@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { fileURLToPath } from "node:url";
-import { basename, dirname, extname, join } from "node:path/posix";
+import { dirname, join } from "node:path/posix";
 
 let flux_shutdown_handler = null;
 try {
@@ -19,25 +19,57 @@ try {
     const root_folder = join(bin_folder, "..");
     const libs_folder = join(root_folder, "..");
 
-    const general_file_filter = root_file => ![
-        "md",
-        "sh"
-    ].includes(extname(root_file).substring(1).toLowerCase()) && !basename(root_file).toLowerCase().includes("template");
-    const delete_exclude_file_filter = root_file => root_file.startsWith("flux-") ? (root_file.includes("/bin/") || root_file.includes("/src/")) && !root_file.startsWith("flux-pwa-generator/") && !root_file.endsWith("/bin/build.mjs") && general_file_filter(
-        root_file
-    ) : true;
-
     if (!dev_mode) {
-        const flux_pwa_generator = (await import("../../flux-pwa-generator/src/FluxPwaGenerator.mjs")).FluxPwaGenerator.new();
+        const {
+            Bundler
+        } = await import("../../flux-pwa-generator/src/Bundler.mjs");
+        const {
+            DeleteEmptyFoldersOrInvalidSymlinks
+        } = await import("../../flux-pwa-generator/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs");
+        const {
+            DeleteExcludedFiles
+        } = await import("../../flux-pwa-generator/src/DeleteExcludedFiles.mjs");
+        const {
+            Minifier
+        } = await import("../../flux-pwa-generator/src/Minifier.mjs");
 
-        await flux_pwa_generator.deleteExcludedFiles(
-            libs_folder,
-            delete_exclude_file_filter
-        );
+        const bin_names = [
+            "create-github-release",
+            "get-release-changelog",
+            "get-release-description",
+            "get-release-title",
+            "update-release-version",
+            "upload-asset-to-github-release"
+        ];
 
-        await flux_pwa_generator.deleteEmptyFoldersOrInvalidSymlinks(
-            libs_folder
-        );
+        const bundler = Bundler.new();
+        for (const bin_name of bin_names) {
+            const bin_path = join(bin_folder, `${bin_name}.mjs`);
+
+            await bundler.bundle(
+                bin_path,
+                bin_path,
+                null,
+                null,
+                dev_mode
+            );
+        }
+
+        await DeleteExcludedFiles.new()
+            .deleteExcludedFiles(
+                libs_folder,
+                root_file => bin_names.some(bin_name => root_file === `flux-publish-utils/bin/${bin_name}.mjs`)
+            );
+
+        await DeleteEmptyFoldersOrInvalidSymlinks.new()
+            .deleteEmptyFoldersOrInvalidSymlinks(
+                libs_folder
+            );
+
+        await Minifier.new()
+            .minifFolder(
+                root_folder
+            );
     }
 } catch (error) {
     console.error(error);
