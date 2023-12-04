@@ -37,16 +37,32 @@ installArchiveLibrary() {
     done
 }
 
+installNpmLibrary() {
+    dest="$libs/$1"
+    dest_node_modules="$libs/node_modules/$1"
+
+    echo "Install npm library $1@$2 to $dest_node_modules"
+
+    mkdir -p "$dest"
+    (cd "$dest" && npm install --prefix . --no-save --omit=dev --omit=optional --omit=peer "$1@$2")
+
+    mkdir -p "`dirname "$dest_node_modules"`"
+    mv "$dest/node_modules/$1" "$dest_node_modules"
+    rm -rf "$dest/node_modules/.bin"
+    mv "$dest/node_modules" "$dest_node_modules/node_modules"
+    rmdir "$dest"
+}
+
 checkAlreadyInstalled
 
 installArchiveLibrary flux-config https://github.com/fluxfw/flux-config/archive/refs/tags/v2023-11-16-1.tar.gz
 
-installArchiveLibrary flux-http https://github.com/fluxfw/flux-http/archive/refs/tags/v2023-11-28-1.tar.gz
+installArchiveLibrary flux-http https://github.com/fluxfw/flux-http/archive/refs/tags/v2023-12-04-1.tar.gz
 
-installArchiveLibrary flux-pwa-generator https://github.com/fluxfw/flux-pwa-generator/archive/refs/tags/v2023-12-04-2.tar.gz
+installArchiveLibrary flux-pwa-generator https://github.com/fluxfw/flux-pwa-generator/archive/refs/tags/v2023-12-04-3.tar.gz
 
 installArchiveLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2023-03-16-1.tar.gz
 
-installArchiveLibrary mime-db https://registry.npmjs.org/mime-db/-/mime-db-1.52.0.tgz
+installNpmLibrary mime-db 1.52.0
 
-installArchiveLibrary uglify-js https://registry.npmjs.org/uglify-js/-/uglify-js-3.17.4.tgz
+installNpmLibrary uglify-js 3.17.4
