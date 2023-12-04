@@ -57,9 +57,9 @@ checkAlreadyInstalled
 
 installArchiveLibrary flux-config https://github.com/fluxfw/flux-config/archive/refs/tags/v2023-11-16-1.tar.gz
 
-installArchiveLibrary flux-http https://github.com/fluxfw/flux-http/archive/refs/tags/v2023-12-04-1.tar.gz
+installArchiveLibrary flux-http https://github.com/fluxfw/flux-http/archive/refs/tags/v2023-12-04-2.tar.gz
 
-installArchiveLibrary flux-pwa-generator https://github.com/fluxfw/flux-pwa-generator/archive/refs/tags/v2023-12-04-4.tar.gz
+installArchiveLibrary flux-pwa-generator https://github.com/fluxfw/flux-pwa-generator/archive/refs/tags/v2023-12-04-5.tar.gz
 
 installArchiveLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2023-03-16-1.tar.gz
 
