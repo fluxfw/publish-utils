@@ -25,10 +25,17 @@ try {
     const build_bin_folder = join(build_root_folder, "bin");
     const build_local_bin_folder = join(build_folder, "usr", "local", "bin");
 
-    const general_file_filter = root_file => ![
-        "md",
-        "sh"
-    ].includes(extname(root_file).substring(1).toLowerCase());
+    const node_modules_file_filter = root_file => ([
+        "42",
+        "cjs",
+        "js",
+        "json",
+        "mjs",
+        "node"
+    ].includes(extname(root_file).substring(1).toLowerCase()) && ![
+        ".package-lock.json",
+        "package-lock.json"
+    ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license");
 
     const bundler = (await import("../../flux-pwa-generator/src/Bundler.mjs")).Bundler.new();
     const minifier = (await import("../../flux-pwa-generator/src/Minifier.mjs")).Minifier.new();
@@ -88,7 +95,7 @@ try {
 
     if (!dev_mode) {
         await minifier.minifyFolder(
-            build_root_folder
+            build_folder
         );
     }
 
@@ -101,7 +108,7 @@ try {
                 join(build_node_modules_folder, "mime-db")
             ]
         ]) {
-        console.log(`Copy ${src} to ${dest}}`);
+        console.log(`Copy ${src} to ${dest}`);
 
         await cp(src, dest, {
             recursive: true
@@ -111,7 +118,7 @@ try {
     await (await import("../../flux-pwa-generator/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new()
         .deleteExcludedFiles(
             build_node_modules_folder,
-            general_file_filter
+            node_modules_file_filter
         );
     await (await import("../../flux-pwa-generator/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new()
         .deleteEmptyFoldersOrInvalidSymlinks(
