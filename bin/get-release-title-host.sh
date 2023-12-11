@@ -17,7 +17,7 @@ host="${FLUX_PUBLISH_DOCKER_HOST:=}"
 host_with_slash="${host}${host:+/}"
 user="${FLUX_PUBLISH_DOCKER_USER:=fluxfw}"
 image="$host_with_slash$user/$name"
-tag="`$bin/PATH/host/get-release-tag "$root"`"
+tag="`$bin/HOST_PATH/get-release-tag "$root"`"
 
 path_host="`realpath "$path"`"
 path_volume="/host/`basename "$path_host"`"

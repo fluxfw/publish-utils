@@ -10,9 +10,9 @@ fi
 
 bin="`dirname "$(realpath "$0")"`"
 
-tag="`$bin/PATH/host/get-release-tag "$path"`"
+tag="`$bin/HOST_PATH/get-release-tag "$path"`"
 
-description="`$bin/PATH/host/get-release-description "$path"`"
+description="`$bin/HOST_PATH/get-release-description "$path"`"
 
 echo "Create git tag $tag"
 

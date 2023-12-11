@@ -4,7 +4,7 @@ Some util scripts for publish
 
 ## Installation
 
-Add the files in [bin/PATH/host](bin/PATH/host) to your PATH
+Add the files in [bin/HOST_PATH](bin/HOST_PATH) to your PATH
 
 ### Github
 

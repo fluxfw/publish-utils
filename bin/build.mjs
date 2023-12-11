@@ -1,76 +1,155 @@
 #!/usr/bin/env node
 import { fileURLToPath } from "node:url";
-import { basename, dirname, extname, join } from "node:path/posix";
+import { basename, dirname, extname, join, relative } from "node:path/posix";
+import { cp, mkdir, symlink } from "node:fs/promises";
 
 let flux_shutdown_handler = null;
 try {
     flux_shutdown_handler = (await import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
 
-    const mode = process.argv[2] ?? null;
-    if (![
-        "prod",
-        "dev"
-    ].includes(mode)) {
-        throw new Error("Please pass prod or dev");
-    }
-    const dev_mode = mode === "dev";
+    const dev_mode = (process.argv[2] ?? "prod") === "dev";
 
     const bin_folder = dirname(fileURLToPath(import.meta.url));
+
     const root_folder = join(bin_folder, "..");
+
     const libs_folder = join(root_folder, "..");
+    const node_modules_folder = join(libs_folder, "node_modules");
+
+    const build_folder = join(root_folder, "build");
+
+    const build_root_folder = join(build_folder, "opt", basename(root_folder));
+
+    const build_node_modules_folder = join(build_root_folder, "node_modules");
+
+    const build_bin_folder = join(build_root_folder, "bin");
+    const build_local_bin_folder = join(build_folder, "usr", "local", "bin");
 
     const general_file_filter = root_file => ![
         "md",
         "sh"
-    ].includes(extname(root_file).substring(1).toLowerCase()) && (!root_file.startsWith("node_modules/") ? !basename(root_file).toLowerCase().includes("template") : true);
+    ].includes(extname(root_file).substring(1).toLowerCase());
+
+    const bundler = (await import("../../flux-pwa-generator/src/Bundler.mjs")).Bundler.new();
+    const minifier = (await import("../../flux-pwa-generator/src/Minifier.mjs")).Minifier.new();
+
+    for (const folder of [
+        build_bin_folder,
+        build_local_bin_folder
+    ]) {
+        console.log(`Create folder ${folder}`);
+
+        await mkdir(folder, {
+            recursive: true
+        });
+    }
+
+    for (const [
+        src,
+        dest
+    ] of [
+            [
+                join(bin_folder, "create-github-release.mjs"),
+                join(build_bin_folder, "create-github-release.mjs")
+            ],
+            [
+                join(bin_folder, "get-release-changelog.mjs"),
+                join(build_bin_folder, "get-release-changelog.mjs")
+            ],
+            [
+                join(bin_folder, "get-release-description.mjs"),
+                join(build_bin_folder, "get-release-description.mjs")
+            ],
+            [
+                join(bin_folder, "get-release-title.mjs"),
+                join(build_bin_folder, "get-release-title.mjs")
+            ],
+            [
+                join(bin_folder, "update-release-version.mjs"),
+                join(build_bin_folder, "update-release-version.mjs")
+            ],
+            [
+                join(bin_folder, "upload-asset-to-github-release.mjs"),
+                join(build_bin_folder, "upload-asset-to-github-release.mjs")
+            ]
+        ]) {
+        await bundler.bundle(
+            src,
+            dest,
+            async code => minifier.minifyCSS(
+                code
+            ),
+            async code => minifier.minifyXML(
+                code
+            ),
+            dev_mode
+        );
+    }
 
     if (!dev_mode) {
-        const bins = [
-            "create-github-release",
-            "get-release-changelog",
-            "get-release-description",
-            "get-release-title",
-            "update-release-version",
-            "upload-asset-to-github-release"
-        ];
+        await minifier.minifyFolder(
+            build_root_folder
+        );
+    }
 
-        const bundler = (await import("../../flux-pwa-generator/src/Bundler.mjs")).Bundler.new();
-        for (const bin of bins) {
-            await bundler.bundle(
-                join(bin_folder, `${bin}.mjs`),
-                join(bin_folder, `${bin}.mjs`),
-                null,
-                null,
-                dev_mode
-            );
-        }
+    for (const [
+        src,
+        dest
+    ] of [
+            [
+                join(node_modules_folder, "mime-db"),
+                join(build_node_modules_folder, "mime-db")
+            ]
+        ]) {
+        console.log(`Copy ${src} to ${dest}}`);
 
-        const {
-            DeleteEmptyFoldersOrInvalidSymlinks
-        } = await import("../../flux-pwa-generator/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs");
-        const {
-            Minifier
-        } = await import("../../flux-pwa-generator/src/Minifier.mjs");
+        await cp(src, dest, {
+            recursive: true
+        });
+    }
 
-        await (await import("../../flux-pwa-generator/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new()
-            .deleteExcludedFiles(
-                libs_folder,
-                root_file => bins.some(bin => root_file === `flux-publish-utils/bin/${bin}.mjs`) || ([
-                    "node_modules/mime-db/"
-                ].some(_root_file => root_file.startsWith(_root_file)) && general_file_filter(
-                    root_file
-                ))
-            );
+    await (await import("../../flux-pwa-generator/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new()
+        .deleteExcludedFiles(
+            build_node_modules_folder,
+            general_file_filter
+        );
+    await (await import("../../flux-pwa-generator/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new()
+        .deleteEmptyFoldersOrInvalidSymlinks(
+            build_node_modules_folder
+        );
 
-        await DeleteEmptyFoldersOrInvalidSymlinks.new()
-            .deleteEmptyFoldersOrInvalidSymlinks(
-                libs_folder
-            );
+    for (const [
+        src,
+        dest
+    ] of [
+            [
+                join(build_bin_folder, "create-github-release.mjs"),
+                join(build_local_bin_folder, "create-github-release")
+            ],
+            [
+                join(build_bin_folder, "get-release-changelog.mjs"),
+                join(build_local_bin_folder, "get-release-changelog")
+            ],
+            [
+                join(build_bin_folder, "get-release-description.mjs"),
+                join(build_local_bin_folder, "get-release-description")
+            ],
+            [
+                join(build_bin_folder, "get-release-title.mjs"),
+                join(build_local_bin_folder, "get-release-title")
+            ],
+            [
+                join(build_bin_folder, "update-release-version.mjs"),
+                join(build_local_bin_folder, "update-release-version")
+            ],
+            [
+                join(build_bin_folder, "upload-asset-to-github-release.mjs"),
+                join(build_local_bin_folder, "upload-asset-to-github-release")
+            ]
+        ]) {
+        console.log(`Create symlink ${src} to ${dest}`);
 
-        await Minifier.new()
-            .minifyFolder(
-                root_folder
-            );
+        await symlink(relative(dirname(dest), src), dest);
     }
 } catch (error) {
     console.error(error);

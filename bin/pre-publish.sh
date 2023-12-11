@@ -7,6 +7,6 @@ root="$bin/.."
 
 #"$bin/lint.sh"
 
-"$bin/PATH/host/update-release-version" "$root"
+"$bin/HOST_PATH/update-release-version" "$root"
 
 "$bin/build.sh"

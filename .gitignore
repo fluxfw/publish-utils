@@ -5,7 +5,7 @@
 !src/**
 !.dockerignore
 !.gitignore
-!CHANEGLOG.md
+!CHANGELOG.md
 !Dockerfile
 !README.md
 !version

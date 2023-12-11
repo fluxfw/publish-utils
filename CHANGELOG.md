@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2023-12-11-1
+
+Changes:
+
+- Inline build
+
 ## v2023-12-04-2
 
 Changes:
