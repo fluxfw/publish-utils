@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { basename, dirname, extname, join, relative } from "node:path/posix";
 import { cp, mkdir, symlink } from "node:fs/promises";
@@ -39,6 +40,10 @@ try {
 
     const bundler = (await import("../../flux-pwa-generator/src/Bundler.mjs")).Bundler.new();
     const minifier = (await import("../../flux-pwa-generator/src/Minifier.mjs")).Minifier.new();
+
+    if (existsSync(build_folder)) {
+        throw new Error("Already built");
+    }
 
     for (const folder of [
         build_bin_folder,
