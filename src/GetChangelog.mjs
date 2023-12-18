@@ -1,9 +1,9 @@
-import { join } from "node:path/posix";
+import { join } from "node:path";
 import { readFile } from "node:fs/promises";
 
-export class GetReleaseVersion {
+export class GetChangelog {
     /**
-     * @returns {GetReleaseVersion}
+     * @returns {GetChangelog}
      */
     static new() {
         return new this();
@@ -20,7 +20,7 @@ export class GetReleaseVersion {
      * @param {string} path
      * @returns {Promise<string>}
      */
-    async getReleaseVersion(path) {
-        return (await readFile(join(path, "version"), "utf8")).trimEnd();
+    async getChangelog(path) {
+        return readFile(join(path, "CHANGELOG.md"), "utf8");
     }
 }

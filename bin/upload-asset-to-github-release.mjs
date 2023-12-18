@@ -13,9 +13,7 @@ try {
         throw new Error("Please pass an asset path");
     }
 
-    await (await import("../src/FluxPublishUtils.mjs")).FluxPublishUtils.new(
-        flux_shutdown_handler
-    )
+    await (await import("../src/UploadAssetToGithubRelease.mjs")).UploadAssetToGithubRelease.new()
         .uploadAssetToGithubRelease(
             path,
             asset_path,

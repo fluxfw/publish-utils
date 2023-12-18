@@ -1,31 +1,22 @@
 import { existsSync } from "node:fs";
-import { join } from "node:path/posix";
+import { GetChangelog } from "./GetChangelog.mjs";
+import { GetReleaseVersion } from "./GetReleaseVersion.mjs";
+import { join } from "node:path";
 import { writeFile } from "node:fs/promises";
-
-/** @typedef {import("../FluxPublishUtils.mjs").FluxPublishUtils} FluxPublishUtils */
 
 export class UpdateReleaseVersion {
     /**
-     * @type {FluxPublishUtils}
-     */
-    #flux_publish_utils;
-
-    /**
-     * @param {FluxPublishUtils} flux_publish_utils
      * @returns {UpdateReleaseVersion}
      */
-    static new(flux_publish_utils) {
-        return new this(
-            flux_publish_utils
-        );
+    static new() {
+        return new this();
     }
 
     /**
-     * @param {FluxPublishUtils} flux_publish_utils
      * @private
      */
-    constructor(flux_publish_utils) {
-        this.#flux_publish_utils = flux_publish_utils;
+    constructor() {
+
     }
 
     /**
@@ -37,9 +28,10 @@ export class UpdateReleaseVersion {
         const version_file = join(path, "version");
         let old_version = null;
         if (existsSync(version_file)) {
-            old_version = await this.#flux_publish_utils.getReleaseVersion(
-                path
-            );
+            old_version = await GetReleaseVersion.new()
+                .getReleaseVersion(
+                    path
+                );
         }
 
         const date = new Date();
@@ -64,9 +56,10 @@ export class UpdateReleaseVersion {
         const changelog_md_file = join(path, "CHANGELOG.md");
         let changelog;
         if (existsSync(changelog_md_file)) {
-            changelog = await this.#flux_publish_utils.getChangelog(
-                path
-            );
+            changelog = await GetChangelog.new()
+                .getChangelog(
+                    path
+                );
         }
         changelog ??= null;
         if ((changelog?.trim() ?? "") === "") {

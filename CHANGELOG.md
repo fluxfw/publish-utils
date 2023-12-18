@@ -6,6 +6,13 @@ Changes:
 
 \-
 
+## v2023-12-18-1
+
+Changes:
+
+- Minimal bundle
+- Remove `flux-http`
+
 ## v2023-12-12-2
 
 Changes:

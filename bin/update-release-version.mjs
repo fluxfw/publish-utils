@@ -8,9 +8,7 @@ try {
         throw new Error("Please pass a path");
     }
 
-    await (await import("../src/FluxPublishUtils.mjs")).FluxPublishUtils.new(
-        flux_shutdown_handler
-    )
+    await (await import("../src/UpdateReleaseVersion.mjs")).UpdateReleaseVersion.new()
         .updateReleaseVersion(
             path
         );

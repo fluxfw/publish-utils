@@ -8,9 +8,7 @@ try {
         throw new Error("Please pass a path");
     }
 
-    process.stdout.write(await (await import("../src/FluxPublishUtils.mjs")).FluxPublishUtils.new(
-        flux_shutdown_handler
-    )
+    process.stdout.write(await (await import("../src/GetReleaseDescription.mjs")).GetReleaseDescription.new()
         .getReleaseDescription(
             path
         ));

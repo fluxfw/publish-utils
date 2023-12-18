@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { basename, dirname, extname, join, relative } from "node:path/posix";
+import { basename, dirname, extname, join, relative } from "node:path";
 import { cp, mkdir, symlink } from "node:fs/promises";
 
 let flux_shutdown_handler = null;
