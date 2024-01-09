@@ -6,6 +6,13 @@ Changes:
 
 \-
 
+## v2024-01-09-1
+
+Changes:
+
+- Adapted `flux-build-utils` (`mime-db` is now bundled)
+- Use same NodeJS 20 version from Alpine 3.19 (`nodejs` package (LTS NodeJS)) instead of Alpine 3.18 (`nodejs-current` package) due is seems smaller
+
 ## v2023-12-18-1
 
 Changes:

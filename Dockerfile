@@ -1,8 +1,8 @@
-FROM alpine:3.18 AS base
+FROM alpine:3.19 AS base
 
 RUN apk upgrade --no-cache
 
-RUN apk add --no-cache nodejs-current
+RUN apk add --no-cache nodejs
 
 RUN addgroup -S -g 1000 node && adduser -S -u 1000 -D -G node node
 

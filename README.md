@@ -1,6 +1,6 @@
 # flux-publish-utils
 
-Some util scripts for publish
+Some utils for publish
 
 ## Installation
 

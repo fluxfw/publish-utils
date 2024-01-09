@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { basename, dirname, extname, join, relative } from "node:path";
-import { cp, mkdir, symlink } from "node:fs/promises";
+import { basename, dirname, join, relative } from "node:path";
+import { mkdir, symlink } from "node:fs/promises";
 
 let flux_shutdown_handler = null;
 try {
@@ -14,32 +14,15 @@ try {
 
     const root_folder = join(bin_folder, "..");
 
-    const libs_folder = join(root_folder, "..");
-    const node_modules_folder = join(libs_folder, "node_modules");
-
     const build_folder = join(root_folder, "build");
 
     const build_root_folder = join(build_folder, "opt", basename(root_folder));
 
-    const build_node_modules_folder = join(build_root_folder, "node_modules");
-
     const build_bin_folder = join(build_root_folder, "bin");
     const build_local_bin_folder = join(build_folder, "usr", "local", "bin");
 
-    const node_modules_file_filter = root_file => ([
-        "42",
-        "cjs",
-        "js",
-        "json",
-        "mjs",
-        "node"
-    ].includes(extname(root_file).substring(1).toLowerCase()) && ![
-        ".package-lock.json",
-        "package-lock.json"
-    ].includes(basename(root_file))) || basename(root_file).toLowerCase().includes("license");
-
-    const bundler = (await import("../../flux-pwa-generator/src/Bundler.mjs")).Bundler.new();
-    const minifier = (await import("../../flux-pwa-generator/src/Minifier.mjs")).Minifier.new();
+    const bundler = (await import("../../flux-build-utils/src/Bundler.mjs")).Bundler.new();
+    const minifier = (await import("../../flux-build-utils/src/Minifier.mjs")).Minifier.new();
 
     if (existsSync(build_folder)) {
         throw new Error("Already built");
@@ -88,6 +71,7 @@ try {
         await bundler.bundle(
             src,
             dest,
+            null,
             async code => minifier.minifyCSS(
                 code
             ),
@@ -103,32 +87,6 @@ try {
             build_folder
         );
     }
-
-    for (const [
-        src,
-        dest
-    ] of [
-            [
-                join(node_modules_folder, "mime-db"),
-                join(build_node_modules_folder, "mime-db")
-            ]
-        ]) {
-        console.log(`Copy ${src} to ${dest}`);
-
-        await cp(src, dest, {
-            recursive: true
-        });
-    }
-
-    await (await import("../../flux-pwa-generator/src/DeleteExcludedFiles.mjs")).DeleteExcludedFiles.new()
-        .deleteExcludedFiles(
-            build_node_modules_folder,
-            node_modules_file_filter
-        );
-    await (await import("../../flux-pwa-generator/src/DeleteEmptyFoldersOrInvalidSymlinks.mjs")).DeleteEmptyFoldersOrInvalidSymlinks.new()
-        .deleteEmptyFoldersOrInvalidSymlinks(
-            build_node_modules_folder
-        );
 
     for (const [
         src,
