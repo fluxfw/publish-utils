@@ -2,19 +2,19 @@
 
 set -e
 
-bin="`dirname "$0"`"
-root="$bin/.."
+bin_folder="`dirname "$0"`"
+root_folder="$bin_folder/.."
 
-name="`basename "$(realpath "$root")"`"
+name="`basename "$(realpath "$root_folder")"`"
 host="${FLUX_PUBLISH_DOCKER_HOST:=}"
 host_with_slash="${host}${host:+/}"
 image="$host_with_slash$FLUX_PUBLISH_DOCKER_USER/$name"
-tag="`$bin/HOST_PATH/get-release-tag "$root"`"
+tag="`$bin_folder/HOST_PATH/get-release-tag "$root_folder"`"
 
-"$bin/build.sh"
+"$bin_folder/build.sh"
 
-"$bin/HOST_PATH/tag-release" "$root"
-"$bin/HOST_PATH/create-github-release" "$root"
+"$bin_folder/HOST_PATH/tag-release" "$root_folder"
+"$bin_folder/HOST_PATH/create-github-release" "$root_folder"
 
 export DOCKER_CONFIG="$FLUX_PUBLISH_DOCKER_CONFIG_FOLDER"
 docker push "$image:$tag"

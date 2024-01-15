@@ -8,8 +8,6 @@ RUN addgroup -S -g 1000 node && adduser -S -u 1000 -D -G node node
 
 FROM base AS build
 
-RUN apk add --no-cache npm
-
 COPY bin/install-libraries.sh /build/flux-publish-utils/bin/install-libraries.sh
 RUN /build/flux-publish-utils/bin/install-libraries.sh
 

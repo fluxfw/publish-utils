@@ -6,7 +6,7 @@ import { mkdir, symlink } from "node:fs/promises";
 
 let flux_shutdown_handler = null;
 try {
-    flux_shutdown_handler = (await import("../../flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
+    flux_shutdown_handler = (await import("flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
 
     const dev_mode = (process.argv[2] ?? "prod") === "dev";
 
@@ -21,8 +21,8 @@ try {
     const build_bin_folder = join(build_root_folder, "bin");
     const build_local_bin_folder = join(build_folder, "usr", "local", "bin");
 
-    const bundler = (await import("../../flux-build-utils/src/Bundler.mjs")).Bundler.new();
-    const minifier = (await import("../../flux-build-utils/src/Minifier.mjs")).Minifier.new();
+    const bundler = (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
+    const minifier = (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
 
     if (existsSync(build_folder)) {
         throw new Error("Already built");

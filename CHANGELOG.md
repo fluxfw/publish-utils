@@ -6,6 +6,15 @@ Changes:
 
 \-
 
+## v2024-01-15-1
+
+Changes:
+
+- Install libraries to inline `node_modules` folder
+- Download npm libraries with no dependencies again directly from archive without cli
+- Load libraries using NodeJS's module resolver
+- Load json using import attributes
+
 ## v2024-01-09-1
 
 Changes:

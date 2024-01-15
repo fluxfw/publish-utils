@@ -2,6 +2,6 @@
 
 set -e
 
-bin="`dirname "$(realpath "$0")"`"
+bin_folder="`dirname "$(realpath "$0")"`"
 
-echo -n "v`$bin/HOST_PATH/get-release-version "$@"`"
+echo -n "v`$bin_folder/HOST_PATH/get-release-version "$@"`"

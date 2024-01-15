@@ -3,7 +3,7 @@ import { createReadStream } from "node:fs";
 import { GetGithubAuthorization } from "./GetGithubAuthorization.mjs";
 import { GetGithubRepository } from "./GetGithubRepository.mjs";
 import { GetReleaseTag } from "./GetReleaseTag.mjs";
-import MIME_DB from "mime-db";
+import MIME_DB from "mime-db/db.json" with { type: "json" };
 import { stat } from "node:fs/promises";
 import { basename, extname, join } from "node:path";
 
