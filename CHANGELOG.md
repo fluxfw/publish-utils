@@ -4,7 +4,8 @@
 
 Changes:
 
-\-
+- Simple `bin` in `.dockerignore`
+- Remove `bin` folder from build
 
 ## v2024-01-15-1
 

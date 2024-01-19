@@ -18,8 +18,7 @@ try {
 
     const build_root_folder = join(build_folder, "opt", basename(root_folder));
 
-    const build_bin_folder = join(build_root_folder, "bin");
-    const build_local_bin_folder = join(build_folder, "usr", "local", "bin");
+    const build_usr_local_bin_folder = join(build_folder, "usr", "local", "bin");
 
     const bundler = (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
     const minifier = (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
@@ -29,8 +28,8 @@ try {
     }
 
     for (const folder of [
-        build_bin_folder,
-        build_local_bin_folder
+        build_root_folder,
+        build_usr_local_bin_folder
     ]) {
         console.log(`Create folder ${folder}`);
 
@@ -45,27 +44,27 @@ try {
     ] of [
             [
                 join(bin_folder, "create-github-release.mjs"),
-                join(build_bin_folder, "create-github-release.mjs")
+                join(build_root_folder, "create-github-release.mjs")
             ],
             [
                 join(bin_folder, "get-release-changelog.mjs"),
-                join(build_bin_folder, "get-release-changelog.mjs")
+                join(build_root_folder, "get-release-changelog.mjs")
             ],
             [
                 join(bin_folder, "get-release-description.mjs"),
-                join(build_bin_folder, "get-release-description.mjs")
+                join(build_root_folder, "get-release-description.mjs")
             ],
             [
                 join(bin_folder, "get-release-title.mjs"),
-                join(build_bin_folder, "get-release-title.mjs")
+                join(build_root_folder, "get-release-title.mjs")
             ],
             [
                 join(bin_folder, "update-release-version.mjs"),
-                join(build_bin_folder, "update-release-version.mjs")
+                join(build_root_folder, "update-release-version.mjs")
             ],
             [
                 join(bin_folder, "upload-asset-to-github-release.mjs"),
-                join(build_bin_folder, "upload-asset-to-github-release.mjs")
+                join(build_root_folder, "upload-asset-to-github-release.mjs")
             ]
         ]) {
         await bundler.bundle(
@@ -93,28 +92,28 @@ try {
         dest
     ] of [
             [
-                join(build_bin_folder, "create-github-release.mjs"),
-                join(build_local_bin_folder, "create-github-release")
+                join(build_root_folder, "create-github-release.mjs"),
+                join(build_usr_local_bin_folder, "create-github-release")
             ],
             [
-                join(build_bin_folder, "get-release-changelog.mjs"),
-                join(build_local_bin_folder, "get-release-changelog")
+                join(build_root_folder, "get-release-changelog.mjs"),
+                join(build_usr_local_bin_folder, "get-release-changelog")
             ],
             [
-                join(build_bin_folder, "get-release-description.mjs"),
-                join(build_local_bin_folder, "get-release-description")
+                join(build_root_folder, "get-release-description.mjs"),
+                join(build_usr_local_bin_folder, "get-release-description")
             ],
             [
-                join(build_bin_folder, "get-release-title.mjs"),
-                join(build_local_bin_folder, "get-release-title")
+                join(build_root_folder, "get-release-title.mjs"),
+                join(build_usr_local_bin_folder, "get-release-title")
             ],
             [
-                join(build_bin_folder, "update-release-version.mjs"),
-                join(build_local_bin_folder, "update-release-version")
+                join(build_root_folder, "update-release-version.mjs"),
+                join(build_usr_local_bin_folder, "update-release-version")
             ],
             [
-                join(build_bin_folder, "upload-asset-to-github-release.mjs"),
-                join(build_local_bin_folder, "upload-asset-to-github-release")
+                join(build_root_folder, "upload-asset-to-github-release.mjs"),
+                join(build_usr_local_bin_folder, "upload-asset-to-github-release")
             ]
         ]) {
         console.log(`Create symlink ${src} to ${dest}`);
