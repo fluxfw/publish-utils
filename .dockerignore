@@ -1,11 +1,5 @@
 *
-!bin/build.mjs
-!bin/create-github-release.mjs
-!bin/get-release-changelog.mjs
-!bin/get-release-description.mjs
-!bin/get-release-title.mjs
-!bin/install-libraries.sh
-!bin/update-release-version.mjs
-!bin/upload-asset-to-github-release.mjs
+!bin
+!bin/**
 !src
 !src/**
