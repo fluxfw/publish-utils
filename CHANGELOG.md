@@ -6,6 +6,8 @@ Changes:
 
 - Simple `bin` in `.dockerignore`
 - Remove `bin` folder from build
+- Remove `node` user (Always run with host user id)
+- Merge `RUN`'s in `Dockerfile`
 
 ## v2024-01-15-1
 

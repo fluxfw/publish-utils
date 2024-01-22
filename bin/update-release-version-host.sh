@@ -22,4 +22,4 @@ tag="`$bin_folder/HOST_PATH/get-release-tag "$root_folder"`"
 path_host="`realpath "$path"`"
 path_volume="/host/`basename "$path_host"`"
 
-docker run --rm --network none -u "`id -u`":"`id -g`" -v "$path_host":"$path_volume" --entrypoint update-release-version "$image:$tag" "$path_volume" "$@"
+docker run --rm --network none -u "`id -u`":"`id -g`" -v "$path_host":"$path_volume" "$image:$tag" "$path_volume" "$@"
