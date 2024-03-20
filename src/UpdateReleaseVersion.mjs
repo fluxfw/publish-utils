@@ -6,9 +6,9 @@ import { writeFile } from "node:fs/promises";
 
 export class UpdateReleaseVersion {
     /**
-     * @returns {UpdateReleaseVersion}
+     * @returns {Promise<UpdateReleaseVersion>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 
@@ -28,7 +28,7 @@ export class UpdateReleaseVersion {
         const version_file = join(path, "version");
         let old_version = null;
         if (existsSync(version_file)) {
-            old_version = await GetReleaseVersion.new()
+            old_version = await (await GetReleaseVersion.new())
                 .getReleaseVersion(
                     path
                 );
@@ -56,7 +56,7 @@ export class UpdateReleaseVersion {
         const changelog_md_file = join(path, "CHANGELOG.md");
         let changelog;
         if (existsSync(changelog_md_file)) {
-            changelog = await GetChangelog.new()
+            changelog = await (await GetChangelog.new())
                 .getChangelog(
                     path
                 );

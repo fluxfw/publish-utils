@@ -3,9 +3,9 @@ import { readFile } from "node:fs/promises";
 
 export class GetReleaseVersion {
     /**
-     * @returns {GetReleaseVersion}
+     * @returns {Promise<GetReleaseVersion>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 

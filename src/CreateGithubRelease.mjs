@@ -6,9 +6,9 @@ import { GetReleaseTitle } from "./GetReleaseTitle.mjs";
 
 export class CreateGithubRelease {
     /**
-     * @returns {CreateGithubRelease}
+     * @returns {Promise<CreateGithubRelease>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 
@@ -24,25 +24,25 @@ export class CreateGithubRelease {
      * @returns {Promise<void>}
      */
     async createGithubRelease(path) {
-        const tag = await GetReleaseTag.new()
+        const tag = await (await GetReleaseTag.new())
             .getReleaseTag(
                 path
             );
 
-        const title = await GetReleaseTitle.new()
+        const title = await (await GetReleaseTitle.new())
             .getReleaseTitle(
                 path
             );
 
         console.log(`Create github release ${title} from tag ${tag}`);
 
-        const response = await fetch(`https://api.github.com/repos/${await GetGithubRepository.new()
+        const response = await fetch(`https://api.github.com/repos/${await (await GetGithubRepository.new())
             .getGithubRepository(
                 path
             )}/releases`, {
             method: "POST",
             headers: {
-                Authorization: await GetGithubAuthorization.new()
+                Authorization: await (await GetGithubAuthorization.new())
                     .getGithubAuthorization(),
                 "Content-Type": "application/json",
                 "User-Agent": "flux-publish-utils"
@@ -50,7 +50,7 @@ export class CreateGithubRelease {
             body: JSON.stringify({
                 tag_name: tag,
                 name: title,
-                body: await GetReleaseDescription.new()
+                body: await (await GetReleaseDescription.new())
                     .getReleaseDescription(
                         path
                     ),

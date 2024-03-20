@@ -3,9 +3,9 @@ import { readFile } from "node:fs/promises";
 
 export class GetGithubRepository {
     /**
-     * @returns {GetGithubRepository}
+     * @returns {Promise<GetGithubRepository>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 

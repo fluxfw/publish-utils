@@ -9,9 +9,9 @@ import { basename, extname, join } from "node:path";
 
 export class UploadAssetToGithubRelease {
     /**
-     * @returns {UploadAssetToGithubRelease}
+     * @returns {Promise<UploadAssetToGithubRelease>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 
@@ -33,19 +33,19 @@ export class UploadAssetToGithubRelease {
 
         const _asset_path = join(path, asset_path);
 
-        const tag = await GetReleaseTag.new()
+        const tag = await (await GetReleaseTag.new())
             .getReleaseTag(
                 path
             );
 
         console.log(`Upload asset ${asset_path} as ${_asset_name} to github release ${tag}`);
 
-        const repository = await GetGithubRepository.new()
+        const repository = await (await GetGithubRepository.new())
             .getGithubRepository(
                 path
             );
 
-        const authorization = await GetGithubAuthorization.new()
+        const authorization = await (await GetGithubAuthorization.new())
             .getGithubAuthorization();
 
         const response = await fetch(`https://api.github.com/repos/${repository}/releases/tags/${tag}`, {

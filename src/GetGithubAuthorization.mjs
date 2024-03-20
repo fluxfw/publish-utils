@@ -5,9 +5,9 @@ import { GITHUB_CONFIG_TOKEN_KEY } from "./Github/GITHUB_CONFIG.mjs";
 
 export class GetGithubAuthorization {
     /**
-     * @returns {GetGithubAuthorization}
+     * @returns {Promise<GetGithubAuthorization>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 
@@ -22,13 +22,14 @@ export class GetGithubAuthorization {
      * @returns {Promise<string>}
      */
     async getGithubAuthorization() {
-        return `Basic ${btoa(await FluxConfig.new(
+        return `Basic ${btoa(await (await FluxConfig.new(
             await getValueProviders(
                 CONFIG_ENV_PREFIX,
                 false
             )
-        ).getConfig(
-            GITHUB_CONFIG_TOKEN_KEY
-        ))}`;
+        ))
+            .getConfig(
+                GITHUB_CONFIG_TOKEN_KEY
+            ))}`;
     }
 }

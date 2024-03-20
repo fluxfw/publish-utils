@@ -2,9 +2,9 @@ import { GetReleaseChangelog } from "./GetReleaseChangelog.mjs";
 
 export class GetReleaseDescription {
     /**
-     * @returns {GetReleaseDescription}
+     * @returns {Promise<GetReleaseDescription>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 
@@ -20,7 +20,7 @@ export class GetReleaseDescription {
      * @returns {Promise<string>}
      */
     async getReleaseDescription(path) {
-        const changelog = await GetReleaseChangelog.new()
+        const changelog = await (await GetReleaseChangelog.new())
             .getReleaseChangelog(
                 path
             );

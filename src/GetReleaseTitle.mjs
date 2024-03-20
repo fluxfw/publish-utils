@@ -3,9 +3,9 @@ import { GetReleaseTag } from "./GetReleaseTag.mjs";
 
 export class GetReleaseTitle {
     /**
-     * @returns {GetReleaseTitle}
+     * @returns {Promise<GetReleaseTitle>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 
@@ -21,12 +21,12 @@ export class GetReleaseTitle {
      * @returns {Promise<string>}
      */
     async getReleaseTitle(path) {
-        const tag = await GetReleaseTag.new()
+        const tag = await (await GetReleaseTag.new())
             .getReleaseTag(
                 path
             );
 
-        const changelog = await GetReleaseChangelog.new()
+        const changelog = await (await GetReleaseChangelog.new())
             .getReleaseChangelog(
                 path
             );

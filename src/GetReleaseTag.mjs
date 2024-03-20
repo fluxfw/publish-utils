@@ -2,9 +2,9 @@ import { GetReleaseVersion } from "./GetReleaseVersion.mjs";
 
 export class GetReleaseTag {
     /**
-     * @returns {GetReleaseTag}
+     * @returns {Promise<GetReleaseTag>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 
@@ -20,7 +20,7 @@ export class GetReleaseTag {
      * @returns {Promise<string>}
      */
     async getReleaseTag(path) {
-        return `v${await GetReleaseVersion.new()
+        return `v${await (await GetReleaseVersion.new())
             .getReleaseVersion(
                 path
             )}`;

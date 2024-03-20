@@ -3,9 +3,9 @@ import { readFile } from "node:fs/promises";
 
 export class GetChangelog {
     /**
-     * @returns {GetChangelog}
+     * @returns {Promise<GetChangelog>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 

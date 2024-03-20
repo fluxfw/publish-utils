@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 let flux_shutdown_handler = null;
 try {
-    flux_shutdown_handler = (await import("flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
+    flux_shutdown_handler = await (await import("flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
 
     const path = process.argv[2] ?? null;
     if (path === null) {
@@ -13,7 +13,7 @@ try {
         throw new Error("Please pass an asset path");
     }
 
-    await (await import("../src/UploadAssetToGithubRelease.mjs")).UploadAssetToGithubRelease.new()
+    await (await (await import("../src/UploadAssetToGithubRelease.mjs")).UploadAssetToGithubRelease.new())
         .uploadAssetToGithubRelease(
             path,
             asset_path,

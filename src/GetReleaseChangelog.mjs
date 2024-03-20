@@ -3,9 +3,9 @@ import { GetReleaseTag } from "./GetReleaseTag.mjs";
 
 export class GetReleaseChangelog {
     /**
-     * @returns {GetReleaseChangelog}
+     * @returns {Promise<GetReleaseChangelog>}
      */
-    static new() {
+    static async new() {
         return new this();
     }
 
@@ -21,12 +21,12 @@ export class GetReleaseChangelog {
      * @returns {Promise<string>}
      */
     async getReleaseChangelog(path) {
-        let changelog = await GetChangelog.new()
+        let changelog = await (await GetChangelog.new())
             .getChangelog(
                 path
             );
 
-        const changelog_start_position = changelog.indexOf(`\n## ${await GetReleaseTag.new()
+        const changelog_start_position = changelog.indexOf(`\n## ${await (await GetReleaseTag.new())
             .getReleaseTag(
                 path
             )}`);
