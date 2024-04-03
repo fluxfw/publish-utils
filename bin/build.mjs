@@ -24,7 +24,7 @@ try {
     const minifier = await (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
 
     if (existsSync(build_folder)) {
-        throw new Error("Already built");
+        throw new Error("Already built!");
     }
 
     for (const folder of [

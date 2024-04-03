@@ -68,7 +68,7 @@ export class UpdateReleaseVersion {
 
         const latest_start_position = changelog.indexOf("\n## latest");
         if (latest_start_position === -1) {
-            throw new Error("Missing latest changelog entry");
+            throw new Error("Missing latest changelog entry!");
         }
         let old_latest_changelog = changelog.substring(latest_start_position + 1);
 

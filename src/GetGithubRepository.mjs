@@ -32,7 +32,7 @@ export class GetGithubRepository {
             if (repository.startsWith("https://github.com/") || (repository.startsWith("https://") && repository.includes("@github.com/"))) {
                 repository = new URL(repository).pathname.substring(1);
             } else {
-                throw new Error(`No github repository ${repository}"`);
+                throw new Error(`No github repository ${repository}"!`);
             }
         }
 

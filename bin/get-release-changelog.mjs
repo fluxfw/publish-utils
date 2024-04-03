@@ -5,7 +5,7 @@ try {
 
     const path = process.argv[2] ?? null;
     if (path === null) {
-        throw new Error("Please pass a path");
+        throw new Error("Please pass a path!");
     }
 
     process.stdout.write(await (await (await import("../src/GetReleaseChangelog.mjs")).GetReleaseChangelog.new())
