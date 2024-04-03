@@ -8,7 +8,7 @@ node_modules_folder="$root_folder/node_modules"
 
 checkAlreadyInstalled() {
     if [ -d "$node_modules_folder" ]; then
-        echo "Already installed" >&2
+        echo "Already installed!" >&2
         exit 1
     fi
 }
