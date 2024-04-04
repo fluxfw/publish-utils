@@ -25,7 +25,7 @@ export class GetGithubAuthorization {
     async getGithubAuthorization() {
         return `Basic ${btoa(await (await FluxConfig.new(
             await getValueProviders(
-                false,
+                null,
                 CONFIG_ENV_PREFIX
             )
         ))
