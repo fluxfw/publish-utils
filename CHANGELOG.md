@@ -9,6 +9,7 @@ Changes:
 - Remove `node` user (Always run with host user id)
 - Merge `RUN`'s in `Dockerfile`
 - Make static new async
+- Update `flux-build-utils`
 - Update `flux-config`
 
 ## v2024-01-15-1

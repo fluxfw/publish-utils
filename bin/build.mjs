@@ -27,17 +27,6 @@ try {
         throw new Error("Already built!");
     }
 
-    for (const folder of [
-        build_root_folder,
-        build_usr_local_bin_folder
-    ]) {
-        console.log(`Create folder ${folder}`);
-
-        await mkdir(folder, {
-            recursive: true
-        });
-    }
-
     for (const [
         src,
         dest
@@ -118,7 +107,13 @@ try {
         ]) {
         console.log(`Create symlink ${src} to ${dest}`);
 
-        await symlink(relative(dirname(dest), src), dest);
+        const dest_folder = dirname(dest);
+
+        await mkdir(dest_folder, {
+            recursive: true
+        });
+
+        await symlink(relative(dest_folder, src), dest);
     }
 } catch (error) {
     console.error(error);
