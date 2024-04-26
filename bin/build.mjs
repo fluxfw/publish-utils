@@ -1,59 +1,56 @@
 #!/usr/bin/env node
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { FluxShutdownHandler } from "flux-shutdown-handler/src/FluxShutdownHandler.mjs";
 import { basename, dirname, join, relative } from "node:path";
 import { mkdir, symlink } from "node:fs/promises";
 
-let flux_shutdown_handler = null;
+const flux_shutdown_handler = await FluxShutdownHandler.new();
+
 try {
-    flux_shutdown_handler = await (await import("flux-shutdown-handler/src/FluxShutdownHandler.mjs")).FluxShutdownHandler.new();
+    const dev = (process.argv[2] ?? "prod") === "dev";
 
-    const dev_mode = (process.argv[2] ?? "prod") === "dev";
+    const src_bin_folder = dirname(fileURLToPath(import.meta.url));
+    const src_root_folder = join(src_bin_folder, "..");
 
-    const bin_folder = dirname(fileURLToPath(import.meta.url));
-
-    const root_folder = join(bin_folder, "..");
-
-    const build_folder = join(root_folder, "build");
-
-    const build_root_folder = join(build_folder, "opt", basename(root_folder));
-
-    const build_usr_local_bin_folder = join(build_folder, "usr", "local", "bin");
-
-    const bundler = await (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
-    const minifier = await (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
+    const build_folder = join(src_root_folder, "build");
+    const build_usr_folder = join(build_folder, "usr", "local");
+    const build_bin_folder = join(build_usr_folder, "bin");
+    const build_lib_folder = join(build_usr_folder, "lib", basename(src_root_folder));
 
     if (existsSync(build_folder)) {
         throw new Error("Already built!");
     }
 
+    const bundler = await (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
+    const minifier = await (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
     for (const [
         src,
         dest
     ] of [
             [
-                join(bin_folder, "create-github-release.mjs"),
-                join(build_root_folder, "create-github-release.mjs")
+                join(src_bin_folder, "create-github-release.mjs"),
+                join(build_lib_folder, "create-github-release.mjs")
             ],
             [
-                join(bin_folder, "get-release-changelog.mjs"),
-                join(build_root_folder, "get-release-changelog.mjs")
+                join(src_bin_folder, "get-release-changelog.mjs"),
+                join(build_lib_folder, "get-release-changelog.mjs")
             ],
             [
-                join(bin_folder, "get-release-description.mjs"),
-                join(build_root_folder, "get-release-description.mjs")
+                join(src_bin_folder, "get-release-description.mjs"),
+                join(build_lib_folder, "get-release-description.mjs")
             ],
             [
-                join(bin_folder, "get-release-title.mjs"),
-                join(build_root_folder, "get-release-title.mjs")
+                join(src_bin_folder, "get-release-title.mjs"),
+                join(build_lib_folder, "get-release-title.mjs")
             ],
             [
-                join(bin_folder, "update-release-version.mjs"),
-                join(build_root_folder, "update-release-version.mjs")
+                join(src_bin_folder, "update-release-version.mjs"),
+                join(build_lib_folder, "update-release-version.mjs")
             ],
             [
-                join(bin_folder, "upload-asset-to-github-release.mjs"),
-                join(build_root_folder, "upload-asset-to-github-release.mjs")
+                join(src_bin_folder, "upload-asset-to-github-release.mjs"),
+                join(build_lib_folder, "upload-asset-to-github-release.mjs")
             ]
         ]) {
         await bundler.bundle(
@@ -66,11 +63,11 @@ try {
             async code => minifier.minifyXML(
                 code
             ),
-            dev_mode
+            dev
         );
     }
 
-    if (!dev_mode) {
+    if (!dev) {
         await minifier.minifyFolder(
             build_folder
         );
@@ -81,28 +78,28 @@ try {
         dest
     ] of [
             [
-                join(build_root_folder, "create-github-release.mjs"),
-                join(build_usr_local_bin_folder, "create-github-release")
+                join(build_lib_folder, "create-github-release.mjs"),
+                join(build_bin_folder, "create-github-release")
             ],
             [
-                join(build_root_folder, "get-release-changelog.mjs"),
-                join(build_usr_local_bin_folder, "get-release-changelog")
+                join(build_lib_folder, "get-release-changelog.mjs"),
+                join(build_bin_folder, "get-release-changelog")
             ],
             [
-                join(build_root_folder, "get-release-description.mjs"),
-                join(build_usr_local_bin_folder, "get-release-description")
+                join(build_lib_folder, "get-release-description.mjs"),
+                join(build_bin_folder, "get-release-description")
             ],
             [
-                join(build_root_folder, "get-release-title.mjs"),
-                join(build_usr_local_bin_folder, "get-release-title")
+                join(build_lib_folder, "get-release-title.mjs"),
+                join(build_bin_folder, "get-release-title")
             ],
             [
-                join(build_root_folder, "update-release-version.mjs"),
-                join(build_usr_local_bin_folder, "update-release-version")
+                join(build_lib_folder, "update-release-version.mjs"),
+                join(build_bin_folder, "update-release-version")
             ],
             [
-                join(build_root_folder, "upload-asset-to-github-release.mjs"),
-                join(build_usr_local_bin_folder, "upload-asset-to-github-release")
+                join(build_lib_folder, "upload-asset-to-github-release.mjs"),
+                join(build_bin_folder, "upload-asset-to-github-release")
             ]
         ]) {
         console.log(`Create symlink ${src} to ${dest}`);
@@ -118,11 +115,7 @@ try {
 } catch (error) {
     console.error(error);
 
-    if (flux_shutdown_handler !== null) {
-        await flux_shutdown_handler.shutdown(
-            1
-        );
-    } else {
-        process.exit(1);
-    }
+    await flux_shutdown_handler.shutdown(
+        1
+    );
 }

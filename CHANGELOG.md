@@ -4,6 +4,7 @@
 
 Changes:
 
+- Install to `lib` instead of `opt`
 - Simple `bin` in `.dockerignore`
 - Remove `bin` folder from build
 - Remove `node` user (Always run with host user id)
