@@ -38,7 +38,7 @@ installArchiveLibrary() {
 
 checkAlreadyInstalled
 
-installArchiveLibrary flux-build-utils https://github.com/fluxfw/flux-build-utils/archive/refs/tags/v2024-05-01-2.tar.gz
+installArchiveLibrary flux-build-utils https://github.com/fluxfw/flux-build-utils/archive/refs/tags/v2024-05-02-1.tar.gz
 
 installArchiveLibrary flux-config https://github.com/fluxfw/flux-config/archive/refs/tags/v2024-04-04-2.tar.gz
 
