@@ -7,7 +7,7 @@ root_folder="$bin_folder/.."
 node_modules_folder="$root_folder/node_modules"
 
 checkAlreadyInstalled() {
-    if [ -d "$node_modules_folder" ]; then
+    if [ -e "$node_modules_folder" ]; then
         echo "Already installed!" >&2
         exit 1
     fi
@@ -16,6 +16,11 @@ checkAlreadyInstalled() {
 installArchiveLibrary() {
     dest="$node_modules_folder/$1"
 
+    if [ -e "$dest" ]; then
+        echo "$1 is already installed in $dest!" >&2
+        exit 1
+    fi
+
     echo "Install archive library $2 to $dest"
 
     while true; do 
@@ -23,7 +28,7 @@ installArchiveLibrary() {
 
         wget -T 5 -O "$dest.tar.gz" "$2" && true
 
-        if [ "$?" = "0" ] && [ -f "$dest.tar.gz" ]; then
+        if [ "$?" = "0" ] && [ -e "$dest.tar.gz" ]; then
             (cd "$dest" && tar -xzf "$dest.tar.gz" --strip-components=1)
             unlink "$dest.tar.gz"
 
@@ -38,7 +43,7 @@ installArchiveLibrary() {
 
 checkAlreadyInstalled
 
-installArchiveLibrary flux-build-utils https://github.com/fluxfw/flux-build-utils/archive/refs/tags/v2024-05-02-2.tar.gz
+installArchiveLibrary flux-build-utils https://github.com/fluxfw/flux-build-utils/archive/refs/tags/v2024-05-03-1.tar.gz
 
 installArchiveLibrary flux-config https://github.com/fluxfw/flux-config/archive/refs/tags/v2024-04-04-2.tar.gz
 
