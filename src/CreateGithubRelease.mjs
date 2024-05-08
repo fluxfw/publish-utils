@@ -45,7 +45,7 @@ export class CreateGithubRelease {
                 Authorization: await (await GetGithubAuthorization.new())
                     .getGithubAuthorization(),
                 "Content-Type": "application/json",
-                "User-Agent": "flux-publish-utils"
+                "User-Agent": "publish-utils"
             },
             body: JSON.stringify({
                 tag_name: tag,

@@ -1,6 +1,4 @@
-# flux-publish-utils
-
-Some utils for publish
+# publish-utils
 
 ## Installation
 
@@ -8,7 +6,7 @@ Add the files in [bin/HOST_PATH](bin/HOST_PATH) to your PATH
 
 ### Github
 
-For the github commands you need to set the environment variable `FLUX_PUBLISH_UTILS_GITHUB_TOKEN_FILE` with the path to the file contains your github token (`public_repo` scope)
+For the github commands you need to set the environment variable `PUBLISH_UTILS_GITHUB_TOKEN_FILE` with the path to the file contains your github token (`public_repo` scope)
 
 The github repository name is taken from `.git/config`
 

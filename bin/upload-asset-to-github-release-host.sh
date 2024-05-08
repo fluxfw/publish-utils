@@ -13,13 +13,13 @@ bin_folder="`dirname "$(realpath "$0")"`"
 root_folder="$bin_folder/.."
 
 name="`basename "$(realpath "$root_folder")"`"
-host="${FLUX_PUBLISH_DOCKER_HOST:=}"
+host="${PUBLISH_DOCKER_HOST:=}"
 host_with_slash="${host}${host:+/}"
-user="${FLUX_PUBLISH_DOCKER_USER:=fluxfw}"
+user="${PUBLISH_DOCKER_USER:=fluxfw}"
 image="$host_with_slash$user/$name"
 tag="`$bin_folder/HOST_PATH/get-release-tag "$root_folder"`"
 
 path_host="`realpath "$path"`"
 path_volume="/host/`basename "$path_host"`"
 
-docker run --rm -u "`id -u`":"`id -g`" -v "$path_host":"$path_volume":ro -v "$FLUX_PUBLISH_UTILS_GITHUB_TOKEN_FILE":/run/secrets/flux_publish_utils_github_token:ro -e FLUX_PUBLISH_UTILS_GITHUB_TOKEN_FILE=/run/secrets/flux_publish_utils_github_token "$image:$tag" "$path_volume" "$@"
+docker run --rm -u "`id -u`":"`id -g`" -v "$path_host":"$path_volume":ro -v "$PUBLISH_UTILS_GITHUB_TOKEN_FILE":/run/secrets/publish_utils_github_token:ro -e PUBLISH_UTILS_GITHUB_TOKEN_FILE=/run/secrets/publish_utils_github_token "$image:$tag" "$path_volume" "$@"

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { FluxShutdownHandler } from "flux-shutdown-handler/src/FluxShutdownHandler.mjs";
+import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
 import { basename, dirname, join, relative } from "node:path";
 import { mkdir, symlink } from "node:fs/promises";
 
-const flux_shutdown_handler = await FluxShutdownHandler.new();
+const shutdown_handler = await ShutdownHandler.new();
 
 try {
     const dev = (process.argv[2] ?? "prod") === "dev";
@@ -22,8 +22,8 @@ try {
         throw new Error("Already built!");
     }
 
-    const bundler = await (await import("flux-build-utils/src/Bundler.mjs")).Bundler.new();
-    const minifier = await (await import("flux-build-utils/src/Minifier.mjs")).Minifier.new();
+    const bundler = await (await import("build-utils/src/Bundler.mjs")).Bundler.new();
+    const minifier = await (await import("build-utils/src/Minifier.mjs")).Minifier.new();
     for (const [
         src,
         dest
@@ -115,7 +115,7 @@ try {
 } catch (error) {
     console.error(error);
 
-    await flux_shutdown_handler.shutdown(
+    await shutdown_handler.shutdown(
         1
     );
 }

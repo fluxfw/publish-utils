@@ -52,7 +52,7 @@ export class UploadAssetToGithubRelease {
             headers: {
                 Accept: "application/vnd.github+json",
                 Authorization: authorization,
-                "User-Agent": "flux-publish-utils"
+                "User-Agent": "publish-utils"
             }
         });
 
@@ -71,7 +71,7 @@ export class UploadAssetToGithubRelease {
                 "Content-Type": this.#getMimeType(
                     _asset_path
                 ),
-                "User-Agent": "flux-publish-utils"
+                "User-Agent": "publish-utils"
             },
             body: await blob(createReadStream(_asset_path))
         });

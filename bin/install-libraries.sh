@@ -43,12 +43,12 @@ installArchiveLibrary() {
 
 checkAlreadyInstalled
 
-installArchiveLibrary flux-build-utils https://github.com/fluxfw/flux-build-utils/archive/refs/tags/v2024-05-03-1.tar.gz
+installArchiveLibrary build-utils https://github.com/fluxfw/build-utils/archive/refs/tags/v2024-05-08-1.tar.gz
 
-installArchiveLibrary flux-config https://github.com/fluxfw/flux-config/archive/refs/tags/v2024-04-04-2.tar.gz
-
-installArchiveLibrary flux-shutdown-handler https://github.com/fluxfw/flux-shutdown-handler/archive/refs/tags/v2024-03-20-1.tar.gz
+installArchiveLibrary config https://github.com/fluxfw/config/archive/refs/tags/v2024-05-08-1.tar.gz
 
 installArchiveLibrary mime-db https://registry.npmjs.org/mime-db/-/mime-db-1.52.0.tgz
+
+installArchiveLibrary shutdown-handler https://github.com/fluxfw/shutdown-handler/archive/refs/tags/v2024-05-08-1.tar.gz
 
 installArchiveLibrary uglify-js https://registry.npmjs.org/uglify-js/-/uglify-js-3.17.4.tgz
