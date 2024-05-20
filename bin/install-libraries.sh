@@ -43,7 +43,7 @@ installArchiveLibrary() {
 
 checkAlreadyInstalled
 
-installArchiveLibrary build-utils https://github.com/fluxfw/build-utils/archive/refs/tags/v2024-05-17-1.tar.gz
+installArchiveLibrary build-utils https://github.com/fluxfw/build-utils/archive/refs/tags/v2024-05-20-4.tar.gz
 
 installArchiveLibrary config https://github.com/fluxfw/config/archive/refs/tags/v2024-05-08-1.tar.gz
 
