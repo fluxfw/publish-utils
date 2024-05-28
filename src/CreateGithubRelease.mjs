@@ -1,3 +1,4 @@
+import { BUILD_CONFIG_APPLICATION_ID } from "./Build/BUILD_CONFIG.mjs";
 import { GetGithubAuthorization } from "./GetGithubAuthorization.mjs";
 import { GetGithubRepository } from "./GetGithubRepository.mjs";
 import { GetReleaseDescription } from "./GetReleaseDescription.mjs";
@@ -45,7 +46,7 @@ export class CreateGithubRelease {
                 Authorization: await (await GetGithubAuthorization.new())
                     .getGithubAuthorization(),
                 "Content-Type": "application/json",
-                "User-Agent": "publish-utils"
+                "User-Agent": BUILD_CONFIG_APPLICATION_ID
             },
             body: JSON.stringify({
                 tag_name: tag,

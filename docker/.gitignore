@@ -1,0 +1,12 @@
+*
+!.dockerignore
+!.gitignore
+!build.sh
+!create-github-release.sh
+!Dockerfile
+!get-release-changelog.sh
+!get-release-description.sh
+!get-release-title.sh
+!publish.sh
+!update-release-version.sh
+!upload-asset-to-github-release.sh

@@ -6,6 +6,15 @@ Changes:
 
 \-
 
+## v2024-05-28-1
+
+Changes:
+
+- Remove `bin` folder
+- Seperate docker
+- `application-id` build config
+- Use application id prefix on commands
+
 ## v2024-05-08-1
 
 Changes:

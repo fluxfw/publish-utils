@@ -1,4 +1,5 @@
 import { blob } from "node:stream/consumers";
+import { BUILD_CONFIG_APPLICATION_ID } from "./Build/BUILD_CONFIG.mjs";
 import { createReadStream } from "node:fs";
 import { GetGithubAuthorization } from "./GetGithubAuthorization.mjs";
 import { GetGithubRepository } from "./GetGithubRepository.mjs";
@@ -52,7 +53,7 @@ export class UploadAssetToGithubRelease {
             headers: {
                 Accept: "application/vnd.github+json",
                 Authorization: authorization,
-                "User-Agent": "publish-utils"
+                "User-Agent": BUILD_CONFIG_APPLICATION_ID
             }
         });
 
@@ -71,7 +72,7 @@ export class UploadAssetToGithubRelease {
                 "Content-Type": this.#getMimeType(
                     _asset_path
                 ),
-                "User-Agent": "publish-utils"
+                "User-Agent": BUILD_CONFIG_APPLICATION_ID
             },
             body: await blob(createReadStream(_asset_path))
         });
