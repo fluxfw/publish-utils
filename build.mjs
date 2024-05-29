@@ -44,7 +44,7 @@ try {
     const build_usr_folder = join(build_folder, "usr", "local");
     const build_bin_folder = join(build_usr_folder, "bin");
     const build_lib_folder = join(build_usr_folder, "lib", application_id);
-    const build_tmp_folder = join(build_folder, "tmp");
+    const build_temp_folder = join(build_folder, "temp");
 
     if (existsSync(build_folder)) {
         throw new Error("Already built!");
@@ -112,7 +112,7 @@ try {
                     return null;
                 }
 
-                const build_file = join(build_tmp_folder, "BUILD_CONFIG.mjs");
+                const build_file = join(build_temp_folder, "BUILD_CONFIG.mjs");
 
                 if (existsSync(build_file)) {
                     return build_file;
@@ -125,7 +125,7 @@ try {
 
                 console.log(`Generate ${build_file} ${build_data.replaceAll("\n", "\\n")}`);
 
-                await mkdir(build_tmp_folder, {
+                await mkdir(build_temp_folder, {
                     recursive: true
                 });
 
@@ -159,7 +159,7 @@ try {
     }
 
     for (const src of [
-        build_tmp_folder
+        build_temp_folder
     ]) {
         if (!existsSync(src)) {
             continue;

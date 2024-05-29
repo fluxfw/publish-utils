@@ -19,11 +19,11 @@ installArchiveLibrary() {
 
         wget -T 5 -O "$dest.tar.gz" "$2" && true
 
-        if [ "$?" = "0" ] && [ -e "$dest.tar.gz" ]; then
+        if [ "$?" = 0 ] && [ -e "$dest.tar.gz" ]; then
             (cd "$dest" && tar -xzf "$dest.tar.gz" --strip-components=1)
             unlink "$dest.tar.gz"
 
-            if [ `ls "$dest" | wc -l` != "0" ]; then
+            if [ `ls "$dest" | wc -l` != 0 ]; then
                 break
             fi
         fi
