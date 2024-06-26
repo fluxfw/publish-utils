@@ -72,7 +72,7 @@ publish-utils-revoke-github-release /path/to/project
 ```
 
 - Revokes a github release
-  - The tag is [publish-utils-get-release-tag](#publish-utils-get-release-tag)
+  - The release is from [publish-utils-get-release-tag](#publish-utils-get-release-tag)
 
 ### publish-utils-revoke-tag-release
 
@@ -80,7 +80,7 @@ publish-utils-revoke-github-release /path/to/project
 publish-utils-revoke-tag-release /path/to/project
 ```
 
-- Revokes a git tag and push it
+- Revokes a git tag and pushes it
   - The tag is [publish-utils-get-release-tag](#publish-utils-get-release-tag)
 
 ### publish-utils-tag-release
@@ -89,7 +89,7 @@ publish-utils-revoke-tag-release /path/to/project
 publish-utils-tag-release /path/to/project
 ```
 
-- Creates a new git tag and push it
+- Creates a new git tag and pushes it
   - The tag is [publish-utils-get-release-tag](#publish-utils-get-release-tag)
   - The message is [publish-utils-get-release-description](#publish-utils-get-release-description)
 
