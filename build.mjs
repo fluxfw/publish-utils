@@ -78,6 +78,10 @@ try {
             join(build_lib_folder, "get-release-title.mjs")
         ],
         [
+            join(src_root_folder, "revoke-github-release.mjs"),
+            join(build_lib_folder, "revoke-github-release.mjs")
+        ],
+        [
             join(src_root_folder, "update-release-version.mjs"),
             join(build_lib_folder, "update-release-version.mjs")
         ],
@@ -197,6 +201,10 @@ try {
             [
                 join(build_lib_folder, "get-release-title.mjs"),
                 join(build_bin_folder, `${application_id}-get-release-title`)
+            ],
+            [
+                join(build_lib_folder, "revoke-github-release.mjs"),
+                join(build_bin_folder, `${application_id}-revoke-github-release`)
             ],
             [
                 join(build_lib_folder, "update-release-version.mjs"),

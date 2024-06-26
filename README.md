@@ -65,6 +65,24 @@ publish-utils-get-release-version /path/to/project
 
 Gets the current `version` file
 
+### publish-utils-revoke-github-release
+
+```shell
+publish-utils-revoke-github-release /path/to/project
+```
+
+- Revokes a github release
+  - The tag is [publish-utils-get-release-tag](#publish-utils-get-release-tag)
+
+### publish-utils-revoke-tag-release
+
+```shell
+publish-utils-revoke-tag-release /path/to/project
+```
+
+- Revokes a git tag and push it
+  - The tag is [publish-utils-get-release-tag](#publish-utils-get-release-tag)
+
 ### publish-utils-tag-release
 
 ```shell

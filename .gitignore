@@ -20,6 +20,8 @@
 !pre-publish.sh
 !publish.sh
 !README.md
+!revoke-github-release.mjs
+!revoke-tag-release.sh
 !tag-release.sh
 !update-release-version.mjs
 !upload-asset-to-github-release.mjs

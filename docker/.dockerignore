@@ -7,5 +7,6 @@
 !get-release-description.mjs
 !get-release-title.mjs
 !install-libraries.sh
+!revoke-github-release.mjs
 !update-release-version.mjs
 !upload-asset-to-github-release.mjs

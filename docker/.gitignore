@@ -8,5 +8,6 @@
 !get-release-description.sh
 !get-release-title.sh
 !publish.sh
+!revoke-github-release.sh
 !update-release-version.sh
 !upload-asset-to-github-release.sh

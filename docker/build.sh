@@ -27,6 +27,7 @@ Dockerfile
 ../../get-release-description.mjs
 ../../get-release-title.mjs
 ../../install-libraries.sh
+../../revoke-github-release.mjs
 ../../update-release-version.mjs
 ../../upload-asset-to-github-release.mjs" | tar -czT -) > "$root_folder/temp/$application_id-$version.tar.gz"
 
