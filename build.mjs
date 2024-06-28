@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { BUILD_CONFIG_APPLICATION_ID } from "./src/Build/BUILD_CONFIG.mjs";
+import { BUILD_CONFIG_APPLICATION_ID } from "./application/Build/BUILD_CONFIG.mjs";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
@@ -28,7 +28,7 @@ try {
     );
 
     const src_root_folder = dirname(fileURLToPath(import.meta.url));
-    const src_folder = join(src_root_folder, "src");
+    const src_application_folder = join(src_root_folder, "application");
 
     const application_id = await config.getConfig(
         "application-id",
@@ -62,31 +62,31 @@ try {
         resolve = null
     ] of [
         [
-            join(src_root_folder, "create-github-release.mjs"),
+            join(src_application_folder, "create-github-release.mjs"),
             join(build_lib_folder, "create-github-release.mjs")
         ],
         [
-            join(src_root_folder, "get-release-changelog.mjs"),
+            join(src_application_folder, "get-release-changelog.mjs"),
             join(build_lib_folder, "get-release-changelog.mjs")
         ],
         [
-            join(src_root_folder, "get-release-description.mjs"),
+            join(src_application_folder, "get-release-description.mjs"),
             join(build_lib_folder, "get-release-description.mjs")
         ],
         [
-            join(src_root_folder, "get-release-title.mjs"),
+            join(src_application_folder, "get-release-title.mjs"),
             join(build_lib_folder, "get-release-title.mjs")
         ],
         [
-            join(src_root_folder, "revoke-github-release.mjs"),
+            join(src_application_folder, "revoke-github-release.mjs"),
             join(build_lib_folder, "revoke-github-release.mjs")
         ],
         [
-            join(src_root_folder, "update-release-version.mjs"),
+            join(src_application_folder, "update-release-version.mjs"),
             join(build_lib_folder, "update-release-version.mjs")
         ],
         [
-            join(src_root_folder, "upload-asset-to-github-release.mjs"),
+            join(src_application_folder, "upload-asset-to-github-release.mjs"),
             join(build_lib_folder, "upload-asset-to-github-release.mjs")
         ]
     ].map(([
@@ -112,7 +112,7 @@ try {
                     return false;
                 }
 
-                if (!join(src_folder, "Build", "BUILD_CONFIG.mjs").includes(absolute_path)) {
+                if (!join(src_application_folder, "Build", "BUILD_CONFIG.mjs").includes(absolute_path)) {
                     return null;
                 }
 

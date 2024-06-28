@@ -5,8 +5,8 @@ import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
 const shutdown_handler = await ShutdownHandler.new();
 
 try {
-    await (await (await import("./src/RevokeGithubRelease.mjs")).RevokeGithubRelease.new())
-        .revokeGithubRelease(
+    process.stdout.write(await (await (await import("./Publish/GetReleaseChangelog.mjs")).GetReleaseChangelog.new())
+        .getReleaseChangelog(
             await (await (await import("config/src/Config.mjs")).Config.new(
                 await (await import("config/src/getValueProviders.mjs")).getValueProviders(
                     true
@@ -15,7 +15,7 @@ try {
                 "path",
                 CONFIG_TYPE_STRING
             )
-        );
+        ));
 } catch (error) {
     console.error(error);
 

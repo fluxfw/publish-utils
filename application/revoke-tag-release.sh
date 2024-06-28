@@ -10,9 +10,9 @@ fi
 
 root_folder="`dirname "$(realpath "$0")"`"
 
-application_id="`basename "$(realpath "$root_folder")"`"
+application_id="`basename "$(realpath "$root_folder/..")"`"
 
-tag="`$root_folder/HOST_PATH/$application_id-get-release-tag "$path"`"
+tag="`$root_folder/../HOST_PATH/$application_id-get-release-tag "$path"`"
 
 echo "Revoke git tag $tag"
 

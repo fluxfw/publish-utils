@@ -5,8 +5,8 @@ import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
 const shutdown_handler = await ShutdownHandler.new();
 
 try {
-    process.stdout.write(await (await (await import("./src/GetReleaseTitle.mjs")).GetReleaseTitle.new())
-        .getReleaseTitle(
+    process.stdout.write(await (await (await import("./Publish/GetReleaseDescription.mjs")).GetReleaseDescription.new())
+        .getReleaseDescription(
             await (await (await import("config/src/Config.mjs")).Config.new(
                 await (await import("config/src/getValueProviders.mjs")).getValueProviders(
                     true

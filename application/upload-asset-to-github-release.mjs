@@ -11,7 +11,7 @@ try {
         )
     );
 
-    await (await (await import("./src/UploadAssetToGithubRelease.mjs")).UploadAssetToGithubRelease.new())
+    await (await (await import("./Publish/UploadAssetToGithubRelease.mjs")).UploadAssetToGithubRelease.new())
         .uploadAssetToGithubRelease(
             await config.getConfig(
                 "path",

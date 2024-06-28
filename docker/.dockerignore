@@ -1,12 +1,5 @@
 *
-!src
-!src/**
+!application
+!application/**
 !build.mjs
-!create-github-release.mjs
-!get-release-changelog.mjs
-!get-release-description.mjs
-!get-release-title.mjs
 !install-libraries.sh
-!revoke-github-release.mjs
-!update-release-version.mjs
-!upload-asset-to-github-release.mjs
