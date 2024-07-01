@@ -146,18 +146,10 @@ try {
                 parent_path,
                 default_resolve
             ) : null,
-            minify ? async code => minifier.minifyCSS(
-                code
-            ) : null,
-            minify ? async code => minifier.minifyCSSRule(
-                code
-            ) : null,
-            minify ? async code => minifier.minifyCSSSelector(
-                code
-            ) : null,
-            minify ? async code => minifier.minifyXML(
-                code
-            ) : null,
+            null,
+            null,
+            null,
+            null,
             dev
         );
     }
