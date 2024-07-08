@@ -94,12 +94,13 @@ try {
     ]) => [
             _src,
             _dest,
-            async (path, parent_path = null, default_resolve = null) => {
+            async (type, path, parent_path = null, default_resolve = null) => {
                 if (parent_path === null || !path.startsWith(".") || !path.endsWith("/Build/BUILD_CONFIG.mjs")) {
                     return null;
                 }
 
                 const absolute_path = default_resolve !== null ? await default_resolve(
+                    type,
                     path,
                     parent_path
                 ) : join(dirname(parent_path), path);
@@ -141,6 +142,7 @@ try {
             src,
             dest,
             async (type, path, parent_path = null, default_resolve = null) => resolve !== null ? resolve(
+                type,
                 path,
                 parent_path,
                 default_resolve
