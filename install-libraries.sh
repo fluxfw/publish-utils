@@ -32,12 +32,12 @@ installArchiveLibrary() {
     done
 }
 
-installArchiveLibrary bundler https://github.com/fluxfw/bundler/archive/refs/tags/v2024-07-08-2.tar.gz
+installArchiveLibrary bundler https://github.com/fluxfw/bundler/archive/refs/tags/v2024-07-08-3.tar.gz
 
-installArchiveLibrary config https://github.com/fluxfw/config/archive/refs/tags/v2024-05-08-1.tar.gz
+installArchiveLibrary config https://github.com/fluxfw/config/archive/refs/tags/v2024-07-08-1.tar.gz
 
 installArchiveLibrary mime-db https://registry.npmjs.org/mime-db/-/mime-db-1.52.0.tgz
 
-installArchiveLibrary shutdown-handler https://github.com/fluxfw/shutdown-handler/archive/refs/tags/v2024-05-08-1.tar.gz
+installArchiveLibrary shutdown-handler https://github.com/fluxfw/shutdown-handler/archive/refs/tags/v2024-07-08-1.tar.gz
 
 installArchiveLibrary uglify-js https://registry.npmjs.org/uglify-js/-/uglify-js-3.17.4.tgz

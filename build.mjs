@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 import { BUILD_CONFIG_APPLICATION_ID } from "./application/Build/BUILD_CONFIG.mjs";
 import { existsSync } from "node:fs";
-import { ShutdownHandler } from "shutdown-handler/src/ShutdownHandler.mjs";
-import { CONFIG_TYPE_BOOLEAN, CONFIG_TYPE_STRING } from "config/src/CONFIG_TYPE.mjs";
+import { ShutdownHandler } from "shutdown-handler/ShutdownHandler.mjs";
+import { CONFIG_TYPE_BOOLEAN, CONFIG_TYPE_STRING } from "config/CONFIG_TYPE.mjs";
 import { dirname, join, relative } from "node:path";
 import { mkdir, rm, symlink, writeFile } from "node:fs/promises";
 
 const shutdown_handler = await ShutdownHandler.new();
 
 try {
-    const config = await (await import("config/src/Config.mjs")).Config.new(
-        await (await import("config/src/getValueProviders.mjs")).getValueProviders(
+    const config = await (await import("config/Config.mjs")).Config.new(
+        await (await import("config/getValueProviders.mjs")).getValueProviders(
             true
         )
     );
@@ -44,8 +44,8 @@ try {
     const build_lib_folder = join(build_usr_folder, "lib", application_id);
     const build_temp_folder = join(build_folder, "temp");
 
-    const bundler = await (await import("bundler/src/Bundler.mjs")).Bundler.new();
-    const minifier = await (await import("bundler/src/Minifier.mjs")).Minifier.new();
+    const bundler = await (await import("bundler/Bundler.mjs")).Bundler.new();
+    const minifier = await (await import("bundler/Minifier.mjs")).Minifier.new();
 
     if (existsSync(build_folder)) {
         throw new Error("Already built!");
