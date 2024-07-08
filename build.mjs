@@ -44,6 +44,9 @@ try {
     const build_lib_folder = join(build_usr_folder, "lib", application_id);
     const build_temp_folder = join(build_folder, "temp");
 
+    const bundler = await (await import("bundler/src/Bundler.mjs")).Bundler.new();
+    const minifier = await (await import("bundler/src/Minifier.mjs")).Minifier.new();
+
     if (existsSync(build_folder)) {
         throw new Error("Already built!");
     }
@@ -52,8 +55,6 @@ try {
         APPLICATION_ID: application_id
     };
 
-    const bundler = await (await import("build-utils/src/Bundler.mjs")).Bundler.new();
-    const minifier = await (await import("build-utils/src/Minifier.mjs")).Minifier.new();
     for (const [
         src,
         dest,
@@ -139,11 +140,16 @@ try {
         await bundler.bundle(
             src,
             dest,
-            async (path, parent_path = null, default_resolve = null) => resolve !== null ? resolve(
+            async (type, path, parent_path = null, default_resolve = null) => resolve !== null ? resolve(
                 path,
                 parent_path,
                 default_resolve
             ) : null,
+            minify,
+            async code => minifier.minifyESMJavaScript(
+                code
+            ),
+            null,
             null,
             null,
             null,
@@ -164,12 +170,6 @@ try {
         await rm(src, {
             recursive: true
         });
-    }
-
-    if (minify) {
-        await minifier.minifyFolder(
-            build_folder
-        );
     }
 
     for (const [

@@ -32,7 +32,7 @@ installArchiveLibrary() {
     done
 }
 
-installArchiveLibrary build-utils https://github.com/fluxfw/build-utils/archive/refs/tags/v2024-07-05-1.tar.gz
+installArchiveLibrary bundler https://github.com/fluxfw/bundler/archive/refs/tags/v2024-07-08-2.tar.gz
 
 installArchiveLibrary config https://github.com/fluxfw/config/archive/refs/tags/v2024-05-08-1.tar.gz
 
