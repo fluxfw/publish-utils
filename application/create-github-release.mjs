@@ -5,7 +5,7 @@ import { ShutdownHandler } from "shutdown-handler/ShutdownHandler.mjs";
 const shutdown_handler = await ShutdownHandler.new();
 
 try {
-    await (await (await import("./Publish/CreateGithubRelease.mjs")).CreateGithubRelease.new())
+    await (await (await import("@publish-utils/publish/CreateGithubRelease.mjs")).CreateGithubRelease.new())
         .createGithubRelease(
             await (await (await import("config/Config.mjs")).Config.new(
                 await (await import("config/getValueProviders.mjs")).getValueProviders(

@@ -1,0 +1,7 @@
+{
+    "exports": {
+        "./*": "./library/*"
+    },
+    "name": "@publish-utils/publish",
+    "private": true
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { BUILD_CONFIG_APPLICATION_ID } from "./application/Build/BUILD_CONFIG.mjs";
+import { BUILD_CONFIG_APPLICATION_ID } from "@publish-utils/build-config/BUILD_CONFIG.mjs";
 import { existsSync } from "node:fs";
 import { ShutdownHandler } from "shutdown-handler/ShutdownHandler.mjs";
 import { CONFIG_TYPE_BOOLEAN, CONFIG_TYPE_STRING } from "config/CONFIG_TYPE.mjs";
@@ -25,8 +25,6 @@ try {
         CONFIG_TYPE_BOOLEAN,
         !dev
     );
-
-    const application_folder = join(import.meta.dirname, "application");
 
     const application_id = await config.getConfig(
         "application-id",
@@ -61,31 +59,31 @@ try {
         resolve = null
     ] of [
         [
-            join(application_folder, "create-github-release.mjs"),
+            "./application/create-github-release.mjs",
             join(build_lib_folder, "create-github-release.mjs")
         ],
         [
-            join(application_folder, "get-release-changelog.mjs"),
+            "./application/get-release-changelog.mjs",
             join(build_lib_folder, "get-release-changelog.mjs")
         ],
         [
-            join(application_folder, "get-release-description.mjs"),
+            "./application/get-release-description.mjs",
             join(build_lib_folder, "get-release-description.mjs")
         ],
         [
-            join(application_folder, "get-release-title.mjs"),
+            "./application/get-release-title.mjs",
             join(build_lib_folder, "get-release-title.mjs")
         ],
         [
-            join(application_folder, "revoke-github-release.mjs"),
+            "./application/revoke-github-release.mjs",
             join(build_lib_folder, "revoke-github-release.mjs")
         ],
         [
-            join(application_folder, "update-release-version.mjs"),
+            "./application/update-release-version.mjs",
             join(build_lib_folder, "update-release-version.mjs")
         ],
         [
-            join(application_folder, "upload-asset-to-github-release.mjs"),
+            "./application/upload-asset-to-github-release.mjs",
             join(build_lib_folder, "upload-asset-to-github-release.mjs")
         ]
     ].map(([
@@ -94,25 +92,8 @@ try {
     ]) => [
             _src,
             _dest,
-            async (type, path, parent_path = null, default_resolve = null) => {
-                if (parent_path === null || !path.startsWith(".") || !path.endsWith("/Build/BUILD_CONFIG.mjs")) {
-                    return null;
-                }
-
-                const absolute_path = default_resolve !== null ? await default_resolve(
-                    type,
-                    path,
-                    parent_path
-                ) : join(dirname(parent_path), path);
-
-                if ([
-                    null,
-                    false
-                ].includes(absolute_path)) {
-                    return false;
-                }
-
-                if (!join(application_folder, "Build", "BUILD_CONFIG.mjs").includes(absolute_path)) {
+            async path => {
+                if (path !== "@publish-utils/build-config/BUILD_CONFIG.mjs") {
                     return null;
                 }
 
@@ -141,11 +122,8 @@ try {
         await bundler.bundle(
             src,
             dest,
-            async (type, path, parent_path = null, default_resolve = null) => resolve !== null ? resolve(
-                type,
-                path,
-                parent_path,
-                default_resolve
+            async path => resolve !== null ? resolve(
+                path
             ) : null,
             minify,
             async code => minifier.minifyESMJavaScript(

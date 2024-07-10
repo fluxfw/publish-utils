@@ -1,5 +1,9 @@
 *
 !application
 !application/**
+!library
+!library/**
 !build.mjs
 !install-libraries.sh
+!package.json
+!package-lock.json

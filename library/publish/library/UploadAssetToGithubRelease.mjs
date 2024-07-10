@@ -1,5 +1,5 @@
 import { blob } from "node:stream/consumers";
-import { BUILD_CONFIG_APPLICATION_ID } from "../Build/BUILD_CONFIG.mjs";
+import { BUILD_CONFIG_APPLICATION_ID } from "@publish-utils/build-config/BUILD_CONFIG.mjs";
 import { createReadStream } from "node:fs";
 import { GetGithubAuthorization } from "./GetGithubAuthorization.mjs";
 import { GetGithubRepository } from "./GetGithubRepository.mjs";

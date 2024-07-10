@@ -1,0 +1,7 @@
+{
+    "exports": {
+        "./*": "./library/*"
+    },
+    "name": "@publish-utils/build-config",
+    "private": true
+}

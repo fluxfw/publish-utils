@@ -5,7 +5,7 @@ import { ShutdownHandler } from "shutdown-handler/ShutdownHandler.mjs";
 const shutdown_handler = await ShutdownHandler.new();
 
 try {
-    await (await (await import("./Publish/UpdateReleaseVersion.mjs")).UpdateReleaseVersion.new())
+    await (await (await import("@publish-utils/publish/UpdateReleaseVersion.mjs")).UpdateReleaseVersion.new())
         .updateReleaseVersion(
             await (await (await import("config/Config.mjs")).Config.new(
                 await (await import("config/getValueProviders.mjs")).getValueProviders(
