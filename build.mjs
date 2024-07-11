@@ -138,20 +138,6 @@ try {
         );
     }
 
-    for (const src of [
-        build_temp_folder
-    ]) {
-        if (!existsSync(src)) {
-            continue;
-        }
-
-        console.log(`Delete ${src}`);
-
-        await rm(src, {
-            recursive: true
-        });
-    }
-
     for (const [
         src,
         dest
@@ -194,6 +180,20 @@ try {
         });
 
         await symlink(relative(dest_folder, src), dest);
+    }
+
+    for (const src of [
+        build_temp_folder
+    ]) {
+        if (!existsSync(src)) {
+            continue;
+        }
+
+        console.log(`Delete ${src}`);
+
+        await rm(src, {
+            recursive: true
+        });
     }
 } catch (error) {
     console.error(error);
