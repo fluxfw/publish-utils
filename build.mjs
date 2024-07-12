@@ -51,7 +51,7 @@ try {
 
     const build_config = {
         ...BUILD_CONFIG,
-        APPLICATION_ID: application_id
+        BUILD_CONFIG_APPLICATION_ID: application_id
     };
 
     for (const [
@@ -107,7 +107,7 @@ try {
                 const build_data = `${Object.entries(build_config).map(([
                     key,
                     value
-                ]) => `export const BUILD_CONFIG_${key} = ${value !== null && typeof value === "object" ? "Object.freeze(" : ""}${JSON.stringify(value)}${value !== null && typeof value === "object" ? ")" : ""};`).join("\n")}\n`;
+                ]) => `export const ${key} = ${value !== null && typeof value === "object" ? "Object.freeze(" : ""}${JSON.stringify(value)}${value !== null && typeof value === "object" ? ")" : ""};`).join("\n")}\n`;
 
                 console.log(`Generate ${build_file} ${build_data.replaceAll("\n", "\\n")}`);
 
