@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { BUILD_CONFIG_APPLICATION_ID } from "@publish-utils/build-config/BUILD_CONFIG.mjs";
+import * as BUILD_CONFIG from "@publish-utils/build-config/BUILD_CONFIG.mjs";
 import { existsSync } from "node:fs";
 import { ShutdownHandler } from "shutdown-handler/ShutdownHandler.mjs";
 import { CONFIG_TYPE_BOOLEAN, CONFIG_TYPE_STRING } from "config/CONFIG_TYPE.mjs";
@@ -29,7 +29,7 @@ try {
     const application_id = await config.getConfig(
         "application-id",
         CONFIG_TYPE_STRING,
-        async () => `${BUILD_CONFIG_APPLICATION_ID}${dev ? "-dev" : ""}`
+        async () => `${BUILD_CONFIG.BUILD_CONFIG_APPLICATION_ID}${dev ? "-dev" : ""}`
     );
 
     const build_folder = await config.getConfig(
@@ -50,6 +50,7 @@ try {
     }
 
     const build_config = {
+        ...BUILD_CONFIG,
         APPLICATION_ID: application_id
     };
 
