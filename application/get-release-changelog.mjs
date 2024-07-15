@@ -1,25 +1,17 @@
 #!/usr/bin/env node
+import { Config } from "config/Config.mjs";
 import { CONFIG_TYPE_STRING } from "config/CONFIG_TYPE.mjs";
-import { ShutdownHandler } from "shutdown-handler/ShutdownHandler.mjs";
+import { GetReleaseChangelog } from "@publish-utils/publish/GetReleaseChangelog.mjs";
+import { getValueProviders } from "config/getValueProviders.mjs";
 
-const shutdown_handler = await ShutdownHandler.new();
-
-try {
-    process.stdout.write(await (await (await import("@publish-utils/publish/GetReleaseChangelog.mjs")).GetReleaseChangelog.new())
-        .getReleaseChangelog(
-            await (await (await import("config/Config.mjs")).Config.new(
-                await (await import("config/getValueProviders.mjs")).getValueProviders(
-                    true
-                )
-            )).getConfig(
-                "path",
-                CONFIG_TYPE_STRING
+process.stdout.write(await (await GetReleaseChangelog.new())
+    .getReleaseChangelog(
+        await (await Config.new(
+            await getValueProviders(
+                true
             )
-        ));
-} catch (error) {
-    console.error(error);
-
-    await shutdown_handler.shutdown(
-        1
-    );
-}
+        )).getConfig(
+            "path",
+            CONFIG_TYPE_STRING
+        )
+    ));

@@ -1,8 +1,7 @@
 {
     "dependencies": {
         "config": "https://github.com/fluxfw/config/archive/refs/tags/v2024-07-08-1.tar.gz",
-        "mime-db": "1.52.0",
-        "shutdown-handler": "https://github.com/fluxfw/shutdown-handler/archive/refs/tags/v2024-07-08-1.tar.gz"
+        "mime-db": "1.52.0"
     },
     "devDependencies": {
         "bundler": "https://github.com/fluxfw/bundler/archive/refs/tags/v2024-07-10-2.tar.gz",
