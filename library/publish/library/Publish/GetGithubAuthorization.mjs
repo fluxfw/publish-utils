@@ -1,8 +1,8 @@
 import { Config } from "config/Config.mjs";
-import { CONFIG_ENV_PREFIX } from "./Config/CONFIG.mjs";
+import { CONFIG_ENV_PREFIX } from "../Config/CONFIG.mjs";
 import { CONFIG_TYPE_STRING } from "config/CONFIG_TYPE.mjs";
 import { getValueProviders } from "config/getValueProviders.mjs";
-import { GITHUB_CONFIG_TOKEN_KEY } from "./Github/GITHUB_CONFIG.mjs";
+import { GITHUB_CONFIG_TOKEN_KEY } from "../Github/GITHUB_CONFIG.mjs";
 
 export class GetGithubAuthorization {
     /**

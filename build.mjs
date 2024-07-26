@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import * as BUILD_CONFIG from "@publish-utils/build-config/BUILD_CONFIG.mjs";
+import * as BUILD_CONFIG from "@publish-utils/build-config/BuildConfig/BUILD_CONFIG.mjs";
 import { Bundler } from "bundler/Bundler.mjs";
 import { Config } from "config/Config.mjs";
 import { existsSync } from "node:fs";
@@ -94,7 +94,7 @@ for (const [
         _src,
         _dest,
         async path => {
-            if (path !== "@publish-utils/build-config/BUILD_CONFIG.mjs") {
+            if (path !== "@publish-utils/build-config/BuildConfig/BUILD_CONFIG.mjs") {
                 return null;
             }
 

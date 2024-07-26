@@ -2,7 +2,7 @@
 import { Config } from "config/Config.mjs";
 import { CONFIG_TYPE_STRING } from "config/CONFIG_TYPE.mjs";
 import { getValueProviders } from "config/getValueProviders.mjs";
-import { UploadAssetToGithubRelease } from "@publish-utils/publish/UploadAssetToGithubRelease.mjs";
+import { UploadAssetToGithubRelease } from "@publish-utils/publish/Publish/UploadAssetToGithubRelease.mjs";
 
 const config = await Config.new(
     await getValueProviders(
