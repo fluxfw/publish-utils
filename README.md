@@ -4,7 +4,7 @@
 
 Add the files in [HOST_PATH](HOST_PATH) to your PATH
 
-### Gitea
+### Gitea (Purposed for forgejo)
 
 For the gitea commands you need to set the environment variable `PUBLISH_UTILS_GITEA_TOKEN_FILE` with the path to the file contains your gitea token (`write:repository` scope)
 
