@@ -6,6 +6,15 @@ Changes:
 
 \-
 
+## v2024-09-19-1
+
+Changes:
+
+- `gitea` commands
+- Supports other remote than `origin` in `.git/config`
+- Fix broken generate new `CHANGELOG.md`
+- Fix wrong docker entrypoint in `upload-asset-to-github-release`
+
 ## v2024-06-26-1
 
 Changes:

@@ -1,11 +1,11 @@
-import { GetGihubConfig } from "../Github/GetGihubConfig.mjs";
+import { GetGiteaConfig } from "../Gitea/GetGiteaConfig.mjs";
 import { GetReleaseDescription } from "./GetReleaseDescription.mjs";
 import { GetReleaseTag } from "./GetReleaseTag.mjs";
 import { GetReleaseTitle } from "./GetReleaseTitle.mjs";
 
-export class CreateGithubRelease {
+export class CreateGiteaRelease {
     /**
-     * @returns {Promise<CreateGithubRelease>}
+     * @returns {Promise<CreateGiteaRelease>}
      */
     static async new() {
         return new this();
@@ -22,7 +22,7 @@ export class CreateGithubRelease {
      * @param {string} path
      * @returns {Promise<void>}
      */
-    async createGithubRelease(path) {
+    async createGiteaRelease(path) {
         const tag = await (await GetReleaseTag.new())
             .getReleaseTag(
                 path
@@ -33,14 +33,14 @@ export class CreateGithubRelease {
                 path
             );
 
-        console.log(`Create github release ${title} from tag ${tag}`);
+        console.log(`Create gitea release ${title} from tag ${tag}`);
 
-        const github_config = await (await GetGihubConfig.new())
-            .getGithubConfig(
+        const gitea_config = await (await GetGiteaConfig.new())
+            .getGiteaConfig(
                 path
             );
 
-        const response = await fetch(`https://api.github.com/repos/${github_config.repository}/releases`, {
+        const response = await fetch(`${gitea_config.host}/api/v1/repos/${gitea_config.repository}/releases`, {
             body: JSON.stringify({
                 body: await (await GetReleaseDescription.new())
                     .getReleaseDescription(
@@ -51,11 +51,11 @@ export class CreateGithubRelease {
                 tag_name: tag
             }),
             headers: {
-                Authorization: github_config.authorization,
-                "Content-Type": "application/json",
-                "User-Agent": github_config["user-agent"]
+                Authorization: gitea_config.authorization,
+                "Content-Type": "application/json"
             },
-            method: "POST"
+            method: "POST",
+            ...gitea_config["https-certificate-options"]
         });
 
         if (!response.ok) {

@@ -2,12 +2,15 @@
 !.dockerignore
 !.gitignore
 !build.sh
+!create-gitea-release.sh
 !create-github-release.sh
 !Dockerfile
 !get-release-changelog.sh
 !get-release-description.sh
 !get-release-title.sh
 !publish.sh
+!revoke-gitea-release.sh
 !revoke-github-release.sh
 !update-release-version.sh
+!upload-asset-to-gitea-release.sh
 !upload-asset-to-github-release.sh

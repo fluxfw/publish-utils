@@ -22,4 +22,4 @@ version="`$root_folder/../HOST_PATH/$application_id-get-release-tag "$root_folde
 path_host="`realpath "$path"`"
 path_volume="/host/`basename "$path_host"`"
 
-docker run --rm -u "`id -u`:`id -g`" -v "$path_host:$path_volume:ro" -v "`printenv "${application_id_env}_GITHUB_TOKEN_FILE"`:/run/secrets/$application_id-github-token:ro" -e "${application_id_env}_GITHUB_TOKEN_FILE=/run/secrets/$application_id-github-token" "$image:$version" "--path=$path_volume" "$@"
+docker run --rm -u "`id -u`:`id -g`" -v "$path_host:$path_volume:ro" -v "`printenv "${application_id_env}_GITHUB_TOKEN_FILE"`:/run/secrets/$application_id-github-token:ro" -e "${application_id_env}_GITHUB_TOKEN_FILE=/run/secrets/$application_id-github-token" --entrypoint "$application_id-upload-asset-to-github-release" "$image:$version" "--path=$path_volume" "$@"

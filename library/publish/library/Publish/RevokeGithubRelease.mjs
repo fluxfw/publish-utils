@@ -1,6 +1,4 @@
-import { BUILD_CONFIG_APPLICATION_ID } from "@publish-utils/build-config/BuildConfig/BUILD_CONFIG.mjs";
-import { GetGithubAuthorization } from "./GetGithubAuthorization.mjs";
-import { GetGithubRepository } from "./GetGithubRepository.mjs";
+import { GetGihubConfig } from "../Github/GetGihubConfig.mjs";
 import { GetReleaseTag } from "./GetReleaseTag.mjs";
 
 export class RevokeGithubRelease {
@@ -30,19 +28,16 @@ export class RevokeGithubRelease {
 
         console.log(`Revoke github release ${tag}`);
 
-        const repository = await (await GetGithubRepository.new())
-            .getGithubRepository(
+        const github_config = await (await GetGihubConfig.new())
+            .getGithubConfig(
                 path
             );
 
-        const authorization = await (await GetGithubAuthorization.new())
-            .getGithubAuthorization();
-
-        const response = await fetch(`https://api.github.com/repos/${repository}/releases/tags/${tag}`, {
+        const response = await fetch(`https://api.github.com/repos/${github_config.repository}/releases/tags/${tag}`, {
             headers: {
                 Accept: "application/vnd.github+json",
-                Authorization: authorization,
-                "User-Agent": BUILD_CONFIG_APPLICATION_ID
+                Authorization: github_config.authorization,
+                "User-Agent": github_config["user-agent"]
             }
         });
 
@@ -50,12 +45,12 @@ export class RevokeGithubRelease {
             throw response;
         }
 
-        const _response = await fetch(`https://api.github.com/repos/${repository}/releases/${(await response.json()).id}`, {
-            method: "DELETE",
+        const _response = await fetch(`https://api.github.com/repos/${github_config.repository}/releases/${(await response.json()).id}`, {
             headers: {
-                Authorization: authorization,
-                "User-Agent": BUILD_CONFIG_APPLICATION_ID
-            }
+                Authorization: github_config.authorization,
+                "User-Agent": github_config["user-agent"]
+            },
+            method: "DELETE"
         });
 
         if (!_response.ok) {

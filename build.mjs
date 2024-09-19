@@ -60,6 +60,10 @@ for (const [
     resolve = null
 ] of [
     [
+        "./application/create-gitea-release.mjs",
+        join(build_lib_folder, "create-gitea-release.mjs")
+    ],
+    [
         "./application/create-github-release.mjs",
         join(build_lib_folder, "create-github-release.mjs")
     ],
@@ -76,12 +80,20 @@ for (const [
         join(build_lib_folder, "get-release-title.mjs")
     ],
     [
+        "./application/revoke-gitea-release.mjs",
+        join(build_lib_folder, "revoke-gitea-release.mjs")
+    ],
+    [
         "./application/revoke-github-release.mjs",
         join(build_lib_folder, "revoke-github-release.mjs")
     ],
     [
         "./application/update-release-version.mjs",
         join(build_lib_folder, "update-release-version.mjs")
+    ],
+    [
+        "./application/upload-asset-to-gitea-release.mjs",
+        join(build_lib_folder, "upload-asset-to-gitea-release.mjs")
     ],
     [
         "./application/upload-asset-to-github-release.mjs",
@@ -144,6 +156,10 @@ for (const [
     dest
 ] of [
         [
+            join(build_lib_folder, "create-gitea-release.mjs"),
+            join(build_bin_folder, `${application_id}-create-gitea-release`)
+        ],
+        [
             join(build_lib_folder, "create-github-release.mjs"),
             join(build_bin_folder, `${application_id}-create-github-release`)
         ],
@@ -160,12 +176,20 @@ for (const [
             join(build_bin_folder, `${application_id}-get-release-title`)
         ],
         [
+            join(build_lib_folder, "revoke-gitea-release.mjs"),
+            join(build_bin_folder, `${application_id}-revoke-gitea-release`)
+        ],
+        [
             join(build_lib_folder, "revoke-github-release.mjs"),
             join(build_bin_folder, `${application_id}-revoke-github-release`)
         ],
         [
             join(build_lib_folder, "update-release-version.mjs"),
             join(build_bin_folder, `${application_id}-update-release-version`)
+        ],
+        [
+            join(build_lib_folder, "upload-asset-to-gitea-release.mjs"),
+            join(build_bin_folder, `${application_id}-upload-asset-to-gitea-release`)
         ],
         [
             join(build_lib_folder, "upload-asset-to-github-release.mjs"),

@@ -4,13 +4,33 @@
 
 Add the files in [HOST_PATH](HOST_PATH) to your PATH
 
+### Gitea
+
+For the gitea commands you need to set the environment variable `PUBLISH_UTILS_GITEA_TOKEN_FILE` with the path to the file contains your gitea token (`write:repository` scope)
+
+The gitea host and repository name is taken from `.git/config` in project
+
+Optionally set the environment variable `PUBLISH_UTILS_GITEA_HTTPS_CERTIFICATE_FILE` with the path to the file contains your gitea https certificate (For trust self signed)
+
 ### Github
 
 For the github commands you need to set the environment variable `PUBLISH_UTILS_GITHUB_TOKEN_FILE` with the path to the file contains your github token (`public_repo` scope)
 
-The github repository name is taken from `.git/config`
+The github repository name is taken from `.git/config` in project
 
 ## Commands
+
+### publish-utils-create-gitea-release
+
+```shell
+publish-utils-create-gitea-release /path/to/project
+```
+
+- Creates a new gitea release
+  - The tag is [publish-utils-get-release-tag](#publish-utils-get-release-tag)
+  - The title is [publish-utils-get-release-title](#publish-utils-get-release-title)
+  - The description is [publish-utils-get-release-description](#publish-utils-get-release-description)
+  - If the tag contains `alpha`, `beta`, `pre` or `rc`, it will marked as a pre release
 
 ### publish-utils-create-github-release
 
@@ -65,6 +85,15 @@ publish-utils-get-release-version /path/to/project
 
 Gets the current `version` file
 
+### publish-utils-revoke-gitea-release
+
+```shell
+publish-utils-revoke-gitea-release /path/to/project
+```
+
+- Revokes a gitea release
+  - The release is from [publish-utils-get-release-tag](#publish-utils-get-release-tag)
+
 ### publish-utils-revoke-github-release
 
 ```shell
@@ -104,6 +133,16 @@ publish-utils-update-release-version /path/to/project
 - Adds a new entry in `CHANGELOG.md` for the new version
   - If exists an entry for `latest`, it will take this as base for the version entry
   - Adds a new entry for `latest` (Replaces if `latest` exists)
+
+### publish-utils-upload-asset-to-gitea-release
+
+```shell
+publish-utils-upload-asset-to-gitea-release /path/to/project path/to/asset/in/project [asset-name]
+```
+
+- Upload an asset to gitea release
+  - The release is from [publish-utils-get-release-tag](#publish-utils-get-release-tag)
+  - If no asset name the basename of the asset path is used
 
 ### publish-utils-upload-asset-to-github-release
 

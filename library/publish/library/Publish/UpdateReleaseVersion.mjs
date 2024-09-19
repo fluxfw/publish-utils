@@ -63,7 +63,7 @@ export class UpdateReleaseVersion {
         }
         changelog ??= null;
         if ((changelog?.trim() ?? "") === "") {
-            changelog = "# Changelog\n\n    ## latest\n    \n    Changes:\n    \n    \\-\n    ";
+            changelog = "# Changelog\n\n## latest\n\nChanges:\n\n\\-\n";
         }
 
         const latest_start_position = changelog.indexOf("\n## latest");

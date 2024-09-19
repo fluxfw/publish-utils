@@ -1,7 +1,8 @@
 {
     "dependencies": {
         "config": "https://github.com/fluxfw/config/archive/refs/tags/v2024-07-08-1.tar.gz",
-        "mime-db": "1.52.0"
+        "mime-db": "1.52.0",
+        "undici": "6.0.1"
     },
     "devDependencies": {
         "bundler": "https://github.com/fluxfw/bundler/archive/refs/tags/v2024-07-26-1.tar.gz",
