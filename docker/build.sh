@@ -13,24 +13,12 @@ version="`$root_folder/../HOST_PATH/$application_id-get-release-tag "$root_folde
 
 rm -rf "$root_folder/temp" && mkdir -p "$root_folder/temp"
 
-placeholder_files=Dockerfile
-for file in $placeholder_files; do
-    sed "s/%APPLICATION_ID%/$application_id/g;s/%INSTALL_LIBRARIES%/$(cd "$root_folder/../library" && for library in *; do echo -n "COPY \"library\/$library\/package.json\" \"\/build\/$application_id\/library\/$library\/package.json\"\n"; done)/g" "$root_folder/$file" > "$root_folder/temp/$file" && chmod "`stat -c %a "$root_folder/$file"`" "$root_folder/temp/$file"
+for file in ../application ../library .dockerignore ../build.mjs Dockerfile ../install-libraries.sh ../package.json ../package-lock.json; do
+    cp -rp "$root_folder/$file" "$root_folder/temp"
 done
 
-(cd "$root_folder/temp" && echo "../../application
-../../library
-../.dockerignore
-../../build.mjs
-Dockerfile
-../../install-libraries.sh
-../../package.json
-../../package-lock.json" | tar -czT -) > "$root_folder/temp/$application_id-$version.tar.gz"
+sed -i "s/%APPLICATION_ID%/$application_id/g;s/%INSTALL_LIBRARIES%/$(cd "$root_folder/../library" && for library in *; do echo -n "COPY \"library\/$library\/package.json\" \"\/build\/$application_id\/library\/$library\/package.json\"\n"; done)/g" "$root_folder/temp/Dockerfile"
 
-for file in $placeholder_files; do
-    unlink "$root_folder/temp/$file"
-done
-
-docker build - --pull -t "$image:$version" -t "$image:latest" < "$root_folder/temp/$application_id-$version.tar.gz"
+docker buildx build "$root_folder/temp" --pull -t "$image:$version" -t "$image:latest"
 
 rm -rf "$root_folder/temp"

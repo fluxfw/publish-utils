@@ -2,4 +2,6 @@
 
 set -e
 
-"`dirname "$0"`/docker/build.sh"
+root_folder="`dirname "$0"`"
+
+"$root_folder/docker/build.sh"
