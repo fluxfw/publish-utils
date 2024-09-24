@@ -37,8 +37,7 @@ export class RevokeGiteaRelease {
             headers: {
                 Authorization: gitea_config.authorization
             },
-            method: "DELETE",
-            ...gitea_config["https-certificate-options"]
+            method: "DELETE"
         });
 
         if (!response.ok) {

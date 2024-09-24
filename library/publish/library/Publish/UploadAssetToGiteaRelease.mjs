@@ -47,8 +47,7 @@ export class UploadAssetToGiteaRelease {
         const response = await fetch(`${gitea_config.host}/api/v1/repos/${gitea_config.repository}/releases/tags/${tag}`, {
             headers: {
                 Authorization: gitea_config.authorization
-            },
-            ...gitea_config["https-certificate-options"]
+            }
         });
 
         if (!response.ok || !(response.headers.get("Content-Type")?.includes("application/json") ?? false)) {
@@ -67,8 +66,7 @@ export class UploadAssetToGiteaRelease {
                     _asset_path
                 )
             },
-            method: "POST",
-            ...gitea_config["https-certificate-options"]
+            method: "POST"
         });
 
         if (!_response.ok) {

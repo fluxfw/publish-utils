@@ -6,6 +6,12 @@ Changes:
 
 \-
 
+## v2024-09-24-1
+
+Changes:
+
+- Remove https certificate and use NodeJS native environment variables `NODE_EXTRA_CA_CERTS`
+
 ## v2024-09-19-1
 
 Changes:

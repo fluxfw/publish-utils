@@ -54,8 +54,7 @@ export class CreateGiteaRelease {
                 Authorization: gitea_config.authorization,
                 "Content-Type": "application/json"
             },
-            method: "POST",
-            ...gitea_config["https-certificate-options"]
+            method: "POST"
         });
 
         if (!response.ok) {
